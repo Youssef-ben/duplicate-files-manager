@@ -1,0 +1,23 @@
+{
+    "files.eol": "\n",
+    "files.exclude": {
+        "**/.venv": true,
+        "**/testfiles": true
+    },
+    
+    "editor.formatOnSave": true,
+
+    "python.formatting.provider": "autopep8",
+    "python.pythonPath": "d:\\3.Workspace\\1.Github\\duplicate-files-manager\\.venv\\Scripts\\python.exe",
+
+    "python.autoComplete.extraPaths": [
+        "../manager"
+    ],
+
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true,
+}
