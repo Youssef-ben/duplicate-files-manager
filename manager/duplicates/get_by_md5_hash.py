@@ -99,6 +99,7 @@ def __exploreFolder(folderPath: str):
     scannedSubFolders = 0
     results = defaultdict(list)
     for folderName, subfolders, filesList in os.walk(folderPath):
+        log.print_ok(f'Searching the folder: ({folderName})...')
         scannedSubFolders += 1
 
         folderFiles = __loadFiles(folderName, filesList)
@@ -112,7 +113,6 @@ def findDuplicateFiles():
     print(f'Starting the duplicate search process')
 
     for folder in utils.getFoldersToScan():
-
         xrpt = 30
         log.print_debug(f'{"="*xrpt} SUMMARY {"="*xrpt}')
         log.print_debug(f'Base folder: ({folder}).')
