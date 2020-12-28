@@ -16,7 +16,7 @@ The library uses two methods for looking for duplicates. First method is by usin
 In order to start using you can set the virtual environment with the follow command:
 
 ```bash
-# You need to create a folder ($PWD/testfiles/Images) and ($PWD/testfiles/Music) in the root folder of the project.
+# Create a folder ($PWD/testfiles/Images) and ($PWD/testfiles/Music) in the root folder of the project.
 # Also, you can override the environment variables (SCAN_FOLDERS) and (OUTPUT_FOLDER).
 # NOTE: If you choose to not set those values, you will be prompted to give the paths.
 source scripts/setup.sh
@@ -24,7 +24,7 @@ source scripts/setup.sh
 
 If you choose to not set the virtual environment, you can just install the required packages and run the program.
 
-```python
+```py
 pip -r requirements.txt
 ```
 
@@ -42,7 +42,7 @@ make find-dup PATHS="<path1> <path2> ..."
 
 Or
 
-```python
+```py
 python scripts/dev/find_duplicates.py
 
 or
