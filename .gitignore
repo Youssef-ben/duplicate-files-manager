@@ -1,5 +1,5 @@
 # Project custom ignore.
-output/
+dfm_output/
 testfiles/
 
 # Environments

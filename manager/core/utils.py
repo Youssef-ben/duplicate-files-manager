@@ -11,24 +11,12 @@ from os import path, sep, getcwd, mkdir
 from pathlib import Path
 
 from .custom_printer import print_ok
-
-E_SCAN_FOLDERS = 'SCAN_FOLDERS'
+from .constants import E_SCAN_FOLDERS, E_OUTPUT_FOLDER
 
 
 def __sanitizePaths(paths: str):
     # Convert path separator to current os.
-    paths = paths.replace('\\', sep).replace('/', sep)
-
-    # If windows fix the path
-    if system() == 'Windows':
-        expr = r'\\([a-z])\\'
-
-        regex = re.compile(expr)
-        match = re.findall(regex, paths)
-
-        for item in match:
-            rep = f'{item.upper()}:{sep+sep}'
-            paths = re.sub(rf'\\({item})\\', rep, paths)
+    paths = fixSeparator(paths)
 
     # Sanitize the paths
     paths = paths\
@@ -80,6 +68,24 @@ def __getFromUserInput():
     return result.split(';')
 
 
+def fixSeparator(paths: str):
+    # Convert path separator to current os.
+    paths = paths.replace('\\', sep).replace('/', sep)
+
+    # If windows fix the path
+    if system() == 'Windows':
+        expr = r'\\([a-z])\\'
+
+        regex = re.compile(expr)
+        match = re.findall(regex, paths)
+
+        for item in match:
+            rep = f'{item.upper()}:{sep+sep}'
+            paths = re.sub(rf'\\({item})\\', rep, paths)
+
+    return paths
+
+
 def getFoldersToScan():
     """Summary:\n
     Return a list of parent folders that we want to scan for duplicate files.
@@ -111,6 +117,30 @@ def getFoldersToScan():
             'You must specify at least one folder to check for duplicates!')
 
     return folders
+
+
+def getOutputFolder():
+    # Check if the env var `OUTPUT_FOLDER` is set.
+    # Otherwise set it to the current user home directory.
+    userHomeFolder = str(Path.home())
+    outputFolder = env.get(E_OUTPUT_FOLDER)
+
+    # If not specified, first prompt the user.
+    if not outputFolder:
+        outputFolder = input(
+            f'Enter the output folder (Default to {userHomeFolder}): ')
+
+    # Defaul tot user Home folder if no input.
+    if not outputFolder:
+        outputFolder = userHomeFolder
+
+    outputFolder = path.join(outputFolder, 'dfm_output')
+
+    # Create the output folder if not exists.
+    if not path.exists(outputFolder):
+        mkdir(outputFolder)
+
+    return outputFolder
 
 
 def getExceptionMessage(ex):
@@ -152,16 +182,6 @@ def mergeDictionaries(dict1, dict2):
             dict1[key] = dict2[key]
 
     return dict1
-
-
-def getOutputFile(baseFolder: str):
-    outputfolder = path.join(getcwd(), 'output')
-
-    if not path.exists(outputfolder):
-        mkdir(outputfolder)
-
-    folderName = path.split(baseFolder)[1]
-    return path.join(outputfolder,  f'{folderName}_result.txt')
 
 
 def printExecutionTime(start_time: time):

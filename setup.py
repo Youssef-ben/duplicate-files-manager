@@ -20,11 +20,11 @@ setup(
     # This will allow to import the code as follow:
     # from filesmanager import <module_name>
     package_dir={
-        'dup-manager': 'manager'
+        'dfm': 'manager'
     },
 
     # This allow to group the modules under one folder.
-    packages=[f'dup-manager.{mod}' for mod in find_packages('manager')],
+    packages=[f'dfm.{mod}' for mod in find_packages('manager')],
 
     setup_requires=[
         'termcolor',

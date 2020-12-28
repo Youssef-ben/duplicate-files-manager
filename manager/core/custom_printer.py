@@ -4,6 +4,14 @@ from termcolor import colored
 init(autoreset=True, convert=True)
 
 
+def print_inf(msg: str):
+    print(msg)
+
+
+def print_title(msg: str):
+    print(colored(msg, 'magenta'))
+
+
 def print_ok(msg: str):
     print(colored(msg, 'green'))
 
