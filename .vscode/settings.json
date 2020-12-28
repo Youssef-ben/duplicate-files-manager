@@ -6,6 +6,9 @@
     },
     
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": true
+    },
 
     "python.formatting.provider": "autopep8",
     "python.pythonPath": "d:\\3.Workspace\\1.Github\\duplicate-files-manager\\.venv\\Scripts\\python.exe",

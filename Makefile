@@ -26,5 +26,5 @@ clean-env:
 	@rm -rf .venv
 
 find-dup:
-	@py scripts/dev/find_duplicates.py
+	@py scripts/dev/find_duplicates.py $(PATHS)
 	
