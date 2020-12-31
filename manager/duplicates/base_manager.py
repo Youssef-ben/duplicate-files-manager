@@ -216,7 +216,7 @@ class BaseManager():
 
         # Print to file.
         xrpt = 40
-        f = open(outputFile, "w")
+        f = open(outputFile, "w", encoding='utf-8')
         f.write(f'{"="*xrpt} SUMMARY {"="*xrpt}\n')
         f.write(f'{currentFolderMsg}\n')
         f.write(f'{scannedFoldersMsg}\n')
