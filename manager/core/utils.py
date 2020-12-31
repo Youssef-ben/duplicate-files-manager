@@ -59,7 +59,7 @@ def __getFromSystemArgs():
 
 def __getFromUserInput():
     userInput = input(
-        'Enter the list of parent folders (ex: <path1>;<path2>): ')
+        'Enter the list of parent/Source-Destination folders (ex: <path1>;<path2>): ')
 
     if not userInput:
         return []

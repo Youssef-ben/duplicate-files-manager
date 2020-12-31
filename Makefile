@@ -27,4 +27,7 @@ clean-env:
 
 find-dup:
 	@py scripts/dev/find_duplicates.py $(PATHS)
+
+cmp-folders:
+	@py scripts/dev/compare_folders.py $(PATHS)
 	
