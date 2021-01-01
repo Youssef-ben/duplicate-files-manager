@@ -5,9 +5,11 @@ for this library.
 import time
 import sys
 import re
+import ntpath
 from platform import system
 from os import environ as env
-from os import path, sep, getcwd, mkdir
+from os import path, sep, getcwd, makedirs, remove
+from shutil import copy2, rmtree
 from pathlib import Path
 
 from .custom_printer import print_ok
@@ -135,12 +137,32 @@ def getOutputFolder():
         outputFolder = userHomeFolder
 
     outputFolder = path.join(outputFolder, 'dfm_output')
+    outputFolder = fixSeparator(outputFolder)
 
     # Create the output folder if not exists.
     if not path.exists(outputFolder):
-        mkdir(outputFolder)
+        makedirs(outputFolder)
 
     return outputFolder
+
+
+def copyFiles(baseFolder: str, filesList: list):
+    for item in filesList:
+        filename = ntpath.basename(str(item))
+        filePath = path.join(baseFolder, filename)
+        filePath = fixSeparator(filePath)
+        copy2(item, filePath)
+
+
+def createFolder(outputFolder: str, folderName: str):
+    folderPath = path.join(outputFolder,  folderName)
+    folder = fixSeparator(folderPath)
+    if path.exists(folder):
+        rmtree(folder)
+
+    makedirs(folder, exist_ok=True)
+
+    return folder
 
 
 def getExceptionMessage(ex):

@@ -1,7 +1,7 @@
 import ntpath
 from collections import defaultdict
 from os import path, makedirs
-from shutil import copyfile
+from shutil import copyfile, copy2
 
 
 # Custom
@@ -22,11 +22,11 @@ class CompareFolders(BaseManager):
     def __init__(self):
         super().__init__()
 
-    def __get_duplicates_from_folders(self):
+    def __compare_folders_for_duplicates(self):
         self.DuplicateFiles = []
         self.NonDuplicateFiles = []
 
-        # Loop on source files and test against destination.
+        # Loop on source files and test against the destination folder.
         for key, value in self.SourceFiles.items():
             if key in self.DestinationFiles:
                 self.DuplicateFiles.append(value[0])
@@ -35,58 +35,40 @@ class CompareFolders(BaseManager):
 
     def __move_duplicate_files(self, sourcePath: str):
         # Should copy the duplicate files into a result folder.
-        outputFolder = r'D:\3.Workspace\1.Github\duplicate-files-manager\testfiles\results'
-
-        # Create result folder and copy duplicate and non -duplicate Files.
-        folderName = path.split(sourcePath)[1]
-        folderName = folderName.strip('\\').strip('/').strip(' ')
-        outputFolder = utils.fixSeparator(path.join(outputFolder,  folderName))
-        dupFolder = utils.fixSeparator(path.join(outputFolder,  'duplicates'))
-        nonDupFolder = utils.fixSeparator(
-            path.join(outputFolder,  'non-duplicates'))
-
-        makedirs(outputFolder, exist_ok=True)
-        makedirs(dupFolder, exist_ok=True)
-        makedirs(nonDupFolder, exist_ok=True)
+        dupFolder = utils.createFolder(self.OutputFolder, 'Duplicates')
+        nonDupFolder = utils.createFolder(self.OutputFolder, 'Non-Duplicates')
 
         # Copy duplicates
-        for item in self.DuplicateFiles:
-            filename = utils.fixSeparator(
-                path.join(dupFolder, ntpath.basename(item)))
-            copyfile(item, filename)
+        log.print_ok('Extracting the duplicate files...')
+        utils.copyFiles(dupFolder, self.DuplicateFiles)
 
-        # Copy non duplicates
-        for item in self.NonDuplicateFiles:
-            filename = utils.fixSeparator(
-                path.join(nonDupFolder, ntpath.basename(item)))
-            copyfile(item, filename)
+        # Copy non-duplicates
+        log.print_ok('Extracting the non-duplicate files...')
+        utils.copyFiles(nonDupFolder, self.NonDuplicateFiles)
 
     def compare(self):
 
         try:
-            print()
-
-            log.print_inf('Setting up the folders!')
-            foldersToScan = [
-                r'D:\3.Workspace\1.Github\duplicate-files-manager\testfiles\copy-from',
-                r'D:\3.Workspace\1.Github\duplicate-files-manager\testfiles\copy-to'
-            ]
-
             log.print_inf('Loading the files from the source folder!')
             self.SourceFiles = self._explore_folder(
-                baseFolder=foldersToScan[0], withDuplicates=False)
+                baseFolder=self.FoldersToScan[0], withDuplicates=False)
+            log.print_debug(
+                f'Loaded ({len(self.SourceFiles)}) file(s) from ({self.FoldersToScan[0]}).')
+            print()
 
             log.print_inf('Loading the files from the destination folder!')
             self.DestinationFiles = self._explore_folder(
-                baseFolder=foldersToScan[1], withDuplicates=False)
+                baseFolder=self.FoldersToScan[1], withDuplicates=False)
+            log.print_debug(
+                f'Loaded ({len(self.DestinationFiles)}) file(s) from ({self.FoldersToScan[1]}).')
+            print()
 
-            log.print_inf('Searching for duplicates!')
-            self.__get_duplicates_from_folders()
+            log.print_inf(
+                'Compare folders (Source/Destination) for duplicates!')
+            self.__compare_folders_for_duplicates()
 
-            print(f'Duplicates: [{len(self.DuplicateFiles)}].')
-            print(f'Non-Duplicates: [{len(self.NonDuplicateFiles)}].')
-
-            self.__move_duplicate_files(foldersToScan[0])
+            log.print_inf('Filtring the result!')
+            self.__move_duplicate_files(self.FoldersToScan[0])
 
         except Exception as message:
             error = utils.getExceptionMessage(message)
