@@ -13,7 +13,7 @@ from shutil import copy2, rmtree
 from pathlib import Path
 
 from .custom_printer import print_ok
-from .constants import E_SCAN_FOLDERS, E_OUTPUT_FOLDER
+from .constants import E_SCAN_FOLDERS, E_OUTPUT_FOLDER, C_OUT_FOLDER_NAME
 
 
 def __sanitizePaths(paths: str):
@@ -136,7 +136,7 @@ def getOutputFolder():
     if not outputFolder:
         outputFolder = userHomeFolder
 
-    outputFolder = path.join(outputFolder, 'dfm_output')
+    outputFolder = path.join(outputFolder, C_OUT_FOLDER_NAME)
     outputFolder = fixSeparator(outputFolder)
 
     # Create the output folder if not exists.

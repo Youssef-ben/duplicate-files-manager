@@ -5,8 +5,9 @@ from shutil import copyfile, copy2
 
 
 # Custom
-from .base_manager import BaseManager
 from ..core import utils
+from ..core import constants as const
+from .base_manager import BaseManager
 from ..core import custom_printer as log
 
 
@@ -35,8 +36,10 @@ class CompareFolders(BaseManager):
 
     def __move_duplicate_files(self, sourcePath: str):
         # Should copy the duplicate files into a result folder.
-        dupFolder = utils.createFolder(self.OutputFolder, 'Duplicates')
-        nonDupFolder = utils.createFolder(self.OutputFolder, 'Non-Duplicates')
+        dupFolder = utils.createFolder(
+            self.OutputFolder, const.C_DUPLICATES_FOLDER)
+        nonDupFolder = utils.createFolder(
+            self.OutputFolder, const.C_NON_DUPLICATES_FOLDER)
 
         # Copy duplicates
         log.print_ok('Extracting the duplicate files...')
