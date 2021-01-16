@@ -4,4 +4,4 @@ if __name__ == "__main__":
     dupFinder = DuplicatesInFolder()
 
     # Start The process
-    dupFinder.findInFolders()
+    dupFinder.find_in_folders()

@@ -14,7 +14,7 @@ class DuplicatesInFolder(BaseManager):
     def __init__(self):
         super().__init__()
 
-    def findInFolders(self):
+    def find_in_folders(self):
         """Summary:\n
         Find duplicate files in the given folders and write the
         result to a file in the specified output folder.

@@ -171,7 +171,7 @@ class BaseManager():
             loadFiles = self.__load_files_without_duplicates
 
         # Scan the folder and load the files into a dictionary.
-        for folderName, subfolders, filesList in walk(self.CurrentFolder):
+        for folderName, _, filesList in walk(self.CurrentFolder):
             log.print_ok(f'Searching the folder: ({folderName})...')
             self.ScannedFolders += 1
 
