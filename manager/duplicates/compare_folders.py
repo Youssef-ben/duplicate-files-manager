@@ -1,67 +1,72 @@
-import ntpath
-from collections import defaultdict
-from os import path, makedirs
-from shutil import copyfile, copy2
+"""
+Compare two folders for duplicates and create a folder of non duplicates files
+from the source folder.
+"""
+# pylint: disable=too-few-public-methods
+# pylint: disable=broad-except
 
+from collections import defaultdict
 
 # Custom
 from ..core import utils
-from ..core import constants as const
 from .base_manager import BaseManager
 from ..core import custom_printer as log
 
 
 class CompareFolders(BaseManager):
     """
-    Compare two folders for duplicates and create a folder of non duplicates files from the source folder.
+    Compare two folders for duplicates and create a folder of non duplicates files
+    from the source folder.
     """
 
-    SourceFiles: dict = defaultdict(list)
-    DestinationFiles: dict = defaultdict(list)
-    NonDuplicateFiles: list = []
-
-    def __init__(self):
-        super().__init__()
+    source_files: dict = defaultdict(list)
+    destination_files: dict = defaultdict(list)
+    non_duplicate_files: list = []
 
     def __compare_folders_for_duplicates(self):
         self.duplicate_files = []
-        self.NonDuplicateFiles = []
+        self.non_duplicate_files = []
 
         # Loop on source files and test against the destination folder.
-        for key, value in self.SourceFiles.items():
-            if key in self.DestinationFiles:
+        for key, value in self.source_files.items():
+            if key in self.destination_files:
                 self.duplicate_files.append(value[0])
             else:
-                self.NonDuplicateFiles.append(value[0])
+                self.non_duplicate_files.append(value[0])
 
-    def __move_duplicate_files(self, sourcePath: str):
+    def __move_duplicate_files(self):
         # Should copy the duplicate files into a result folder.
-        dupFolder = utils.create_folder(self.output_folder, True)
-        nonDupFolder = utils.create_folder(self.output_folder, False)
+        duplicate_folder = utils.create_folder(self.output_folder, True)
+        non_duplicate_folder = utils.create_folder(self.output_folder, False)
 
         # Copy duplicates
         log.print_ok('Extracting the duplicate files...')
-        utils.copy_files(dupFolder, self.duplicate_files)
+        utils.copy_files(duplicate_folder, self.duplicate_files)
 
         # Copy non-duplicates
         log.print_ok('Extracting the non-duplicate files...')
-        utils.copy_files(nonDupFolder, self.NonDuplicateFiles)
+        utils.copy_files(non_duplicate_folder, self.non_duplicate_files)
 
     def compare(self):
+        """
+        Compare the given folders for duplicates.
+        """
 
         try:
             log.print_inf('Loading the files from the source folder!')
-            self.SourceFiles = self._explore_folder(
-                base_folder=self.folders_to_scan[0], with_duplicates=False)
+            self.source_files = self._explore_folder(
+                self.folders_to_scan[0], False)
+
             log.print_debug(
-                f'Loaded ({len(self.SourceFiles)}) file(s) from ({self.folders_to_scan[0]}).')
+                f'Loaded ({len(self.source_files)}) file(s) from ({self.folders_to_scan[0]}).')
             print()
 
             log.print_inf('Loading the files from the destination folder!')
-            self.DestinationFiles = self._explore_folder(
-                base_folder=self.folders_to_scan[1], with_duplicates=False)
+            self.destination_files = self._explore_folder(
+                self.folders_to_scan[1], False)
+
             log.print_debug(
-                f'Loaded ({len(self.DestinationFiles)}) file(s) from ({self.folders_to_scan[1]}).')
+                f'Loaded ({len(self.destination_files)}) file(s) from ({self.folders_to_scan[1]}).')
             print()
 
             log.print_inf(
@@ -69,7 +74,7 @@ class CompareFolders(BaseManager):
             self.__compare_folders_for_duplicates()
 
             log.print_inf('Filtering the result!')
-            self.__move_duplicate_files(self.folders_to_scan[0])
+            self.__move_duplicate_files()
 
         except Exception as message:
             error = utils.format_error_message(message)
