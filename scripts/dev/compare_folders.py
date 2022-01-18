@@ -1,3 +1,7 @@
+"""
+Process to start the folders compare.
+"""
+
 from manager import CompareFolders
 
 if __name__ == "__main__":

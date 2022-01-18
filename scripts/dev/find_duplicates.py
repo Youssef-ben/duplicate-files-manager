@@ -1,3 +1,7 @@
+"""
+Process to find duplicates in the given folder.
+"""
+
 from manager import DuplicatesInFolder
 
 if __name__ == "__main__":
