@@ -6,6 +6,7 @@ import sys
 import re
 import ntpath
 import traceback
+from hashlib import md5
 from platform import system
 from os import environ as env
 from os import path, sep, makedirs
@@ -269,3 +270,29 @@ def merge_dictionaries(base_dictionary, dict_to_be_merged):
             base_dictionary[key] = dict_to_be_merged[key]
 
     return base_dictionary
+
+
+def genrate_md5_hash(file_path, buffer_size=const.C_DEFAULT_BUFFER_SIZE):
+    """Summary:\n
+    Generate the MD5 checksum hash of the given file.
+
+    Args:\n
+        filePath(str): 'The files you want to generate hash from.'
+        bufferSize(int): 'The buffer size that we want read the file. default to (65536)'
+
+    Returns:\n
+        (str): 'Checksum hash of the file.'
+    """
+    hasher = md5()
+
+    with open(file_path, "rb") as file_to_read:
+        # Initialize the buffer.
+        buffer = file_to_read.read(buffer_size)
+
+        # Read the file until the end and update the hash at the same time.
+        while buffer:
+            hasher.update(buffer)
+            buffer = file_to_read.read(buffer_size)
+
+    # Return the file hash.
+    return hasher.hexdigest()

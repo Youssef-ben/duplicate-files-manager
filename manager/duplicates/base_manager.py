@@ -1,149 +1,98 @@
 #!/usr/bin/env python3
+"""
+Abstract Base manager class, contains the shared methods
+between the folders comparision and finding duplicates.
+"""
+# pylint: disable=no-self-use
+# pylint: disable=too-few-public-methods
 
 # Based on the following solutions :
 #   - `https://www.pythoncentral.io/finding-duplicate-files-with-python/`
 #   - `https://gist.github.com/vinovator/a2ba7306e829bf3a9010`
 
-from hashlib import md5
-from pathlib import Path
+from abc import ABC
 from collections import defaultdict
-from os import path, mkdir, getcwd, walk, environ as env
-
+from os import path, walk
 
 # Custom
-from ..core import constants as const
 from ..core import custom_printer as log
 from ..core import utils
 
 
-class BaseManager():
+class BaseManager(ABC):
     """Summary:\n
     Module that offers the base methods required by the managers.
     """
     # Folders to scan and output folder
-    OutputFolder: str
-    FoldersToScan: list
+    output_folder: str
+    folders_to_scan: list
 
     # Attributes for summary.
-    ScannedFolders: int = 0
+    scanned_folders: int = 0
 
     # Attributes for data.
-    CurrentFolder: str = ''
-    LoadedFiles: defaultdict(list)
-    DuplicateFiles: list
+    current_folder: str = ''
+    loaded_files: defaultdict(list)
+    duplicate_files: list
 
     def __init__(self):
         # Get the list of folders to scan.
-        self.FoldersToScan = utils.get_folders_to_scan()
+        self.folders_to_scan = utils.get_folders_to_scan()
 
         # Get the output file.
-        self.OutputFolder = utils.get_output_folder()
+        self.output_folder = utils.get_output_folder()
 
-    def __get_md5_hash(self, filePath, bufferSize=const.C_DEFAULT_BUFFER_SIZE):
-        """Summary:\n
-        Generate the MD5 checksum hash of the given file.
-
-        Args:\n
-            filePath(str): 'The files you want to generate hash from.'
-            bufferSize(int): 'The buffer size that we want read the file. default to (65536)'
-
-        Returns:\n
-            (str): 'Checksum hash of the file.'
-        """
-        hasher = md5()
-
-        with open(filePath, "rb") as f:
-            # Initialize the buffer.
-            buffer = f.read(bufferSize)
-
-            # Read the file until the end and update the hash at the same time.
-            while buffer:
-                hasher.update(buffer)
-                buffer = f.read(bufferSize)
-
-        # Return the file hash.
-        return hasher.hexdigest()
-
-    def __load_files_with_duplicates(self, folderPath: str, filesList: list):
+    def __load_files(self, folder_path: str, files_list: list, with_duplicates: bool):
         """Summary:\n
         Load the files of the given folder in a dictionary.
 
-        Details:\n
-        The method get the files MD5 hash and add it to the dictionary.\n
-        If there is duplicate of the file, the method add it under the
-        same key in the dictionary.
-
         Args:\n
-            folderPath (str): 'The folder from which we are loading the files.'
-            filesList (list): 'The list of files in the specified folder.'
+            folder_path (str): 'The folder from which we are loading the files.'
+            files_list (list): 'The list of files in the specified folder.'
+            with_duplicates (bool): 'Indicate if we want to load duplicate files too.'
 
         Returns:\n
             (dict(list)): 'Returns a dictionary of lists.'
         """
-        # Dictionary to hold the Hash with duplicate files paths.
+        # Dictionary to hold the Hash and files paths.
         result = defaultdict(list)
 
-        for item in filesList:
-            fullPath = path.join(folderPath, item)
+        for item in files_list:
+            full_path = path.join(folder_path, item)
 
-            file_hash = self.__get_md5_hash(fullPath)
-            result[file_hash].append(fullPath)
+            file_hash = utils.genrate_md5_hash(full_path)
+
+            if (file_hash not in result) and (not with_duplicates):
+                result[file_hash].append(full_path)
+            else:
+                result[file_hash].append(full_path)
 
         return result
 
-    def __load_files_without_duplicates(self, folderPath: str, filesList: list):
+    def _find_duplicates(self):
         """Summary:\n
-        Load the files of the given folder in a dictionary.
-
-        *WARNING: USE THIS METHOD WITH FOLDERs THAT DOESN'T HAVE DUPLICATES.*
-
-        Details:\n
-        The method get the files MD5 hash and add it to the dictionary.\n
-        Note that it doesn't load duplicates files.
-
-        Args:\n
-            folderPath (str): 'The folder from which we are loading the files.'
-            filesList (list): 'The list of files in the specified folder.'
-
-        Returns:\n
-            (dict(list)): 'Returns a dictionary of lists.'
-        """
-        # Dictionary to hold the Hash with duplicate files paths.
-        result = defaultdict(list)
-
-        for item in filesList:
-            fullPath = path.join(folderPath, item)
-
-            file_hash = self.__get_md5_hash(fullPath)
-            if not file_hash in result:
-                result[file_hash].append(fullPath)
-
-        return result
-
-    def _get_duplicates_in_folder(self):
-        """Summary:\n
-        Find and return the list of duplicate files from the given dictinary.
+        Find and return the list of duplicate files from the given dictionary.
 
         Returns:
             list: 'The list of duplicate files.'
         """
-        self.DuplicateFiles = list(
-            filter(lambda x: len(x) > 1, self.LoadedFiles.values()))
+        self.duplicate_files = list(
+            filter(lambda x: len(x) > 1, self.loaded_files.values()))
 
-        if len(self.DuplicateFiles) < 1:
+        if len(self.duplicate_files) < 1:
             log.print_warning(
-                f'No duplicate files were found in the folder ({self.CurrentFolder})!')
+                f'No duplicate files were found in the folder ({self.current_folder})!')
             return defaultdict(list)
 
-        return self.DuplicateFiles
+        return self.duplicate_files
 
-    def _explore_folder(self, baseFolder: str, withDuplicates=True):
+    def _explore_folder(self, base_folder: str, with_duplicates=True):
         """Summary:\n
         Walks the given folder and load its files.
 
         Args:\n
-            baseFolder (str): 'The folder we want to load.'
-            withDuplicates (bool, optional): 'Indicate if we want to load duplicate files too.'
+            base_folder (str): 'The folder we want to load.'
+            with_duplicates (bool, optional): 'Indicate if we want to load duplicate files too.'
 
         Raises:\n
             Exception: 'Thrown when the base folder is not supplied.'
@@ -151,34 +100,31 @@ class BaseManager():
         Returns:\n
             dict(list): 'Returns the loaded files.'
         """
-        if not baseFolder:
+        if not base_folder:
             raise Exception(
                 'Base folder required! please specify a valid folder!')
 
-        log.print_title(f'Searching the base folder ({baseFolder})...')
+        log.print_title(f'Searching the base folder ({base_folder})...')
 
-        if not path.exists(baseFolder):
+        if not path.exists(base_folder):
             log.print_warning(
-                f"Folder ({baseFolder}) doesn't exists! Skipping...")
+                f"Folder ({base_folder}) doesn't exists! Skipping...")
 
-        self.CurrentFolder = baseFolder
-        self.ScannedFolders = 0
-        self.LoadedFiles = defaultdict(list)
-
-        # Define which method to call for loading the files.
-        loadFiles = self.__load_files_with_duplicates
-        if not withDuplicates:
-            loadFiles = self.__load_files_without_duplicates
+        self.current_folder = base_folder
+        self.scanned_folders = 0
+        self.loaded_files = defaultdict(list)
 
         # Scan the folder and load the files into a dictionary.
-        for folderName, _, filesList in walk(self.CurrentFolder):
-            log.print_ok(f'Searching the folder: ({folderName})...')
-            self.ScannedFolders += 1
+        for folder_name, _, files_list in walk(self.current_folder):
+            log.print_ok(f'Searching the folder: ({folder_name})...')
+            self.scanned_folders += 1
 
-            folderFiles = loadFiles(folderName, filesList)
-            utils.merge_dictionaries(self.LoadedFiles, folderFiles)
+            files_in_folder = self.__load_files(
+                folder_name, files_list, with_duplicates)
 
-        return self.LoadedFiles
+            utils.merge_dictionaries(self.loaded_files, files_in_folder)
+
+        return self.loaded_files
 
     def _write_to_file(self):
         """Summary:\n
@@ -197,46 +143,50 @@ class BaseManager():
 
         path/to/folder/W1.jpg\n
         path/to/duplicate/file/name.jpg\n
-        '-----------------------------------------------------------------------------------------'\n
+        '----------------------------------------------------------------------------------------'\n
         """
         # Get the name of the parent folder being searched for
         # duplicates, to set the name of the file with it.
-        folderName = path.split(self.CurrentFolder)[1]
-        folderName = folderName.strip('\\').strip('/').strip(' ')
-        outputFile = utils.unify_separator(
-            path.join(self.OutputFolder,  f'{folderName}_result.txt'))
+        folder_name = path\
+            .split(self.current_folder)[1]\
+            .strip('\\').strip('/').strip(' ')
+
+        output_file = path.join(
+            self.output_folder,  f'{folder_name}_result.txt')
+        output_file = utils.unify_separator(output_file)
 
         log.print_title(
-            f'Saving the result to the file: ({outputFile}).')
+            f'Saving the result to the file: ({output_file}).')
 
-        currentFolderMsg = f'Base folder: ({self.CurrentFolder}).'
-        scannedFoldersMsg = f'Scanned sub-folders: ({self.ScannedFolders}).'
-        loadedFilesMsg = f'Loaded files: ({len(self.LoadedFiles)}).'
-        duplicatesMsg = f'Duplicate files: ({len(self.DuplicateFiles)}).'
+        current_folder_msg = f'Base folder: ({self.current_folder}).'
+        scanned_folders_msg = f'Scanned sub-folders: ({self.scanned_folders}).'
+        loaded_files_msg = f'Loaded files: ({len(self.loaded_files)}).'
+        duplicates_msg = f'Duplicate files: ({len(self.duplicate_files)}).'
 
         # Print to file.
-        xrpt = 40
-        f = open(outputFile, "w", encoding='utf-8')
-        f.write(f'{"="*xrpt} SUMMARY {"="*xrpt}\n')
-        f.write(f'{currentFolderMsg}\n')
-        f.write(f'{scannedFoldersMsg}\n')
-        f.write(f'{loadedFilesMsg}\n')
-        f.write(f'{duplicatesMsg}\n')
-        f.write(f'{"="*(xrpt*2 + 9)}\n\n')
+        repeat = 40
+        output_file = open(output_file, "w", encoding='utf-8')
+        output_file.write(f'{"="*repeat} SUMMARY {"="*repeat}\n')
+        output_file.write(f'{current_folder_msg}\n')
+        output_file.write(f'{scanned_folders_msg}\n')
+        output_file.write(f'{loaded_files_msg}\n')
+        output_file.write(f'{duplicates_msg}\n')
+        output_file.write(f'{"="*(repeat*2 + 9)}\n\n')
 
-        for item in self.DuplicateFiles:
-            for subItem in item:
-                f.write(f'{subItem}\n')
-            f.writelines(f'{"-"*(xrpt*2 + 9)}\n\n')
+        for item in self.duplicate_files:
+            for sub_item in item:
+                output_file.write(f'{sub_item}\n')
 
-        f.close()
+            output_file.writelines(f'{"-"*(repeat*2 + 9)}\n\n')
+
+        output_file.close()
 
         # Print to screen.
-        xrpt = 40
-        log.print_debug(f'{"="*xrpt} SUMMARY {"="*xrpt}')
-        log.print_debug(currentFolderMsg)
-        log.print_debug(scannedFoldersMsg)
-        log.print_debug(loadedFilesMsg)
-        log.print_debug(duplicatesMsg)
-        log.print_debug(f'{"="*(xrpt*2 + 9)}')
+        repeat = 40
+        log.print_debug(f'{"="*repeat} SUMMARY {"="*repeat}')
+        log.print_debug(current_folder_msg)
+        log.print_debug(scanned_folders_msg)
+        log.print_debug(loaded_files_msg)
+        log.print_debug(duplicates_msg)
+        log.print_debug(f'{"="*(repeat*2 + 9)}')
         print()

@@ -24,13 +24,13 @@ class DuplicatesInFolder(BaseManager):
             print()
             log.print_inf(f'Starting the duplicate search process')
 
-            for folder in self.FoldersToScan:
+            for folder in self.folders_to_scan:
 
                 # Start exploring the folder.
                 self._explore_folder(folder, True)
 
                 # Clean the loaded files and return the duplicates.
-                self._get_duplicates_in_folder()
+                self._find_duplicates()
 
                 # Write the result of each folder into a dedicated file.
                 self._write_to_file()

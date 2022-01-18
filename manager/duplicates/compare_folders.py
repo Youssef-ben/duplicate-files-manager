@@ -24,24 +24,24 @@ class CompareFolders(BaseManager):
         super().__init__()
 
     def __compare_folders_for_duplicates(self):
-        self.DuplicateFiles = []
+        self.duplicate_files = []
         self.NonDuplicateFiles = []
 
         # Loop on source files and test against the destination folder.
         for key, value in self.SourceFiles.items():
             if key in self.DestinationFiles:
-                self.DuplicateFiles.append(value[0])
+                self.duplicate_files.append(value[0])
             else:
                 self.NonDuplicateFiles.append(value[0])
 
     def __move_duplicate_files(self, sourcePath: str):
         # Should copy the duplicate files into a result folder.
-        dupFolder = utils.create_folder(self.OutputFolder, True)
-        nonDupFolder = utils.create_folder(self.OutputFolder, False)
+        dupFolder = utils.create_folder(self.output_folder, True)
+        nonDupFolder = utils.create_folder(self.output_folder, False)
 
         # Copy duplicates
         log.print_ok('Extracting the duplicate files...')
-        utils.copy_files(dupFolder, self.DuplicateFiles)
+        utils.copy_files(dupFolder, self.duplicate_files)
 
         # Copy non-duplicates
         log.print_ok('Extracting the non-duplicate files...')
@@ -52,24 +52,24 @@ class CompareFolders(BaseManager):
         try:
             log.print_inf('Loading the files from the source folder!')
             self.SourceFiles = self._explore_folder(
-                baseFolder=self.FoldersToScan[0], withDuplicates=False)
+                base_folder=self.folders_to_scan[0], with_duplicates=False)
             log.print_debug(
-                f'Loaded ({len(self.SourceFiles)}) file(s) from ({self.FoldersToScan[0]}).')
+                f'Loaded ({len(self.SourceFiles)}) file(s) from ({self.folders_to_scan[0]}).')
             print()
 
             log.print_inf('Loading the files from the destination folder!')
             self.DestinationFiles = self._explore_folder(
-                baseFolder=self.FoldersToScan[1], withDuplicates=False)
+                base_folder=self.folders_to_scan[1], with_duplicates=False)
             log.print_debug(
-                f'Loaded ({len(self.DestinationFiles)}) file(s) from ({self.FoldersToScan[1]}).')
+                f'Loaded ({len(self.DestinationFiles)}) file(s) from ({self.folders_to_scan[1]}).')
             print()
 
             log.print_inf(
                 'Compare folders (Source/Destination) for duplicates!')
             self.__compare_folders_for_duplicates()
 
-            log.print_inf('Filtring the result!')
-            self.__move_duplicate_files(self.FoldersToScan[0])
+            log.print_inf('Filtering the result!')
+            self.__move_duplicate_files(self.folders_to_scan[0])
 
         except Exception as message:
             error = utils.format_error_message(message)
