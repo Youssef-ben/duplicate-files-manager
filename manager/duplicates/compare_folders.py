@@ -36,18 +36,16 @@ class CompareFolders(BaseManager):
 
     def __move_duplicate_files(self, sourcePath: str):
         # Should copy the duplicate files into a result folder.
-        dupFolder = utils.createFolder(
-            self.OutputFolder, const.C_DUPLICATES_FOLDER)
-        nonDupFolder = utils.createFolder(
-            self.OutputFolder, const.C_NON_DUPLICATES_FOLDER)
+        dupFolder = utils.create_folder(self.OutputFolder, True)
+        nonDupFolder = utils.create_folder(self.OutputFolder, False)
 
         # Copy duplicates
         log.print_ok('Extracting the duplicate files...')
-        utils.copyFiles(dupFolder, self.DuplicateFiles)
+        utils.copy_files(dupFolder, self.DuplicateFiles)
 
         # Copy non-duplicates
         log.print_ok('Extracting the non-duplicate files...')
-        utils.copyFiles(nonDupFolder, self.NonDuplicateFiles)
+        utils.copy_files(nonDupFolder, self.NonDuplicateFiles)
 
     def compare(self):
 
@@ -74,5 +72,5 @@ class CompareFolders(BaseManager):
             self.__move_duplicate_files(self.FoldersToScan[0])
 
         except Exception as message:
-            error = utils.getExceptionMessage(message)
+            error = utils.format_error_message(message)
             log.print_error(error)

@@ -39,5 +39,5 @@ class DuplicatesInFolder(BaseManager):
                 f'Finished the duplicate search process for the given folders!')
 
         except Exception as message:
-            error = utils.getExceptionMessage(message)
+            error = utils.format_error_message(message)
             log.print_error(error)

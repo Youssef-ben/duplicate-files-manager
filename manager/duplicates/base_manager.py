@@ -34,10 +34,10 @@ class BaseManager():
 
     def __init__(self):
         # Get the list of folders to scan.
-        self.FoldersToScan = utils.getFoldersToScan()
+        self.FoldersToScan = utils.get_folders_to_scan()
 
         # Get the output file.
-        self.OutputFolder = utils.getOutputFolder()
+        self.OutputFolder = utils.get_output_folder()
 
     def __get_md5_hash(self, filePath, bufferSize=const.C_DEFAULT_BUFFER_SIZE):
         """Summary:\n
@@ -176,7 +176,7 @@ class BaseManager():
             self.ScannedFolders += 1
 
             folderFiles = loadFiles(folderName, filesList)
-            utils.mergeDictionaries(self.LoadedFiles, folderFiles)
+            utils.merge_dictionaries(self.LoadedFiles, folderFiles)
 
         return self.LoadedFiles
 
@@ -203,7 +203,7 @@ class BaseManager():
         # duplicates, to set the name of the file with it.
         folderName = path.split(self.CurrentFolder)[1]
         folderName = folderName.strip('\\').strip('/').strip(' ')
-        outputFile = utils.fixSeparator(
+        outputFile = utils.unify_separator(
             path.join(self.OutputFolder,  f'{folderName}_result.txt'))
 
         log.print_title(

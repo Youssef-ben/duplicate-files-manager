@@ -1,3 +1,7 @@
+"""
+Contains all the constants files that the project needs.
+"""
+
 # Environment variables.
 E_SCAN_FOLDERS = 'SCAN_FOLDERS'
 E_OUTPUT_FOLDER = 'OUTPUT_FOLDER'
