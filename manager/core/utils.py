@@ -2,23 +2,33 @@
 Utility file that contains the needed function
 for this library.
 """
-import time
 import sys
 import re
 import ntpath
+import traceback
+from hashlib import md5
 from platform import system
 from os import environ as env
-from os import path, sep, getcwd, makedirs, remove
+from os import path, sep, makedirs
 from shutil import copy2, rmtree
 from pathlib import Path
 
-from .custom_printer import print_ok
-from .constants import E_SCAN_FOLDERS, E_OUTPUT_FOLDER, C_OUT_FOLDER_NAME
+# Custom imports
+import manager.core.constants as const
 
 
-def __sanitizePaths(paths: str):
+def __sanitize_paths(paths: str):
+    """Sanitize the given string from spaces
+    and remove any extras ';'
+
+    Args:
+        paths (str): Path to be sanitized.
+
+    Returns:
+        (str): Sanitized path.
+    """
     # Convert path separator to current os.
-    paths = fixSeparator(paths)
+    paths = unify_separator(paths)
 
     # Sanitize the paths
     paths = paths\
@@ -34,16 +44,28 @@ def __sanitizePaths(paths: str):
     return paths
 
 
-def __getFromEnvVar():
-    folders = env.get(E_SCAN_FOLDERS)
+def __get_from_environment():
+    """Get the folder path of the folder to be scanned
+    from the environment variable (SCAN_FOLDERS).
+
+    Returns:
+        list[str]: List of paths to be scanned.
+    """
+    folders = env.get(const.E_SCAN_FOLDERS)
     if not folders:
         return []
 
-    folders = __sanitizePaths(folders)
+    folders = __sanitize_paths(folders)
     return folders.split(';')
 
 
-def __getFromSystemArgs():
+def __get_from_system_args():
+    """Get the list of folder to be scanned from
+    the system args.
+
+    Returns:
+        list[str]: List of paths to be scanned.
+    """
     result = []
     if len(sys.argv) < 2:
         return result
@@ -59,18 +81,31 @@ def __getFromSystemArgs():
     return result
 
 
-def __getFromUserInput():
-    userInput = input(
+def __get_from_user_input():
+    """Get the list of folder to scan from user input.
+
+    Returns:
+        list[str]: List of paths to be scanned.
+    """
+    values = input(
         'Enter the list of parent/Source-Destination folders (ex: <path1>;<path2>): ')
 
-    if not userInput:
+    if not values:
         return []
 
-    result = __sanitizePaths(userInput)
+    result = __sanitize_paths(values)
     return result.split(';')
 
 
-def fixSeparator(paths: str):
+def unify_separator(paths: str):
+    """Change the path separators based on the current system.
+
+    Args:
+        paths (str): paths to be updated.
+
+    Returns:
+        (str): Updated paths
+    """
     # Convert path separator to current os.
     paths = paths.replace('\\', sep).replace('/', sep)
 
@@ -88,13 +123,13 @@ def fixSeparator(paths: str):
     return paths
 
 
-def getFoldersToScan():
+def get_folders_to_scan():
     """Summary:\n
     Return a list of parent folders that we want to scan for duplicate files.
 
     The method get the parent folder from the following steps:
     - The Environment variables {SCAN_FOLDERS}: ex: '<folder/path1>;<folder/path2>'.
-    - The Arguments when running the command. ex: 'pyhton <cmd> <args1 arg2 ...>'.
+    - The Arguments when running the command. ex: 'python <cmd> <args1 arg2 ...>'.
     - The User input.
 
     Raises:\n
@@ -104,15 +139,15 @@ def getFoldersToScan():
         list(str): 'The list of parent folder to scan.'
     """
     # Get the list from the environment variable first.
-    folders = __getFromEnvVar()
+    folders = __get_from_environment()
 
     # Get the list from the system arguments, if the list is empty.
     if not folders:
-        folders = __getFromSystemArgs()
+        folders = __get_from_system_args()
 
     # Last, Get the list from the user input.
     if not folders:
-        folders = __getFromUserInput()
+        folders = __get_from_user_input()
 
     if not folders:
         raise Exception(
@@ -121,42 +156,64 @@ def getFoldersToScan():
     return folders
 
 
-def getOutputFolder():
+def get_output_folder():
+    """Get the output folder were to store the result
+
+    Returns:
+        (str): The output folder path.
+    """
     # Check if the env var `OUTPUT_FOLDER` is set.
     # Otherwise set it to the current user home directory.
-    userHomeFolder = str(Path.home())
-    outputFolder = env.get(E_OUTPUT_FOLDER)
+    output_folder = env.get(const.E_OUTPUT_FOLDER)
 
-    # If not specified, first prompt the user.
-    if not outputFolder:
-        outputFolder = input(
-            f'Enter the output folder (Default to {userHomeFolder}): ')
+    # Default to user home folder if no input.
+    if not output_folder:
+        output_folder = str(Path.home())
 
-    # Defaul tot user Home folder if no input.
-    if not outputFolder:
-        outputFolder = userHomeFolder
-
-    outputFolder = path.join(outputFolder, C_OUT_FOLDER_NAME)
-    outputFolder = fixSeparator(outputFolder)
+    # Create the output folder if not exits.
+    output_folder = path.join(output_folder, const.C_OUT_FOLDER_NAME)
+    output_folder = unify_separator(output_folder)
 
     # Create the output folder if not exists.
-    if not path.exists(outputFolder):
-        makedirs(outputFolder)
+    if not path.exists(output_folder):
+        makedirs(output_folder)
 
-    return outputFolder
+    return output_folder
 
 
-def copyFiles(baseFolder: str, filesList: list):
-    for item in filesList:
+def copy_files(dest_folder: str, files_list: list):
+    """Copy the given files to the destination folder.
+
+    Args:
+        dest_folder (str): The folder where the files will be copied to.
+        files_list (list): The files to be copied.
+    """
+    for item in files_list:
         filename = ntpath.basename(str(item))
-        filePath = path.join(baseFolder, filename)
-        filePath = fixSeparator(filePath)
-        copy2(item, filePath)
+        file_path = path.join(dest_folder, filename)
+        file_path = unify_separator(file_path)
+        copy2(item, file_path)
 
 
-def createFolder(outputFolder: str, folderName: str):
-    folderPath = path.join(outputFolder,  folderName)
-    folder = fixSeparator(folderPath)
+def create_folder(output_folder: str, for_duplicates: bool):
+    """Create folder for the duplicate and non duplicate files.
+
+    Args:
+        output_folder (str): The base folder where to create the duplicate or non-duplicate folder.
+        for_duplicates (bool): Specify if we want ot create duplicate or non-duplicate folder.
+
+    Returns:
+        (str): The folder path.
+    """
+    # Set the folder name.
+    folder_name = const.C_DUPLICATES_FOLDER if for_duplicates else const.C_NON_DUPLICATES_FOLDER
+
+    # Setup the path
+    folder_path = path.join(output_folder,  folder_name)
+    folder = unify_separator(folder_path)
+
+    # Clear and remove if any exists
+    # This will allow to always start fresh.
     if path.exists(folder):
         rmtree(folder)
 
@@ -165,7 +222,7 @@ def createFolder(outputFolder: str, folderName: str):
     return folder
 
 
-def getExceptionMessage(ex):
+def format_error_message(ex):
     """Summary:\n
     Format the exception message and adds more details.
 
@@ -175,14 +232,13 @@ def getExceptionMessage(ex):
     Returns:\n
         message (str): 'Formatted exception message.'
     """
-    import traceback
-
     # Getting the traceback
-    listStr = traceback.format_tb(ex.__traceback__)
-    for index, value in enumerate(listStr):
-        listStr[index] = '\t' + \
+    str_list = traceback.format_tb(ex.__traceback__)
+    for index, value in enumerate(str_list):
+        str_list[index] = '\t' + \
             value.replace('\n', ' ').replace(' '*5, ' ==> ')
-    traceback_str = '\n'.join(listStr)
+
+    traceback_str = '\n'.join(str_list)
 
     en_str_value = str(ex)
 
@@ -196,19 +252,47 @@ def getExceptionMessage(ex):
     return en_str_value
 
 
-def mergeDictionaries(dict1, dict2):
-    for key in dict2.keys():
-        if key in dict1:
-            dict1[key] = dict1[key] + dict2[key]
+def merge_dictionaries(base_dictionary, dict_to_be_merged):
+    """Merge two dictionaries into one.
+
+    Args:
+        base_dictionary (dict): First Dictionary
+        dict_to_be_merged (dict): Seconde Dictionary.
+
+    Returns:
+        (dict): Merged dictionaries.
+    """
+    for key in dict_to_be_merged.keys():
+        if key in base_dictionary:
+            base_dictionary[key] = base_dictionary[key] + \
+                dict_to_be_merged[key]
         else:
-            dict1[key] = dict2[key]
+            base_dictionary[key] = dict_to_be_merged[key]
 
-    return dict1
+    return base_dictionary
 
 
-def printExecutionTime(start_time: time):
-    print()
-    timer = "{:.5f}".format(time.time() - start_time)
-    print_ok(f'---------------------------------------')
-    print_ok(f'----- Finished in {timer} seconds -----')
-    print_ok(f'---------------------------------------')
+def genrate_md5_hash(file_path, buffer_size=const.C_DEFAULT_BUFFER_SIZE):
+    """Summary:\n
+    Generate the MD5 checksum hash of the given file.
+
+    Args:\n
+        filePath(str): 'The files you want to generate hash from.'
+        bufferSize(int): 'The buffer size that we want read the file. default to (65536)'
+
+    Returns:\n
+        (str): 'Checksum hash of the file.'
+    """
+    hasher = md5()
+
+    with open(file_path, "rb") as file_to_read:
+        # Initialize the buffer.
+        buffer = file_to_read.read(buffer_size)
+
+        # Read the file until the end and update the hash at the same time.
+        while buffer:
+            hasher.update(buffer)
+            buffer = file_to_read.read(buffer_size)
+
+    # Return the file hash.
+    return hasher.hexdigest()

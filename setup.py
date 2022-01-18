@@ -1,3 +1,6 @@
+"""
+Duplicate files manager (dfm) setup file.
+"""
 from setuptools import find_packages
 from setuptools import setup
 
