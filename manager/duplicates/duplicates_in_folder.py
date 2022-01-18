@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+"""
+Get the list of all duplicate files in the given folder.
+"""
+# pylint: disable=too-few-public-methods
+# pylint: disable=broad-except
 
 # Custom
 from .base_manager import BaseManager
@@ -11,9 +15,6 @@ class DuplicatesInFolder(BaseManager):
     Get the list of all duplicate files in the given folder.
     """
 
-    def __init__(self):
-        super().__init__()
-
     def find_in_folders(self):
         """Summary:\n
         Find duplicate files in the given folders and write the
@@ -22,7 +23,7 @@ class DuplicatesInFolder(BaseManager):
 
         try:
             print()
-            log.print_inf(f'Starting the duplicate search process')
+            log.print_inf('Starting the duplicate search process')
 
             for folder in self.folders_to_scan:
 
@@ -36,7 +37,7 @@ class DuplicatesInFolder(BaseManager):
                 self._write_to_file()
 
             log.print_inf(
-                f'Finished the duplicate search process for the given folders!')
+                'Finished the duplicate search process for the given folders!')
 
         except Exception as message:
             error = utils.format_error_message(message)
