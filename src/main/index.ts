@@ -5,13 +5,16 @@ import icon from '../../resources/icon.png?asset'
 import { registerHandlers } from './ipc/handlers'
 
 function createWindow(): void {
+  const appTitle = app.getName()
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: appTitle,
     width: 900,
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux' || process.platform === 'win32' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -20,6 +23,12 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  // Keep a stable native title bar title (don't let the renderer override it).
+  mainWindow.on('page-title-updated', (e) => {
+    e.preventDefault()
+    mainWindow.setTitle(appTitle)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -43,7 +52,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.electron.app')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

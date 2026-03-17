@@ -1,4 +1,4 @@
-import type { CliRunArgs, CliEvent } from '../../../main/cli/types'
+import type { CliRunArgs, CliEvent } from '@main/cli/types'
 
 export {}
 declare global {

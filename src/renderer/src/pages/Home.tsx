@@ -1,7 +1,7 @@
-export default function Home() {
+export default function Home(): React.JSX.Element {
   return (
     <div className="flex h-screen items-center justify-center text-gray-500">
-      <p>Library Organizer</p>
+      <p>Duplicate File Manager</p>
     </div>
   )
 }

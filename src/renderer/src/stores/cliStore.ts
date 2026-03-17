@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import type { CliEvent, ProgressEvent, SummaryEvent } from '../../../main/cli/types'
+import type { CliEvent, ProgressEvent, SummaryEvent } from '@main/cli/types'
 
 interface CliState {
   runId: string | null
@@ -13,16 +13,38 @@ interface CliState {
   reset: () => void
 }
 
-export const useCliStore = create<CliState>()(immer(set => ({
-  runId: null,
-  status: 'idle',
-  progress: null,
-  summary: null,
-  start: runId => set(s => { s.runId = runId; s.status = 'running'; s.progress = null; s.summary = null }),
-  handleEvent: e => set(s => {
-    if (e.type === 'progress') s.progress = e
-    if (e.type === 'summary') { s.summary = e; s.status = 'done' }
-  }),
-  cancel: () => set(s => { s.status = 'idle'; s.runId = null }),
-  reset: () => set(s => { s.status = 'idle'; s.runId = null; s.progress = null; s.summary = null }),
-})))
+export const useCliStore = create<CliState>()(
+  immer((set) => ({
+    runId: null,
+    status: 'idle',
+    progress: null,
+    summary: null,
+    start: (runId) =>
+      set((s) => {
+        s.runId = runId
+        s.status = 'running'
+        s.progress = null
+        s.summary = null
+      }),
+    handleEvent: (e) =>
+      set((s) => {
+        if (e.type === 'progress') s.progress = e
+        if (e.type === 'summary') {
+          s.summary = e
+          s.status = 'done'
+        }
+      }),
+    cancel: () =>
+      set((s) => {
+        s.status = 'idle'
+        s.runId = null
+      }),
+    reset: () =>
+      set((s) => {
+        s.status = 'idle'
+        s.runId = null
+        s.progress = null
+        s.summary = null
+      })
+  }))
+)

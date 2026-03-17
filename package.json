@@ -1,10 +1,11 @@
 {
   "name": "duplicate-file-manager",
+  "productName": "Duplicate File Manager",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "YBensoft",
+  "homepage": "https://ybensoft.ca",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -21,8 +22,8 @@
     "build:linux": "electron-vite build && electron-builder --linux"
   },
   "build": {
-    "appId": "com.yourname.library-organizer-app",
-    "productName": "Library Organizer",
+    "appId": "ca.ybensoft.duplicate-file-manager-app",
+    "productName": "Duplicate File Manager",
     "directories": {
       "output": "dist"
     },
@@ -30,12 +31,16 @@
       {
         "from": "resources/library-organizer.exe",
         "to": "library-organizer.exe",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "resources/library-organizer",
         "to": "library-organizer",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "win": {
