@@ -1,0 +1,139 @@
+---
+description: Electron + React/TypeScript rules for library-organizer desktop app
+globs: ["src/**/*.ts", "src/**/*.tsx", "electron/**/*.ts"]
+alwaysApply: true
+---
+
+# Electron + React — project rules
+
+## Stack
+
+- **TypeScript** — strict mode only (`"strict": true` in tsconfig). No `any`, no `@ts-ignore`.
+- **React** — functional components + hooks only. No class components.
+- **Zustand** — all global client state. No Redux, no Context for state.
+- **React Query (`@tanstack/react-query`)** — all async data fetching and mutations.
+- **Tailwind CSS** — all styling. No inline styles, no CSS modules, no styled-components.
+
+---
+
+## Project structure
+
+```text
+electron/
+  main.ts          # BrowserWindow setup, app lifecycle
+  preload.ts       # contextBridge exposure only — no business logic
+  ipc/
+    handlers.ts    # ipcMain.handle() registrations
+    channels.ts    # shared channel name constants (imported by both sides)
+  cli/
+    runner.ts      # spawn logic, stdout parsing, process lifecycle
+    types.ts       # ProgressEvent, SummaryEvent, CLI arg types
+
+src/
+  pages/           # one file per route/view
+  components/      # shared UI components
+  stores/          # one file per Zustand store
+  hooks/           # custom hooks, including useCliRun
+  types/           # shared TypeScript types (no Electron imports here)
+```
+
+---
+
+## Security — contextBridge
+
+- The renderer **never** accesses `require`, `ipcRenderer`, `shell`, or any Node API directly.
+- All Node/Electron APIs are exposed exclusively through `contextBridge.exposeInMainWorld` in `preload.ts`.
+- `preload.ts` contains **only** `contextBridge.exposeInMainWorld(...)` calls — no logic, no imports from `electron/cli/`.
+- The exposed API must be typed. Declare it in `src/types/global.d.ts`:
+
+```ts
+// src/types/global.d.ts
+export {}
+declare global {
+  interface Window {
+    api: ElectronAPI
+  }
+}
+```
+
+- In the renderer, always access Electron via `window.api.*` — never import from `electron`.
+
+---
+
+## IPC patterns
+
+- All channel names are string constants defined in `electron/ipc/channels.ts` and imported by both `handlers.ts` and `preload.ts`. No magic strings.
+- Use `ipcMain.handle` / `ipcRenderer.invoke` for request-response (e.g. open dialog, read report file).
+- Use `ipcMain.on` / `webContents.send` for push events (e.g. streaming CLI progress).
+- Channel naming convention: `domain:action` — e.g. `cli:run`, `cli:cancel`, `dialog:openFolder`, `report:read`.
+
+```ts
+// electron/ipc/channels.ts
+export const CH = {
+  CLI_RUN:           'cli:run',
+  CLI_CANCEL:        'cli:cancel',
+  CLI_PROGRESS:      'cli:progress',   // main → renderer push
+  DIALOG_OPEN_FOLDER:'dialog:openFolder',
+  REPORT_READ:       'report:read',
+} as const
+```
+
+---
+
+## CLI spawning
+
+- The CLI executable path is resolved **only** in `electron/cli/runner.ts` using `app.isPackaged ? process.resourcesPath : app.getAppPath()`. Never hardcode paths.
+- Spawn with `child_process.spawn`, never `exec` or `execSync`.
+- Always pass `--progress-format json` when a progress stream is needed.
+- Read stdout line-by-line; `JSON.parse` each line; emit typed `ProgressEvent` or `SummaryEvent`.
+- Maintain a `Map<string, ChildProcess>` keyed by a `runId` to support cancellation via `process.kill()`.
+- On `cli:cancel`, kill the process and clean up the map entry.
+
+```ts
+// electron/cli/runner.ts  (skeleton)
+import { spawn, ChildProcess } from 'child_process'
+import { getCliPath } from './path'
+
+const procs = new Map<string, ChildProcess>()
+
+export function runCli(runId: string, args: string[], onEvent: (e: CliEvent) => void) {
+  const proc = spawn(getCliPath(), args)
+  procs.set(runId, proc)
+
+  let buf = ''
+  proc.stdout.on('data', chunk => {
+    buf += chunk.toString()
+    const lines = buf.split('\n')
+    buf = lines.pop() ?? ''
+    for (const line of lines) {
+      if (!line.trim()) continue
+      try { onEvent(JSON.parse(line)) } catch { /* ignore non-JSON */ }
+    }
+  })
+
+  proc.on('close', () => procs.delete(runId))
+}
+
+export function cancelCli(runId: string) {
+  procs.get(runId)?.kill()
+  procs.delete(runId)
+}
+```
+
+---
+
+## Renderer-side CLI integration
+
+- Wrap CLI runs in a custom hook `useCliRun` that calls `window.api.cliRun(...)`, stores progress in Zustand, and exposes a `cancel()` function.
+- Use React Query `useMutation` for one-shot CLI invocations (e.g. reading a report file).
+- Never call `window.api.*` directly from a component — always go through a hook.
+
+---
+
+## General rules
+
+- No `useEffect` for derived state — use Zustand selectors or `useMemo`.
+- All Zustand stores use the `immer` middleware for nested updates.
+- Avoid prop-drilling beyond 2 levels — lift to a store instead.
+- Every async operation has explicit loading, error, and empty states in the UI.
+- `--dry-run` is always the default when building UI actions that mutate files; require an explicit user confirmation step to drop it.
