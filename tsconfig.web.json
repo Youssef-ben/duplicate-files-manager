@@ -4,7 +4,9 @@
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.tsx",
-    "src/main/cli/types.ts"
+    "src/renderer/src/context/theme/**/*",
+    "src/shared/**/*",
+    "src/handlers/**/*"
   ],
   "compilerOptions": {
     "composite": true,
@@ -12,27 +14,20 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@renderer/*": [
-        "src/renderer/src/*"
-      ],
-      "@hooks/*": [
-        "src/renderer/src/hooks/*"
-      ],
-      "@stores/*": [
-        "src/renderer/src/stores/*"
-      ],
-      "@types/*": [
-        "src/renderer/src/types/*"
-      ],
-      "@pages/*": [
-        "src/renderer/src/pages/*"
-      ],
-      "@components/*": [
-        "src/renderer/src/components/*"
-      ],
-      "@main/*": [
-        "src/main/*"
-      ]
+      "@pkg": ["./package.json"],
+      "@renderer/*": ["src/renderer/src/*"],
+      "@shared/*": ["src/shared/*"],
+      "@handlers/*": ["src/handlers/*"],
+      
+      "@assets/*": ["src/renderer/src/assets/*"],
+      "@components/*": ["src/renderer/src/components/*"],
+      "@context/*": ["src/renderer/src/context/*"],
+      "@hooks/*": ["src/renderer/src/hooks/*"],
+      "@pages/*": ["src/renderer/src/pages/*"],
+      "@stores/*": ["src/renderer/src/stores/*"],
+      "@styles/*": ["src/renderer/src/styles/*"],
+      "@types/*": ["src/renderer/src/types/*"],
+      "@utils/*": ["src/renderer/src/utils/*"]
     }
   }
 }

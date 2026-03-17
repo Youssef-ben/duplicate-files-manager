@@ -1,6 +1,6 @@
+import type { CliEvent, ProgressEvent, SummaryEvent } from '@handlers/cli'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import type { CliEvent, ProgressEvent, SummaryEvent } from '@main/cli/types'
 
 interface CliState {
   runId: string | null

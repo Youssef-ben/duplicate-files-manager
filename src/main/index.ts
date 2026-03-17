@@ -1,7 +1,8 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import packageJson from '@pkg'
+import icon from '@resources/icon.png?asset'
+import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
 import { registerHandlers } from './ipc/handlers'
 
 function createWindow(): void {
@@ -36,6 +37,7 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+  // Register all the IPC handlers
   registerHandlers(mainWindow)
 
   // HMR for renderer base on electron-vite cli.
@@ -52,7 +54,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron.app')
+  electronApp.setAppUserModelId(packageJson.build.appId)
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

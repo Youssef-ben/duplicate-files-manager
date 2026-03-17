@@ -1,4 +1,4 @@
-export interface ProgressEvent {
+export type ProgressEvent = {
   type: 'progress'
   stage: string
   phase: string
@@ -6,7 +6,7 @@ export interface ProgressEvent {
   total: number
 }
 
-export interface SummaryEvent {
+export type SummaryEvent = {
   type: 'summary'
   action: string
   [key: string]: unknown
@@ -14,9 +14,9 @@ export interface SummaryEvent {
 
 export type CliEvent = ProgressEvent | SummaryEvent
 
-export interface CliRunArgs {
+export type CliRunArgs = {
   runId: string
-  mode: 'all' | 'flatten' | 'organize' | 'find-duplicate' | 'compare' | 'sync' | 'delete-duplicate'
+  mode: 'flatten' | 'organize' | 'compare' | 'sync' | 'find-duplicate' | 'delete-duplicate'
   sourceRoot: string
   dryRun?: boolean
   target?: string
@@ -24,4 +24,10 @@ export interface CliRunArgs {
   output?: string
   input?: string
   confirm?: boolean
+}
+
+export type CliApi = {
+  run: (args: CliRunArgs) => void
+  cancel: (runId: string) => void
+  onProgress: (callback: (e: CliEvent) => void) => () => void
 }

@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import type { CliRunArgs, ProgressEvent, SummaryEvent } from '@handlers/cli'
 import { useCliStore } from '@stores/cliStore'
-import type { CliRunArgs, ProgressEvent, SummaryEvent } from '@main/cli/types'
+import { useEffect } from 'react'
 
 interface UseCliRunResult {
   run: (args: CliRunArgs) => void
@@ -14,20 +14,20 @@ export function useCliRun(): UseCliRunResult {
   const { start, handleEvent, cancel, status, progress, summary } = useCliStore()
 
   useEffect(() => {
-    const unsubscribe = window.api.onCliProgress(handleEvent)
+    const unsubscribe = window.appApi.cli.onProgress(handleEvent)
     return unsubscribe
   }, [handleEvent])
 
   const run = (args: CliRunArgs): void => {
     const runId = crypto.randomUUID()
     start(runId)
-    window.api.cliRun({ ...args, runId })
+    window.appApi.cli.run({ ...args, runId })
   }
 
   const stop = (): void => {
     const runId = useCliStore.getState().runId
     if (runId) {
-      window.api.cliCancel(runId)
+      window.appApi.cli.cancel(runId)
       cancel()
     }
   }
