@@ -137,3 +137,4 @@ export function cancelCli(runId: string) {
 - Avoid prop-drilling beyond 2 levels — lift to a store instead.
 - Every async operation has explicit loading, error, and empty states in the UI.
 - `--dry-run` is always the default when building UI actions that mutate files; require an explicit user confirmation step to drop it.
+- always use `yarn`
