@@ -20,9 +20,9 @@ export const NavButton = ({
       aria-pressed={isActive}
       className={mergeCls(
         'flex w-full cursor-pointer items-center gap-2 rounded-md p-2 px-4 text-left transition-colors ',
-        'hover:bg-accent hover:text-mantle hover:font-bold',
         {
-          'bg-accent text-mantle font-bold': isActive
+          'hover:bg-accent/80 hover:text-base hover:font-medium': !isActive,
+          'bg-accent text-mantle font-medium': isActive
         }
       )}
     >

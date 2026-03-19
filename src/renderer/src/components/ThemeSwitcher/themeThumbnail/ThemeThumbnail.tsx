@@ -1,5 +1,5 @@
 import { ThemeSwatch } from '@handlers/theme/types'
-import { mergeCls } from '@renderer/utils/ClassNameMerger'
+import { mergeCls } from '@utils/ClassNameMerger'
 import { JSX } from 'react'
 
 export interface ThemeThumbnailProps {
@@ -17,7 +17,7 @@ export const ThemeThumbnail = ({ theme, isActive, onClick }: ThemeThumbnailProps
     >
       <div
         className={mergeCls(
-          'relative h-24 w-full rounded-md border bg-surface border-muted transition-transform hover:scale-[1.02]',
+          'relative h-24 w-24 rounded-md border bg-surface border-muted transition-transform hover:scale-[1.02]',
           {
             'ring-2 ring-accent ring-offset-2 ring-offset-surface': isActive
           }

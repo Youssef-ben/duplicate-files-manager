@@ -1,5 +1,5 @@
-import { APP_ROUTES, NAVIGATION_PATHS } from '@renderer/Navigation'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { APP_ROUTES, NAVIGATION_PATHS } from './routes'
 
 export const Navigation = (): React.JSX.Element => {
   return (

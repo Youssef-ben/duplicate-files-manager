@@ -1,6 +1,6 @@
 import { NavButton } from '@components/navButton'
-import { isNavigationItemActive, NAVIGATION_ITEMS } from '@renderer/Navigation'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { isNavigationItemActive, NAVIGATION_ITEMS } from './routes'
 
 export const SidebarNavigation = (): React.JSX.Element => {
   const location = useLocation()

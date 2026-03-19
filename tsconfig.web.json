@@ -14,8 +14,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@pkg": ["./package.json"],
-      "@renderer/*": ["src/renderer/src/*"],
+      "@pkg": ["./package.json"], 
       "@shared/*": ["src/shared/*"],
       "@handlers/*": ["src/handlers/*"],
       
@@ -23,6 +22,7 @@
       "@components/*": ["src/renderer/src/components/*"],
       "@context/*": ["src/renderer/src/context/*"],
       "@hooks/*": ["src/renderer/src/hooks/*"],
+      "@navigation/*": ["src/renderer/src/navigation/*"],
       "@pages/*": ["src/renderer/src/pages/*"],
       "@stores/*": ["src/renderer/src/stores/*"],
       "@styles/*": ["src/renderer/src/styles/*"],

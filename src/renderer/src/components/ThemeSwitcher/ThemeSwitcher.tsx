@@ -1,17 +1,12 @@
+import { useTheme } from '@context/theme'
 import { THEMES_SWATCHES } from '@handlers/theme/types'
-import { useTheme } from '@renderer/context/theme'
 import type { JSX } from 'react'
 import { ThemeThumbnail } from './themeThumbnail'
-
-interface ThemeSwitcherProps {
-  className?: string
-}
-
-export function ThemeSwitcher({ className }: ThemeSwitcherProps): JSX.Element {
+export function ThemeSwitcher(): JSX.Element {
   const { theme, setTheme } = useTheme()
 
   return (
-    <div className={`grid grid-cols-3 gap-4 ${className ?? ''}`.trim()}>
+    <div className="flex flex-row items-left gap-4 flex-wrap w-full">
       {THEMES_SWATCHES.map((themeSwatch) => (
         <ThemeThumbnail
           key={themeSwatch.id}

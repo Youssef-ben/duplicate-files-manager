@@ -1,4 +1,4 @@
-import { Navigation, SidebarNavigation } from '@renderer/Navigation'
+import { Navigation, SidebarNavigation } from './navigation'
 
 function App(): React.JSX.Element {
   return (
