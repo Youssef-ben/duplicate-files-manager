@@ -7,8 +7,13 @@ export type ThemeStoreSchema = {
   }
 }
 
+export type ThemeSnapshot = {
+  preference: ThemeStoreSchema
+  resolved: ThemePreference
+}
+
 export type ThemeApi = {
-  getTheme: () => Promise<SupportedTheme>
+  getTheme: () => Promise<ThemeSnapshot>
   setTheme: (theme: ThemePreference) => void
   onThemeChanged: (callback: (theme: SupportedTheme) => void) => () => void
 }

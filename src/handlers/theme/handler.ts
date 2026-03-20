@@ -6,11 +6,11 @@ import {
   resolveTheme,
   setCurrentPreference
 } from './theme.store'
-import type { SupportedTheme, ThemeApi, ThemePreference } from './types'
+import type { SupportedTheme, ThemeApi, ThemePreference, ThemeSnapshot } from './types'
 
 function broadcastThemeChange(): void {
-  const pref = getCurrentPreference()
-  const resolved = resolveTheme(pref.theme.selected)
+  const { theme } = getCurrentPreference()
+  const resolved = resolveTheme(theme.selected)
 
   BrowserWindow.getAllWindows().forEach((win) => {
     win.webContents.send(THEME_CHANNELS.CHANGED, resolved)
@@ -21,17 +21,20 @@ function broadcastThemeChange(): void {
  * Registers the theme IPC handlers for the application.
  */
 export function registerTheme(): void {
-  const {
-    theme: { selected: initialPreference }
-  } = getCurrentPreference()
+  const { theme } = getCurrentPreference()
 
-  nativeTheme.themeSource = convertToSystemTheme(initialPreference)
+  nativeTheme.themeSource = convertToSystemTheme(theme.selected)
 
-  ipcMain.handle(THEME_CHANNELS.GET, () => {
-    const {
-      theme: { selected: pref }
-    } = getCurrentPreference()
-    return resolveTheme(pref)
+  ipcMain.handle(THEME_CHANNELS.GET, (): ThemeSnapshot => {
+    const { theme: t } = getCurrentPreference()
+    return {
+      preference: {
+        theme: {
+          selected: resolveTheme(t.selected)
+        }
+      },
+      resolved: t.selected
+    }
   })
 
   ipcMain.on(THEME_CHANNELS.SET, (_event, pref: ThemePreference) => {

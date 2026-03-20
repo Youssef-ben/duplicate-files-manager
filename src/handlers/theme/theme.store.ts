@@ -13,9 +13,16 @@ const DEFAULT_PREFERENCES: ThemeStoreSchema = {
   }
 }
 
-const store = new StoreCtor<ThemeStoreSchema>({
+/** Root shape of the persisted `settings` file — defaults must match get/set keys. */
+type SettingsFileSchema = {
+  preferences: ThemeStoreSchema
+}
+
+const store = new StoreCtor<SettingsFileSchema>({
   name: 'settings',
-  defaults: DEFAULT_PREFERENCES
+  defaults: {
+    preferences: DEFAULT_PREFERENCES
+  }
 })
 
 export function getCurrentPreference(): ThemeStoreSchema {
@@ -23,7 +30,11 @@ export function getCurrentPreference(): ThemeStoreSchema {
 }
 
 export function setCurrentPreference(pref: ThemePreference): void {
-  store.set('preferences.theme.selected', pref)
+  store.set('preferences', {
+    theme: {
+      selected: pref
+    }
+  })
 }
 
 export function convertToSystemTheme(pref: ThemePreference): 'dark' | 'light' | 'system' {
