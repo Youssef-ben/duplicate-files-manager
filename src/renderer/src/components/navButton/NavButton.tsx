@@ -21,7 +21,7 @@ export const NavButton = ({
       className={mergeCls(
         'flex w-full cursor-pointer items-center gap-2 rounded-md p-2 px-4 text-left transition-colors  ',
         {
-          'hover:bg-primary-container hover:text-on-primary-container hover:font-medium': !isActive,
+          'hover:bg-primary-container hover:text-on-primary-container': !isActive,
           'bg-primary text-on-primary font-medium': isActive
         }
       )}

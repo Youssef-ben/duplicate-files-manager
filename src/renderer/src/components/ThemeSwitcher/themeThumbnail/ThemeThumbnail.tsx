@@ -17,9 +17,9 @@ export const ThemeThumbnail = ({ theme, isActive, onClick }: ThemeThumbnailProps
     >
       <div
         className={mergeCls(
-          'relative h-24 w-24 rounded-md border bg-surface border-muted transition-transform hover:scale-[1.02]',
+          'relative h-24 w-24 rounded-md border bg-surface border-outline-variant transition-transform hover:scale-[1.02]',
           {
-            'ring-2 ring-accent ring-offset-2 ring-offset-surface': isActive
+            'ring-2 ring-primary ring-offset-2 ring-offset-surface': isActive
           }
         )}
       >
