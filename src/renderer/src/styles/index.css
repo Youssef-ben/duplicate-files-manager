@@ -1,2 +1,6 @@
- @import "./themes.css";
+/* @import "./themes.new.css"; */
+@import "./themes/default.theme.css";
+@import "./themes/dark.theme.css";
+@import "./themes/catppuccin-mocha.css";
+@import "./themes/nord.theme.css";
 @import "tailwindcss";

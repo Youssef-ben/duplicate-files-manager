@@ -25,9 +25,9 @@ export interface ThemeSwatch {
 }
 
 export const THEMES_SWATCHES: ThemeSwatch[] = [
-  { id: 'system', label: 'System', swatches: ['#fafafa', '#282c34'] },
-  { id: 'light', label: 'Light', swatches: ['#fafafa', '#f0f0f0', '#1769BF'] },
-  { id: 'dark', label: 'Dark', swatches: ['#282c34', '#3e4451', '#61afef'] },
+  { id: 'system', label: 'System', swatches: ['#fafafa', '#21252b'] },
+  { id: 'light', label: 'Light', swatches: ['#fafafa', '#edeff1', '#006a61'] },
+  { id: 'dark', label: 'Dark', swatches: ['#21252b', '#36393a', '#006a61'] },
   { id: 'nord', label: 'Nord', swatches: ['#2e3440', '#3b4252', '#88c0d0'] },
   {
     id: 'catppuccin-mocha',
