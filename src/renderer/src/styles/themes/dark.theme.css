@@ -2,39 +2,6 @@
 /* ============================================================
    Dark ("Digital Architect" - Dark)
    ============================================================ */
-   :root[data-theme="blue"] {
-    --color-primary:               #006a61;
-    --color-primary-dim:           #005d55;
-    --color-on-primary:            #006a61;
-    --color-primary-container:     #89f5e7;
-    --color-on-primary-container:  #00201d; /* reuse light container fg */
-  
-    --color-secondary-container:     #1f3937;
-    --color-on-secondary-container:  #cce8e4;
-  
-    --color-error:               #ffb4ab;
-    --color-on-error:            #690005;
-    --color-error-container:     #93000a;
-    --color-on-error-container:  #ffdad6;
-  
-    --color-surface:                    #21252b;
-    --color-surface-bright:             #282c34;
-    --color-surface-variant:            #1e2a2c;
-    --color-on-surface:                 #dde3e5;
-    --color-on-surface-variant:         #bec8ca;
-  
-    --color-surface-container-lowest:   #090f10;
-    --color-surface-container-low:      #161e20;
-    --color-surface-container:          #21252b;
-    --color-surface-container-high:     #242d2f;
-  
-    --color-outline:          #889396;
-    --color-outline-variant:  #3f4849;
-  
-    --bg-primary-gradient: linear-gradient(135deg, #4fd8ca, #3bbfb2);
-  }
-  
-
   :root[data-theme="dark"] {
     /* --- Primary (Teal) --- */
     --color-primary:               #4fd8c9;
@@ -68,13 +35,14 @@
     /* --- Outline --- */
     --color-outline:          #899294;
     --color-outline-variant:  #3f484a;
-  
+    --color-outline-dim:  #6c7070;
+
     /* --- Typography --- */
     --font-sans: "Inter", system-ui, sans-serif;
     --font-mono: "JetBrains Mono", "Fira Code", monospace;
   
     /* --- Shadows --- */
-    --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.45);
+    --shadow-ghost: 0 8px 30px rgba(250, 248, 248, 0.45);
   
     /* --- Gradients --- */
     --bg-primary-gradient: linear-gradient(135deg, #004f48, #003c36);

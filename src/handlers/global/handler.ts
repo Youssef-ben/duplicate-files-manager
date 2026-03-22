@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog, ipcMain, ipcRenderer } from 'electron'
+import { BrowserWindow, dialog, ipcMain, ipcRenderer, webUtils } from 'electron'
 import { GLOBAL_CHANNELS } from './channels'
 import { GlobalApi } from './types'
 
@@ -19,6 +19,7 @@ export function registerGlobal(win: BrowserWindow): void {
  */
 export function globalPreload(): GlobalApi {
   return {
-    openFolder: () => ipcRenderer.invoke(GLOBAL_CHANNELS.DIALOG_OPEN_FOLDER)
+    openFolder: () => ipcRenderer.invoke(GLOBAL_CHANNELS.DIALOG_OPEN_FOLDER),
+    getPathForFile: (folder: File): string => webUtils.getPathForFile(folder)
   }
 }

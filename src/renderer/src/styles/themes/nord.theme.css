@@ -30,7 +30,8 @@
     --color-surface-container-high:     #434c5e; /* nord2 */
   
     --color-outline:          #4c566a; /* nord3 */
-    --color-outline-variant:  #3b4252; /* nord1 */
+    --color-outline-variant:  #616b83; /* nord1 */
+    --color-outline-dim:  #7f838d;
   
     --bg-primary-gradient: linear-gradient(135deg, #88c0d0, #81a1c1);
   }

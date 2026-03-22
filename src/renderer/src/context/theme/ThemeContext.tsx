@@ -54,7 +54,6 @@ export function ThemeProvider({
 
   useEffect(() => {
     const unsubscribe = window.appApi.theme.onThemeChanged((theme) => {
-      console.log('onThemeChanged', theme)
       setPreferredTheme(theme)
     })
 

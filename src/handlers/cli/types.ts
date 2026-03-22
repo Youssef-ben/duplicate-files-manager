@@ -1,3 +1,5 @@
+import { ScanningSummary } from './types/scan.mode'
+
 export type ProgressEvent = {
   type: 'progress'
   stage: string
@@ -6,17 +8,27 @@ export type ProgressEvent = {
   total: number
 }
 
-export type SummaryEvent = {
+type SummaryEventBase = {
   type: 'summary'
   action: string
   [key: string]: unknown
 }
+export type SummaryEvent = SummaryEventBase | ScanningSummary
 
-export type CliEvent = ProgressEvent | SummaryEvent
+export type CliEvent = ProgressEvent | ScanningSummary | SummaryEvent
+export type CliMode =
+  | 'flatten'
+  | 'organize'
+  | 'compare'
+  | 'sync'
+  | 'find-duplicate'
+  | 'delete-duplicate'
+  | 'scan'
+  | 'rename'
 
 export type CliRunArgs = {
-  runId: string
-  mode: 'flatten' | 'organize' | 'compare' | 'sync' | 'find-duplicate' | 'delete-duplicate'
+  runId?: string
+  mode: CliMode
   sourceRoot: string
   dryRun?: boolean
   target?: string
@@ -30,4 +42,5 @@ export type CliApi = {
   run: (args: CliRunArgs) => void
   cancel: (runId: string) => void
   onProgress: (callback: (e: CliEvent) => void) => () => void
+  readSummaryResult: <T>(jsonPath: string) => T
 }

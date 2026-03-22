@@ -19,9 +19,11 @@ export function useCliRun(): UseCliRunResult {
   }, [handleEvent])
 
   const run = (args: CliRunArgs): void => {
-    const runId = crypto.randomUUID()
-    start(runId)
-    window.appApi.cli.run({ ...args, runId })
+    if (!args.runId) {
+      args.runId = crypto.randomUUID()
+    }
+    start(args.runId)
+    window.appApi.cli.run(args)
   }
 
   const stop = (): void => {

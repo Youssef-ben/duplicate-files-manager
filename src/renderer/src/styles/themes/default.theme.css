@@ -18,11 +18,15 @@
     --color-on-error:            #ffffff;
     --color-error-container:     #ffdad6;
     --color-on-error-container:  #410002;
+
+    --color-info:                #0C8CE9;
+    --color-on-info:             #ffffff;
   
     /* --- Surfaces --- */
     --color-surface:                    #f7f9fb;
     --color-surface-bright:             #f7f9fb;
     --color-surface-variant:            #dbe4e8;
+    --color-surface-dim:                #f1f4f6;
     --color-on-surface:                 #191c1d;
     --color-on-surface-variant:         #3f484a;
   
@@ -34,6 +38,7 @@
     /* --- Outline --- */
     --color-outline:          #6f797b;
     --color-outline-variant:  #bec8ca;
+    --color-outline-dim:  #c3c9ca;
   
     /* --- Typography --- */
     --font-sans: "Inter", system-ui, sans-serif;
@@ -41,7 +46,8 @@
   
     /* --- Shadows --- */
     --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.04);
-  
+    --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.06), 0 0 16px rgb(0 0 0 / 0.08);
+
     /* --- Gradients --- */
     --bg-primary-gradient: linear-gradient(135deg, #006a61, #005d55);
   }
@@ -68,6 +74,7 @@
     --color-surface:                    #f7f9fb;
     --color-surface-bright:             #ffffff;
     --color-surface-variant:            #dbe4e8;
+    --color-surface-dim:                #F1F5F9;
     --color-on-surface:                 #191c1d;
     --color-on-surface-variant:         #3f484a;
   
@@ -79,6 +86,7 @@
     /* --- Outline --- */
     --color-outline:          #6f797b;
     --color-outline-variant:  #bec8ca;
+    --color-outline-dim:  #8d9192;
   
     /* --- Typography --- */
     --font-sans: "Inter", system-ui, sans-serif;
@@ -86,8 +94,11 @@
   
     /* --- Shadows --- */
     --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.04);
+    --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.06), 0 0 16px rgb(0 0 0 / 0.08);
   
     /* --- Gradients --- */
     --bg-primary-gradient: linear-gradient(135deg, #006a61, #005d55);
+
+    --scale-98: scale(0.98);
   }
   

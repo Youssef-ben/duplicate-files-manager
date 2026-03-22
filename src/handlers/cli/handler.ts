@@ -1,5 +1,6 @@
 import { ChildProcess, spawn } from 'child_process'
 import { BrowserWindow, ipcMain, ipcRenderer } from 'electron'
+import { existsSync, readFileSync } from 'fs'
 import { CLI_CHANNELS } from './channels'
 import { getCliFlags, getCliPath } from './helpers'
 import type { CliApi, CliEvent, CliRunArgs } from './types'
@@ -8,9 +9,10 @@ const cliProcesses = new Map<string, ChildProcess>()
 
 function runCli(args: CliRunArgs, onEvent: (e: CliEvent) => void): void {
   const flags = getCliFlags(args)
+  const runId = args.runId ?? crypto.randomUUID()
 
   const proc = spawn(getCliPath(), flags)
-  cliProcesses.set(args.runId, proc)
+  cliProcesses.set(runId, proc)
 
   let buf = ''
   proc.stdout.on('data', (chunk) => {
@@ -27,7 +29,7 @@ function runCli(args: CliRunArgs, onEvent: (e: CliEvent) => void): void {
     }
   })
 
-  proc.on('close', () => cliProcesses.delete(args.runId))
+  proc.on('close', () => cliProcesses.delete(runId))
 }
 
 function cancelCli(runId: string): void {
@@ -45,6 +47,17 @@ export function registerCli(win: BrowserWindow): void {
   })
 }
 
+/**
+ * Reads a UTF-8 JSON file and parses it. Throws if the file does not exist.
+ */
+export function readSummaryResult<T>(jsonPath: string): T {
+  if (!existsSync(jsonPath)) {
+    throw new Error(`Result file not found: ${jsonPath}`)
+  }
+  const text = readFileSync(jsonPath, 'utf8')
+  return JSON.parse(text) as T
+}
+
 export function cliPreload(): CliApi {
   return {
     run: (args: CliRunArgs): void => ipcRenderer.send(CLI_CHANNELS.RUN, args),
@@ -52,6 +65,7 @@ export function cliPreload(): CliApi {
     onProgress: (callback: (e: CliEvent) => void) => {
       ipcRenderer.on(CLI_CHANNELS.PROGRESS, (_e, event) => callback(event))
       return () => ipcRenderer.removeAllListeners(CLI_CHANNELS.PROGRESS)
-    }
+    },
+    readSummaryResult: <T>(jsonPath: string): T => readSummaryResult<T>(jsonPath)
   }
 }

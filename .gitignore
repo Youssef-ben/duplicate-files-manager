@@ -8,6 +8,7 @@ node_modules/
 ##############################
 dist/
 out/
+library-organizer.exe
 
 ##############################
 # Vite / Electron tooling caches

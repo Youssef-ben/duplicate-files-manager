@@ -6,17 +6,17 @@ import {
 } from '@heroicons/react/24/outline'
 import type { ComponentType, SVGProps } from 'react'
 
-import DuplicatePage from '@pages/Duplicate'
-import OrganizePage from '@pages/Organize'
+import { Duplicate as DuplicatePage } from '@pages/duplicates'
+import { Organize as OrganizePage } from '@pages/organize'
 import SettingsPage from '@pages/Settings'
-import SynchronizePage from '@pages/Synchronize'
+import { Synchronize as SynchronizePage } from '@pages/synchronize'
 
 type NavigationIcon = ComponentType<SVGProps<SVGSVGElement>>
 type NavigationPage = ComponentType
 
 export const NAVIGATION_PATHS = {
   organize: '/organize',
-  duplicate: '/duplicate',
+  duplicate: '/duplicates',
   synchronize: '/synchronize',
   settings: '/settings'
 } as const
@@ -36,7 +36,7 @@ export interface AppRoute {
 
 const primaryItems: readonly NavigationItem[] = [
   { label: 'Organize', path: NAVIGATION_PATHS.organize, icon: FolderIcon },
-  { label: 'Duplicate', path: NAVIGATION_PATHS.duplicate, icon: Squares2X2Icon },
+  { label: 'Duplicates', path: NAVIGATION_PATHS.duplicate, icon: Squares2X2Icon },
   { label: 'Synchronize', path: NAVIGATION_PATHS.synchronize, icon: ArrowPathIcon }
 ]
 

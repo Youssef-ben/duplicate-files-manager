@@ -39,6 +39,7 @@
     /* --- Outline --- */
     --color-outline:          #6c7086; /* overlay0 */
     --color-outline-variant:  #585b70; /* surface2 */
+    --color-outline-dim:  #888ca5;
   
     /* --- Typography --- */
     --font-sans: "Inter", system-ui, sans-serif;

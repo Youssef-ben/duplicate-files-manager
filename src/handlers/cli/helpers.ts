@@ -4,6 +4,16 @@ import path from 'path'
 import { CliRunArgs } from './types'
 
 /**
+ * Gets the path to the output file for the given arguments.
+ *
+ * @param args The arguments for the CLI.
+ * @returns The path to the output file for the given arguments.
+ */
+function getOutputPath(args: CliRunArgs): string {
+  return args.output ?? path.join(app.getPath('userData'), `${args.mode}-results.json`)
+}
+
+/**
  * Gets the path to the CLI executable.
  *
  * Condition:
@@ -27,12 +37,14 @@ export function getCliPath(): string {
  */
 export function getCliFlags(args: CliRunArgs): string[] {
   const flags: string[] = [args.sourceRoot, '--mode', args.mode, '--progress-format', 'json']
+
   if (args.dryRun) flags.push('--dry-run')
   if (args.target) flags.push('--target', args.target)
   if (args.direction) flags.push('--direction', args.direction)
-  if (args.output) flags.push('--output', args.output)
   if (args.input) flags.push('--input', args.input)
   if (args.confirm) flags.push('--confirm')
+
+  flags.push('--output', getOutputPath(args))
 
   return flags
 }

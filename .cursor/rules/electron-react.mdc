@@ -1,6 +1,6 @@
 ---
 description: Electron + React/TypeScript rules for library-organizer desktop app
-globs: ["src/**/*.ts", "src/**/*.tsx", "electron/**/*.ts"]
+globs: ['src/**/*.ts', 'src/**/*.tsx', 'electron/**/*.ts']
 alwaysApply: true
 ---
 
@@ -51,7 +51,7 @@ src/
 export {}
 declare global {
   interface Window {
-    api: ElectronAPI
+    api: AppAPI
   }
 }
 ```
@@ -70,11 +70,11 @@ declare global {
 ```ts
 // electron/ipc/channels.ts
 export const CH = {
-  CLI_RUN:           'cli:run',
-  CLI_CANCEL:        'cli:cancel',
-  CLI_PROGRESS:      'cli:progress',   // main → renderer push
-  DIALOG_OPEN_FOLDER:'dialog:openFolder',
-  REPORT_READ:       'report:read',
+  CLI_RUN: 'cli:run',
+  CLI_CANCEL: 'cli:cancel',
+  CLI_PROGRESS: 'cli:progress', // main → renderer push
+  DIALOG_OPEN_FOLDER: 'dialog:openFolder',
+  REPORT_READ: 'report:read'
 } as const
 ```
 
@@ -101,13 +101,17 @@ export function runCli(runId: string, args: string[], onEvent: (e: CliEvent) => 
   procs.set(runId, proc)
 
   let buf = ''
-  proc.stdout.on('data', chunk => {
+  proc.stdout.on('data', (chunk) => {
     buf += chunk.toString()
     const lines = buf.split('\n')
     buf = lines.pop() ?? ''
     for (const line of lines) {
       if (!line.trim()) continue
-      try { onEvent(JSON.parse(line)) } catch { /* ignore non-JSON */ }
+      try {
+        onEvent(JSON.parse(line))
+      } catch {
+        /* ignore non-JSON */
+      }
     }
   })
 
