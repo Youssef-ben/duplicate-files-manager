@@ -1,4 +1,4 @@
-import { NavButton } from '@components/navButton'
+import { NavButton } from '@components/buttons/navButton'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { isNavigationItemActive, NAVIGATION_ITEMS } from './routes'
 

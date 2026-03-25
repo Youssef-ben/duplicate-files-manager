@@ -1,9 +1,23 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import packageJson from '@pkg'
 import icon from '@resources/icon.png?asset'
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, protocol, shell } from 'electron'
 import { join } from 'path'
+import { localFileResponse } from './helpers'
 import { registerHandlers } from './ipc/handlers'
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'localfile',
+    privileges: {
+      secure: true,
+      standard: true,
+      supportFetchAPI: true,
+      bypassCSP: true,
+      stream: true
+    }
+  }
+])
 
 function createWindow(): void {
   const appTitle = app.getName()
@@ -12,8 +26,9 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     title: appTitle,
     width: 1000,
-    height: 700,
+    height: 720,
     minWidth: 1000,
+    minHeight: 720,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' || process.platform === 'win32' ? { icon } : {}),
@@ -56,6 +71,25 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId(packageJson.build.appId)
+
+  // Path in `?p=` — see loadFileUrl. Serve from disk (net.fetch(file://) is unreliable on Windows).
+  protocol.handle('localfile', async (req) => {
+    let url: URL
+    try {
+      url = new URL(req.url)
+    } catch {
+      return new Response(null, { status: 400 })
+    }
+    let filePath = url.searchParams.get('p')
+    if (filePath === null) {
+      const pathname = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+      filePath = pathname ? decodeURIComponent(pathname) : null
+    }
+    if (filePath === null || !filePath.trim()) {
+      return new Response(null, { status: 400 })
+    }
+    return localFileResponse(req, filePath)
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

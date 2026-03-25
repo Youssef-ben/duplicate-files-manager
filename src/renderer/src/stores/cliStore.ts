@@ -4,9 +4,10 @@ import { immer } from 'zustand/middleware/immer'
 
 interface CliState {
   runId: string | null
-  status: 'idle' | 'running' | 'done' | 'error'
+  status: 'IDLE' | 'RUNNING' | 'DONE' | 'ERROR'
   progress: ProgressEvent | null
   summary: SummaryEvent | null
+
   start: (runId: string) => void
   handleEvent: (e: CliEvent) => void
   cancel: () => void
@@ -16,35 +17,36 @@ interface CliState {
 export const useCliStore = create<CliState>()(
   immer((set) => ({
     runId: null,
-    status: 'idle',
+    status: 'IDLE',
     progress: null,
     summary: null,
+
     start: (runId) =>
-      set((s) => {
-        s.runId = runId
-        s.status = 'running'
-        s.progress = null
-        s.summary = null
-      }),
-    handleEvent: (e) =>
-      set((s) => {
-        if (e.type === 'progress') s.progress = e
-        if (e.type === 'summary') {
-          s.summary = e
-          s.status = 'done'
-        }
+      set((state) => {
+        state.runId = runId
+        state.status = 'RUNNING'
+        state.progress = null
+        state.summary = null
       }),
     cancel: () =>
-      set((s) => {
-        s.status = 'idle'
-        s.runId = null
+      set((state) => {
+        state.status = 'IDLE'
+        state.runId = null
       }),
     reset: () =>
       set((s) => {
-        s.status = 'idle'
+        s.status = 'IDLE'
         s.runId = null
         s.progress = null
         s.summary = null
+      }),
+    handleEvent: (event) =>
+      set((state) => {
+        if (event.type === 'progress') state.progress = event as ProgressEvent
+        if (event.type === 'summary') {
+          state.summary = event
+          state.status = 'DONE'
+        }
       })
   }))
 )

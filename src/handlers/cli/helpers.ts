@@ -1,4 +1,4 @@
-import packageJson from '@pkg'
+import { IGNORED_FOLDERS_FILE } from '@shared/constants'
 import { app } from 'electron'
 import path from 'path'
 import { CliRunArgs } from './types'
@@ -9,10 +9,15 @@ import { CliRunArgs } from './types'
  * @param args The arguments for the CLI.
  * @returns The path to the output file for the given arguments.
  */
-function getOutputPath(args: CliRunArgs): string {
-  return args.output ?? path.join(app.getPath('userData'), `${args.mode}-results.json`)
+function getCliOutputPath(args: CliRunArgs): string {
+  return args.output ?? path.join(app.getPath('userData'), `results/${args.mode}-results.json`)
 }
 
+function getCliIgnoreConfigPath(): string {
+  return path.join(app.getPath('userData'), `results/${IGNORED_FOLDERS_FILE}.json`)
+}
+
+const CLI_EXE_NAME = 'library-organizer-cli'
 /**
  * Gets the path to the CLI executable.
  *
@@ -23,7 +28,7 @@ function getOutputPath(args: CliRunArgs): string {
  * @returns The path to the CLI executable.
  */
 export function getCliPath(): string {
-  const exe = process.platform === 'win32' ? `${packageJson.name}.exe` : packageJson.name
+  const exe = process.platform === 'win32' ? `${CLI_EXE_NAME}.exe` : CLI_EXE_NAME
   const resourcesPath = app.isPackaged ? process.resourcesPath : app.getAppPath()
 
   return path.join(resourcesPath, 'resources', exe)
@@ -43,8 +48,10 @@ export function getCliFlags(args: CliRunArgs): string[] {
   if (args.direction) flags.push('--direction', args.direction)
   if (args.input) flags.push('--input', args.input)
   if (args.confirm) flags.push('--confirm')
+  if (args.outputFolder) flags.push('--output-folder', args.outputFolder)
 
-  flags.push('--output', getOutputPath(args))
+  flags.push('--output', getCliOutputPath(args))
+  flags.push('--ignore-config', getCliIgnoreConfigPath())
 
   return flags
 }

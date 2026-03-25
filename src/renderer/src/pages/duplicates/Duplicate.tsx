@@ -7,14 +7,16 @@ const steps: AppWizardStep[] = [
     label: 'Selection',
     isActive: true,
     isCompleted: false,
-    component: <>Selection — pick the root folder to scan (images and videos in scope).</>
+    component: <>Selection — pick the root folder to scan (images and videos in scope).</>,
+    isRunning: false
   },
   {
     id: 2,
     label: 'Scan',
     isActive: false,
     isCompleted: false,
-    component: <>Duplicate scan — build duplicate groups (same content, multiple paths).</>
+    component: <>Duplicate scan — build duplicate groups (same content, multiple paths).</>,
+    isRunning: false
   },
   {
     id: 3,
@@ -26,7 +28,8 @@ const steps: AppWizardStep[] = [
         Review and removal — mark paths to remove; dry-run / preview first, then confirm before
         delete.
       </>
-    )
+    ),
+    isRunning: false
   }
 ]
 

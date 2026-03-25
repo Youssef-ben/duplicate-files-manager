@@ -7,14 +7,16 @@ const steps: AppWizardStep[] = [
     label: 'Selection',
     isActive: true,
     isCompleted: false,
-    component: <>Selection — choose folder A and folder B (both trees in scope).</>
+    component: <>Selection — choose folder A and folder B (both trees in scope).</>,
+    isRunning: false
   },
   {
     id: 2,
     label: 'Scan',
     isActive: false,
     isCompleted: false,
-    component: <>Scan / compare — preview-only diff (only on A, only on B, conflicts per CLI).</>
+    component: <>Scan / compare — preview-only diff (only on A, only on B, conflicts per CLI).</>,
+    isRunning: false
   },
   {
     id: 3,
@@ -23,7 +25,8 @@ const steps: AppWizardStep[] = [
     isCompleted: false,
     component: (
       <>Direction — A → B, B → A, or bidirectional (each side gets missing files from the other).</>
-    )
+    ),
+    isRunning: false
   },
   {
     id: 4,
@@ -34,7 +37,8 @@ const steps: AppWizardStep[] = [
       <>
         Review and sync — choose planned copies; dry-run / preview first, then confirm before write.
       </>
-    )
+    ),
+    isRunning: false
   }
 ]
 

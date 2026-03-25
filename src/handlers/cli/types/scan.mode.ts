@@ -1,4 +1,5 @@
-export type ScanningSummary = {
+/** PROGRESS SUMMARY OF SCANNING **/
+export type ScanningProgressSummary = {
   type: string
   action: string
   total_files: number
@@ -9,7 +10,7 @@ export type ScanningSummary = {
 
 /** RESULT OF SCANNING **/
 //===============================================
-export interface ScanningFolderEntry {
+export interface ScannedResultsFolder {
   path: string
   direct_files: number
   recursive_bytes: number
@@ -21,6 +22,10 @@ export type ScanningResults = {
   total_bytes: number
   folder_count: number
   report_path: string
-  folders: ScanningFolderEntry[]
+  folders: ScannedResultsFolder[]
+}
+
+export type OutputFolderResults = {
+  path?: string
 }
 //===============================================

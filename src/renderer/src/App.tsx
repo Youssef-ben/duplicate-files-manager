@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner'
 import { Navigation, SidebarNavigation } from './navigation'
 
 function App(): React.JSX.Element {
@@ -6,6 +7,7 @@ function App(): React.JSX.Element {
       <SidebarNavigation />
 
       <Navigation />
+      <Toaster closeButton richColors position="bottom-center" />
     </div>
   )
 }

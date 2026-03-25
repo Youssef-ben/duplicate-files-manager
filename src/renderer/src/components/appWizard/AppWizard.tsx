@@ -5,6 +5,7 @@ export interface AppWizardStep {
   id: number
   label: string
   isActive: boolean
+  isRunning: boolean
   isCompleted: boolean
   component: React.ReactNode
 }
@@ -12,9 +13,14 @@ export interface AppWizardStep {
 export interface AppWizardProps {
   steps: AppWizardStep[]
   children?: React.ReactNode
+  onFinishClick?: () => void
 }
 
-export const AppWizard = ({ steps, children }: AppWizardProps): React.JSX.Element | null => {
+export const AppWizard = ({
+  steps,
+  children,
+  onFinishClick
+}: AppWizardProps): React.JSX.Element | null => {
   const [activeIndex, setActiveIndex] = useState(0)
 
   const { activeStep, isFirstStep, isLastStep } = useMemo(() => {
@@ -40,6 +46,16 @@ export const AppWizard = ({ steps, children }: AppWizardProps): React.JSX.Elemen
   const goToPreviousStep = useCallback(() => {
     setActiveIndex((index) => Math.max(index - 1, 0))
   }, [])
+
+  const isWizardCompleted = useMemo(() => {
+    return steps.every((step) => step.isCompleted) && isLastStep
+  }, [steps, isLastStep])
+
+  const handleOnWizardCompleted = useCallback(() => {
+    if (!isWizardCompleted && onFinishClick) return
+    onFinishClick?.()
+    setActiveIndex(0)
+  }, [isWizardCompleted, onFinishClick, setActiveIndex])
 
   if (!activeStep) {
     return null
@@ -74,6 +90,9 @@ export const AppWizard = ({ steps, children }: AppWizardProps): React.JSX.Elemen
         goToNextStep={goToNextStep}
         isLastStep={isLastStep}
         isCompleted={activeStep.isCompleted}
+        isRunning={activeStep.isRunning}
+        isWizardCompleted={isWizardCompleted}
+        onWizardCompleted={handleOnWizardCompleted}
       />
     </div>
   )

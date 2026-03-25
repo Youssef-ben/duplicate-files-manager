@@ -1,4 +1,7 @@
-import { ScanningSummary } from './types/scan.mode'
+import { DuplicatesProgressSummary } from './types/duplicates.mode'
+import { FlatteningProgressSummary } from './types/flatten.mode'
+import { OrganizeProgressSummary } from './types/organize.mode'
+import { ScanningProgressSummary } from './types/scan.mode'
 
 export type ProgressEvent = {
   type: 'progress'
@@ -6,6 +9,10 @@ export type ProgressEvent = {
   phase: string
   current: number
   total: number
+  file?: string
+  file_size_bytes?: number
+  processed_bytes?: number
+  total_bytes?: number
 }
 
 type SummaryEventBase = {
@@ -13,9 +20,15 @@ type SummaryEventBase = {
   action: string
   [key: string]: unknown
 }
-export type SummaryEvent = SummaryEventBase | ScanningSummary
+export type SummaryEvent =
+  | SummaryEventBase
+  | ScanningProgressSummary
+  | FlatteningProgressSummary
+  | DuplicatesProgressSummary
+  | OrganizeProgressSummary
 
-export type CliEvent = ProgressEvent | ScanningSummary | SummaryEvent
+export type CliEvent = ProgressEvent | SummaryEvent
+
 export type CliMode =
   | 'flatten'
   | 'organize'
@@ -36,6 +49,7 @@ export type CliRunArgs = {
   output?: string
   input?: string
   confirm?: boolean
+  outputFolder?: string
 }
 
 export type CliApi = {

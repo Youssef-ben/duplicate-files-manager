@@ -142,3 +142,4 @@ export function cancelCli(runId: string) {
 - Every async operation has explicit loading, error, and empty states in the UI.
 - `--dry-run` is always the default when building UI actions that mutate files; require an explicit user confirmation step to drop it.
 - always use `yarn`
+- Naming convention: always use meaningful names never use one letter.

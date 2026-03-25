@@ -1,9 +1,9 @@
 /* @import "./themes.new.css"; */
-@import "./themes/default.theme.css";
-@import "./themes/dark.theme.css";
-@import "./themes/catppuccin-mocha.css";
-@import "./themes/nord.theme.css";
-@import "tailwindcss";
+@import './themes/default.theme.css';
+@import './themes/dark.theme.css';
+@import './themes/catppuccin-mocha.css';
+@import './themes/nord.theme.css';
+@import 'tailwindcss';
 
 @keyframes folder-selection-enter {
   from {
@@ -16,14 +16,26 @@
   }
 }
 
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 2px;
+  height: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-surface-variant);
-  border-radius: 5px;
+  border-radius: 2px;
   transition: background-color 0.2s;
 }
 

@@ -12,6 +12,7 @@ function runCli(args: CliRunArgs, onEvent: (e: CliEvent) => void): void {
   const runId = args.runId ?? crypto.randomUUID()
 
   const proc = spawn(getCliPath(), flags)
+
   cliProcesses.set(runId, proc)
 
   let buf = ''
