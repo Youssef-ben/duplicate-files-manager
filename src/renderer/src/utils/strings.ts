@@ -1,4 +1,4 @@
-import { ProgressEvent } from '@handlers/cli/types'
+import { CliProgressEvent } from '@handlers/cli/types'
 
 /**
  * Returns the URL of a given file path.
@@ -52,7 +52,7 @@ export function getParentFolderPath(path: string): string {
  *
  * @returns The progress percentage.
  */
-export function getProgressPercentage(progress: ProgressEvent | null): number {
+export function getProgressPercentage(progress: CliProgressEvent | null): number {
   if (!progress?.current || !progress?.total) return 0
 
   return Math.floor((progress.current / progress.total) * 100)
@@ -116,7 +116,7 @@ const etaMsFromBytes = (
 }
 
 export function calculateRemainingTime(
-  progress: ProgressEvent | undefined,
+  progress: CliProgressEvent | undefined,
   startTimeMs: number | undefined
 ): number {
   if (!progress || !startTimeMs) return 0

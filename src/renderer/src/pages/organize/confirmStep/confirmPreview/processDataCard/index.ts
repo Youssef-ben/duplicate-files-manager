@@ -1,2 +1,1 @@
-export * from './ProcessDataCard';
-
+export * from './ProcessDataCard'

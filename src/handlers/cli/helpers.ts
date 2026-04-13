@@ -10,11 +10,21 @@ import { CliRunArgs } from './types'
  * @returns The path to the output file for the given arguments.
  */
 function getCliOutputPath(args: CliRunArgs): string {
-  return args.output ?? path.join(app.getPath('userData'), `results/${args.mode}-results.json`)
+  if (args.output) {
+    return args.output
+  }
+
+  return path.join(app.getPath('userData'), 'results', args.menu, `${args.mode}-results.json`)
 }
 
-function getCliIgnoreConfigPath(): string {
-  return path.join(app.getPath('userData'), `results/${IGNORED_FOLDERS_FILE}.json`)
+/**
+ * Gets the path to the ignore config file for the given arguments.
+ *
+ * @param args The arguments for the CLI.
+ * @returns The path to the ignore config file for the given arguments.
+ */
+export function getCliIgnoreConfigPath(): string {
+  return path.join(app.getPath('userData'), 'results', `${IGNORED_FOLDERS_FILE}.json`)
 }
 
 const CLI_EXE_NAME = 'library-organizer-cli'

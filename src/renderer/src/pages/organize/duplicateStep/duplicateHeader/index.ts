@@ -1,2 +1,1 @@
-export * from './DuplicateHeader';
-
+export * from './DuplicateHeader'

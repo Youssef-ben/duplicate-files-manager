@@ -1,2 +1,1 @@
-export * from './ConfirmHeader';
-
+export * from './ConfirmHeader'

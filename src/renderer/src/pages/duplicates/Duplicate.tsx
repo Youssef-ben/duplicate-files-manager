@@ -1,47 +1,47 @@
 import { AppWizard } from '@components/appWizard'
 import { AppWizardStep } from '@components/appWizard/AppWizard'
-
-const steps: AppWizardStep[] = [
-  {
-    id: 1,
-    label: 'Selection',
-    isActive: true,
-    isCompleted: false,
-    component: <>Selection — pick the root folder to scan (images and videos in scope).</>,
-    isRunning: false
-  },
-  {
-    id: 2,
-    label: 'Scan',
-    isActive: false,
-    isCompleted: false,
-    component: <>Duplicate scan — build duplicate groups (same content, multiple paths).</>,
-    isRunning: false
-  },
-  {
-    id: 3,
-    label: 'Review',
-    isActive: false,
-    isCompleted: false,
-    component: (
-      <>
-        Review and removal — mark paths to remove; dry-run / preview first, then confirm before
-        delete.
-      </>
-    ),
-    isRunning: false
-  }
-]
+import { useCliRun } from '@hooks/useCliRun'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useShallow } from 'zustand/shallow'
+import { ScanStep, SelectionStep } from './steps'
+import { DUPLICATES_STEPS_IDS, useDuplicatesStore } from './store/duplicatesStore'
 
 export const Duplicate = (): React.JSX.Element => {
-  return (
-    <AppWizard steps={steps}>
-      <div className="flex flex-col items-left justify-center w-full gap-1">
-        <span className="text-xl font-semibold text-primary">Duplicates Finder</span>
-        <p className="text-sm text-outline-dim">
-          Find duplicate media in place and resolve them with preview and confirmation.
-        </p>
-      </div>
-    </AppWizard>
+  const { reset } = useDuplicatesStore()
+  const { steps } = useDuplicatesStore(useShallow((state) => ({ steps: state.steps })))
+
+  const { setMenu } = useCliRun()
+
+  useEffect(() => {
+    setMenu('duplicate')
+  }, [setMenu])
+
+  const handleFinishClick = useCallback(async () => {
+    await window.appApi.global.removeFolder('duplicate')
+    reset()
+  }, [reset])
+
+  const wizardSteps: AppWizardStep[] = useMemo(
+    () => [
+      {
+        id: DUPLICATES_STEPS_IDS.selection,
+        label: 'Selection',
+        isActive: true,
+        isCompleted: steps.selection.status === 'COMPLETED',
+        isRunning: steps.selection.status === 'RUNNING',
+        component: <SelectionStep />
+      },
+      {
+        id: DUPLICATES_STEPS_IDS.scan,
+        label: 'Scan',
+        isActive: false,
+        isCompleted: steps.scan.status === 'COMPLETED',
+        isRunning: steps.scan.status === 'RUNNING',
+        component: <ScanStep />
+      }
+    ],
+    [steps]
   )
+
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
 }

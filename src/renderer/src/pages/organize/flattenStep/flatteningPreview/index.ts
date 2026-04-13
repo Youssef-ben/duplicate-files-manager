@@ -1,2 +1,1 @@
-export * from './FlatteningPreview';
-
+export * from './FlatteningPreview'

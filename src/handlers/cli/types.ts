@@ -3,7 +3,7 @@ import { FlatteningProgressSummary } from './types/flatten.mode'
 import { OrganizeProgressSummary } from './types/organize.mode'
 import { ScanningProgressSummary } from './types/scan.mode'
 
-export type ProgressEvent = {
+export type CliProgressEvent = {
   type: 'progress'
   stage: string
   phase: string
@@ -20,6 +20,7 @@ type SummaryEventBase = {
   action: string
   [key: string]: unknown
 }
+
 export type SummaryEvent =
   | SummaryEventBase
   | ScanningProgressSummary
@@ -27,7 +28,7 @@ export type SummaryEvent =
   | DuplicatesProgressSummary
   | OrganizeProgressSummary
 
-export type CliEvent = ProgressEvent | SummaryEvent
+export type CliEvent = CliProgressEvent | SummaryEvent
 
 export type CliMode =
   | 'flatten'
@@ -39,7 +40,11 @@ export type CliMode =
   | 'scan'
   | 'rename'
 
+export type CliMenu = 'organize' | 'duplicate' | 'synchronize'
+
 export type CliRunArgs = {
+  /** Omitted when using `useCliRun.run` — the hook sets it from the active app section. */
+  menu: CliMenu
   runId?: string
   mode: CliMode
   sourceRoot: string

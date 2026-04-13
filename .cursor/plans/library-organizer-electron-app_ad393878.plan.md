@@ -51,7 +51,7 @@ isProject: false
 ### 4. Implement shared channels and CLI utilities
 
 - **Channel constants**: Create `[src/main/ipc/channels.ts](duplicate-file-manager/src/main/ipc/channels.ts)` and add the provided `CH` constant containing all IPC channel string values.
-- **CLI types**: Create `[src/main/cli/types.ts](duplicate-file-manager/src/main/cli/types.ts)` with the provided `ProgressEvent`, `SummaryEvent`, `CliEvent`, and `CliRunArgs` definitions.
+- **CLI types**: Create `[src/main/cli/types.ts](duplicate-file-manager/src/main/cli/types.ts)` with the provided `CliProgressEvent`, `SummaryEvent`, `CliEvent`, and `CliRunArgs` definitions.
 - **CLI binary path resolver**: Create `[src/main/cli/path.ts](duplicate-file-manager/src/main/cli/path.ts)` and implement `getCliPath` exactly as given, importing `app` from `electron` and `path` from `path`.
 - **CLI runner**: Create `[src/main/cli/runner.ts](duplicate-file-manager/src/main/cli/runner.ts)` with the provided implementation using `spawn`, `getCliPath`, `procs` map, line-buffered `stdout` handling, and `cancelCli` that kills and removes processes.
 

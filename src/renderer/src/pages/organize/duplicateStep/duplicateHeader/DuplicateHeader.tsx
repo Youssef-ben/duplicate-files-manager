@@ -1,24 +1,32 @@
-import { CommonStepHeader } from '@components/commonStepHeader'
-import { DuplicatesResults } from '@handlers/cli/types/duplicates.mode'
+import { CommonStepHeader } from '@components/steps/commonStepHeader'
+import type { StepStatus } from '@renderer/types/common'
 import { humanizeSize } from '@utils/strings'
 
-interface DuplicateHeaderProps {
+export interface DuplicateHeaderProps extends CompletedContentProps {
+  status: StepStatus
+  onCancelClick: () => void
   onReRunClick: () => void
-  result?: DuplicatesResults
 }
 
 export const DuplicateHeader = ({
-  result,
+  status,
+  groupsCount,
+  filesCount,
+  totalSize,
+  onCancelClick,
   onReRunClick
 }: DuplicateHeaderProps): React.JSX.Element => {
   return (
     <CommonStepHeader
-      stepId="duplicates"
       title="Finding Duplicates"
+      status={status}
+      onCancelClick={onCancelClick}
       onReRunClick={onReRunClick}
       idleContent={<IdleContent />}
       runningContent={<RunningContent />}
-      completedContent={result && <CompletedContent result={result} />}
+      completedContent={
+        <CompletedContent groupsCount={groupsCount} filesCount={filesCount} totalSize={totalSize} />
+      }
     />
   )
 }
@@ -44,16 +52,23 @@ const RunningContent = (): React.JSX.Element => {
 }
 
 interface CompletedContentProps {
-  result: DuplicatesResults
+  groupsCount: number
+  filesCount: number
+  totalSize: number
 }
-const CompletedContent = ({ result }: CompletedContentProps): React.JSX.Element => {
+
+const CompletedContent = ({
+  groupsCount,
+  filesCount,
+  totalSize
+}: CompletedContentProps): React.JSX.Element => {
   return (
     <div className="flex flex-col items-left justify-center w-full gap-6">
       <div className="flex flex-row items-center justify-start gap-1">
         <span className="text-xs font-semibold text-primary bg-primary-dim/10 px-2 py-1 rounded-md w-fit">
-          <span className="font-mono">{result.duplicate_groups.toLocaleString()}</span> Groups (
-          <span className="font-mono">{result.duplicate_files.toLocaleString()}</span> files,{' '}
-          <span className="font-mono">{humanizeSize(result.duplicate_total_bytes)}</span>)
+          <span className="font-mono">{groupsCount.toLocaleString()}</span> Groups (
+          <span className="font-mono">{filesCount.toLocaleString()}</span> files,{' '}
+          <span className="font-mono">{humanizeSize(totalSize)}</span>)
         </span>
         <span className="text-sm text-outline-dim text-justify">
           — Choose the versions to delete and confirm to apply your changes.

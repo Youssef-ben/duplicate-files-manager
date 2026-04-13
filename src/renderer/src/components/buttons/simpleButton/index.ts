@@ -1,2 +1,1 @@
-export * from './SimpleButton';
-
+export * from './SimpleButton'

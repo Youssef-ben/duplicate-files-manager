@@ -2,6 +2,7 @@ import { DuplicatesResults } from '@handlers/cli/types/duplicates.mode'
 import { FlatteningResults } from '@handlers/cli/types/flatten.mode'
 import { OrganizeResults } from '@handlers/cli/types/organize.mode'
 import { OutputFolderResults, ScanningResults } from '@handlers/cli/types/scan.mode'
+import type { StepStatus } from '@renderer/types/common'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import type { StateCreator } from 'zustand/vanilla'
@@ -32,7 +33,7 @@ export type OrganizeStepResultType =
 type OrganizeStep<T extends OrganizeStepResultType> = {
   // State
   stepRunnerId: string | null
-  status: 'NOT_STARTED' | 'RUNNING' | 'COMPLETED' | 'ERROR'
+  status: StepStatus
   result?: T
   startedAtMs?: number
   completedAtMs?: number
@@ -45,8 +46,6 @@ type OrganizeStep<T extends OrganizeStepResultType> = {
 
 /**
  * The Organize store state.
- *
- * @returns The Organize store zustand (Get) state interface.
  */
 interface OrganizeState {
   steps: {

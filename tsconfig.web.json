@@ -26,7 +26,7 @@
       "@pages/*": ["src/renderer/src/pages/*"],
       "@stores/*": ["src/renderer/src/stores/*"],
       "@styles/*": ["src/renderer/src/styles/*"],
-      "@types/*": ["src/renderer/src/types/*"],
+      "@renderer/*": ["src/renderer/src/*"],
       "@utils/*": ["src/renderer/src/utils/*"]
     }
   }

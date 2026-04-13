@@ -28,15 +28,16 @@
   }
 }
 
+/* Scrollbar (Electron / Chromium only) */
 ::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-surface-variant);
-  border-radius: 2px;
-  transition: background-color 0.2s;
+  border-radius: 4px;
+  border-radius: 999px; /* pill style */
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -44,10 +45,6 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface-variant);
+  background: var(--color-surface);
 }
-
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-surface-variant) var(--color-surface);
-}
+ 

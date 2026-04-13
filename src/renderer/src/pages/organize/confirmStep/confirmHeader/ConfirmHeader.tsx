@@ -1,14 +1,22 @@
-import { CommonStepHeader } from '@components/commonStepHeader'
+import { CommonStepHeader } from '@components/steps/commonStepHeader'
+import type { StepStatus } from '@renderer/types/common'
 
 interface ConfirmHeaderProps {
-  onReRunClick?: () => void
+  status: StepStatus
+  onCancelClick: () => void
+  onReRunClick: () => void
 }
 
-export const ConfirmHeader = ({ onReRunClick }: ConfirmHeaderProps): React.JSX.Element => {
+export const ConfirmHeader = ({
+  status,
+  onCancelClick,
+  onReRunClick
+}: ConfirmHeaderProps): React.JSX.Element => {
   return (
     <CommonStepHeader
-      stepId="confirm"
       title="Confirm Organization"
+      status={status}
+      onCancelClick={onCancelClick}
       onReRunClick={onReRunClick}
       idleContent={<IdleContent />}
       runningContent={<RunningContent />}

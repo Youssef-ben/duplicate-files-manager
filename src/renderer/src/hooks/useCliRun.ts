@@ -1,20 +1,23 @@
-import type { CliRunArgs, ProgressEvent, SummaryEvent } from '@handlers/cli'
+import type { CliProgressEvent, CliRunArgs, SummaryEvent } from '@handlers/cli'
+import { CliMenu } from '@handlers/cli/types'
 import { useCliStore } from '@stores/cliStore'
 import { useCallback, useEffect } from 'react'
 
 interface UseCliRunResult {
   runnerId: string | null
   runnerStatus: 'IDLE' | 'RUNNING' | 'DONE' | 'ERROR'
-  progress: ProgressEvent | null
+  progress: CliProgressEvent | null
   summary: SummaryEvent | null
 
   run: (args: CliRunArgs) => void
   stop: () => void
   resetRunner: () => void
+  setMenu: (menu: CliMenu) => void
 }
 
 export function useCliRun(): UseCliRunResult {
-  const { runId, start, handleEvent, cancel, status, progress, summary, reset } = useCliStore()
+  const { runId, start, handleEvent, cancel, status, progress, summary, reset, menu, setMenu } =
+    useCliStore()
 
   useEffect(() => {
     const unsubscribe = window.appApi.cli.onProgress(handleEvent)
@@ -26,10 +29,11 @@ export function useCliRun(): UseCliRunResult {
       if (!args.runId) {
         args.runId = crypto.randomUUID()
       }
+      args.menu = menu
       start(args.runId)
       window.appApi.cli.run(args)
     },
-    [start]
+    [start, menu]
   )
 
   const stop = useCallback((): void => {
@@ -52,6 +56,7 @@ export function useCliRun(): UseCliRunResult {
     summary,
     run,
     stop,
-    resetRunner
+    resetRunner,
+    setMenu
   }
 }

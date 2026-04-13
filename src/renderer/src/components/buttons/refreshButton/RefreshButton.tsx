@@ -17,7 +17,7 @@ export const RefreshButton = ({
       onClick={onClick}
       className={mergeCls(
         'flex w-6 h-6 flex-row items-center justify-center gap-1 p-1 border transition-all duration-500 rounded-full',
-        'group border-primary bg-surface text-primary cursor-pointer',
+        'group border-primary bg-transparent text-primary cursor-pointer',
         'hover:bg-primary-dim/80 hover:text-on-primary hover:border-primary-dim hover:rotate-90 active:scale-95'
       )}
     >

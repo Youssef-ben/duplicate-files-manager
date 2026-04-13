@@ -1,14 +1,22 @@
-import { CommonStepHeader } from '@components/commonStepHeader'
+import { CommonStepHeader } from '@components/steps/commonStepHeader'
+import type { StepStatus } from '@renderer/types/common'
 
 interface FlatteningHeaderProps {
+  status: StepStatus
+  onCancelClick: () => void
   onReRunClick: () => void
 }
 
-export const FlatteningHeader = ({ onReRunClick }: FlatteningHeaderProps): React.JSX.Element => {
+export const FlatteningHeader = ({
+  status,
+  onCancelClick,
+  onReRunClick
+}: FlatteningHeaderProps): React.JSX.Element => {
   return (
     <CommonStepHeader
-      stepId="flatten"
       title="Staging Files"
+      status={status}
+      onCancelClick={onCancelClick}
       onReRunClick={onReRunClick}
       idleContent={<IdleContent />}
       runningContent={<RunningContent />}

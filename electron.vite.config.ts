@@ -38,7 +38,7 @@ export default defineConfig({
         '@pages': resolve('src/renderer/src/pages'),
         '@stores': resolve('src/renderer/src/stores'),
         '@styles': resolve('src/renderer/src/styles'),
-        '@types': resolve('src/renderer/src/types'),
+        '@renderer': resolve('src/renderer/src'),
         '@utils': resolve('src/renderer/src/utils')
       }
     },

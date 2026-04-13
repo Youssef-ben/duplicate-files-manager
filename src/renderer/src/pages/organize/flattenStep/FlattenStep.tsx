@@ -1,5 +1,5 @@
 import { SimpleButton } from '@components/buttons'
-import { StepProgress } from '@components/stepProgress'
+import { StepProgress } from '@components/steps/stepProgress'
 import { FlatteningProgressSummary, FlatteningResults } from '@handlers/cli/types/flatten.mode'
 import { useCliRun } from '@hooks/useCliRun'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -15,7 +15,7 @@ export const FlattenFolder = (): React.JSX.Element => {
   )
   const { reset: resetDuplicates } = useOrganizeStore(StepSelector('duplicates'))
 
-  const { runnerId, summary, progress, run, resetRunner } = useCliRun()
+  const { runnerId, summary, progress, run, resetRunner, stop } = useCliRun()
 
   useEffect(() => {
     if (!getPath()) window.location.reload()
@@ -48,6 +48,7 @@ export const FlattenFolder = (): React.JSX.Element => {
     start(newRunId)
     run({
       runId: newRunId,
+      menu: 'organize',
       mode: 'flatten',
       sourceRoot: selectedFolderPath,
       outputFolder: getPath()
@@ -59,12 +60,21 @@ export const FlattenFolder = (): React.JSX.Element => {
     startProcess()
   }, [startProcess, status])
 
+  const handleCancelFlatten = useCallback(() => {
+    stop()
+    reset()
+  }, [stop, reset])
+
   const isRunning = useMemo(() => status === 'RUNNING', [status])
   const isCompleted = useMemo(() => status === 'COMPLETED', [status])
 
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
-      <FlatteningHeader onReRunClick={startProcess} />
+      <FlatteningHeader
+        status={status}
+        onCancelClick={handleCancelFlatten}
+        onReRunClick={startProcess}
+      />
 
       {!isCompleted && <FlatteningPreview />}
 
@@ -75,7 +85,7 @@ export const FlattenFolder = (): React.JSX.Element => {
         </div>
       )}
 
-      {isRunning && !isCompleted && progress && (
+      {isRunning && !isCompleted && (
         <StepProgress startedAtMs={startedAtMs ?? 0} progress={progress} />
       )}
 

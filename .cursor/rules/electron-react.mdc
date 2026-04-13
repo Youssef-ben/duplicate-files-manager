@@ -27,7 +27,7 @@ electron/
     channels.ts    # shared channel name constants (imported by both sides)
   cli/
     runner.ts      # spawn logic, stdout parsing, process lifecycle
-    types.ts       # ProgressEvent, SummaryEvent, CLI arg types
+    types.ts       # CliProgressEvent, SummaryEvent, CLI arg types
 
 src/
   pages/           # one file per route/view
@@ -85,7 +85,7 @@ export const CH = {
 - The CLI executable path is resolved **only** in `electron/cli/runner.ts` using `app.isPackaged ? process.resourcesPath : app.getAppPath()`. Never hardcode paths.
 - Spawn with `child_process.spawn`, never `exec` or `execSync`.
 - Always pass `--progress-format json` when a progress stream is needed.
-- Read stdout line-by-line; `JSON.parse` each line; emit typed `ProgressEvent` or `SummaryEvent`.
+- Read stdout line-by-line; `JSON.parse` each line; emit typed `CliProgressEvent` or `SummaryEvent`.
 - Maintain a `Map<string, ChildProcess>` keyed by a `runId` to support cancellation via `process.kill()`.
 - On `cli:cancel`, kill the process and clean up the map entry.
 

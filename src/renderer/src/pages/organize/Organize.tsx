@@ -1,6 +1,7 @@
 import { AppWizard, AppWizardStep } from '@components/appWizard'
+import { useCliRun } from '@hooks/useCliRun'
 import { ORGANIZE_STEPS_IDS, useOrganizeStore } from '@pages/organize/store/organizeStore'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useShallow } from 'zustand/shallow'
 import { ConfirmStep } from './confirmStep'
 import { DuplicateStep } from './duplicateStep'
@@ -11,6 +12,17 @@ import { SelectionStep } from './selectionStep'
 export const Organize = (): React.JSX.Element => {
   const { reset } = useOrganizeStore()
   const { steps } = useOrganizeStore(useShallow((state) => ({ steps: state.steps })))
+
+  const { setMenu } = useCliRun()
+
+  useEffect(() => {
+    setMenu('organize')
+  }, [setMenu])
+
+  const handleFinishClick = useCallback(async () => {
+    await window.appApi.global.removeFolder('organize')
+    reset()
+  }, [reset])
 
   const wizardSteps: AppWizardStep[] = useMemo(
     () => [
@@ -58,5 +70,5 @@ export const Organize = (): React.JSX.Element => {
     [steps]
   )
 
-  return <AppWizard steps={wizardSteps} onFinishClick={reset} />
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
 }
