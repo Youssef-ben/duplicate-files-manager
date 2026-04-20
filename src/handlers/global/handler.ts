@@ -18,8 +18,13 @@ export function registerGlobal(win: BrowserWindow): void {
 
   ipcMain.handle(
     GLOBAL_CHANNELS.WRITE_JSON_FILE,
-    async <T>(_e: unknown, name: string, menu: CliMenu, data: T): Promise<string> => {
-      const outputPath = path.join(app.getPath('userData'), 'results', menu, `${name}.json`)
+    async <T>(_e: unknown, name: string, menu: CliMenu | 'settings', data: T): Promise<string> => {
+      const fileName = `${name}.json`
+
+      const outputPath =
+        menu === 'settings'
+          ? path.join(app.getPath('userData'), 'results', fileName)
+          : path.join(app.getPath('userData'), 'results', menu, fileName)
 
       mkdirSync(path.dirname(outputPath), { recursive: true })
       writeFileSync(outputPath, JSON.stringify(data, null, 2), 'utf8')
@@ -29,8 +34,21 @@ export function registerGlobal(win: BrowserWindow): void {
 
   ipcMain.handle(
     GLOBAL_CHANNELS.READ_JSON_FILE,
-    async <T>(_e: unknown, name: string, filePath?: string): Promise<T> => {
-      const jsonPath = filePath ?? path.join(app.getPath('userData'), `results/${name}.json`)
+    async <T>(
+      _e: unknown,
+      name: string,
+      menu: CliMenu | 'settings',
+      filePath?: string
+    ): Promise<T> => {
+      const fileName = `${name}.json`
+      let jsonPath = filePath
+      if (!jsonPath) {
+        jsonPath =
+          menu === 'settings'
+            ? path.join(app.getPath('userData'), 'results', fileName)
+            : path.join(app.getPath('userData'), 'results', menu, fileName)
+      }
+
       if (!existsSync(jsonPath)) {
         throw new Error(`File not found: [${jsonPath}]`)
       }
@@ -68,10 +86,10 @@ export function globalPreload(): GlobalApi {
     openFilePath: (filePath: string): Promise<void> =>
       ipcRenderer.invoke(GLOBAL_CHANNELS.OPEN_FILE_PATH, filePath),
     getPathForFile: (folder: File): string => webUtils.getPathForFile(folder),
-    writeJsonFile: <T>(name: string, menu: CliMenu, data: T): Promise<string> =>
+    writeJsonFile: <T>(name: string, menu: CliMenu | 'settings', data: T): Promise<string> =>
       ipcRenderer.invoke(GLOBAL_CHANNELS.WRITE_JSON_FILE, name, menu, data),
-    readJsonFile: <T>(name: string, filePath?: string): Promise<T> =>
-      ipcRenderer.invoke(GLOBAL_CHANNELS.READ_JSON_FILE, name, filePath),
+    readJsonFile: <T>(name: string, menu: CliMenu | 'settings', filePath?: string): Promise<T> =>
+      ipcRenderer.invoke(GLOBAL_CHANNELS.READ_JSON_FILE, name, menu, filePath),
     removeFolder: (menu: CliMenu): Promise<void> =>
       ipcRenderer.invoke(GLOBAL_CHANNELS.REMOVE_FOLDER, menu)
   }

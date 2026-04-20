@@ -59,8 +59,10 @@ export const IgnoredFolderSection = (): JSX.Element => {
 
   useEffect(() => {
     const readConfig = async (): Promise<void> => {
-      const data =
-        await window.appApi.global.readJsonFile<IgnoredFoldersConfig>(IGNORED_FOLDERS_FILE)
+      const data = await window.appApi.global.readJsonFile<IgnoredFoldersConfig>(
+        IGNORED_FOLDERS_FILE,
+        'settings'
+      )
       setFolders(data.folders)
     }
 
@@ -70,9 +72,13 @@ export const IgnoredFolderSection = (): JSX.Element => {
   const writeConfig = useCallback(
     async (folders: string[]): Promise<void> => {
       setFolders(folders)
-      await window.appApi.global.writeJsonFile<IgnoredFoldersConfig>(IGNORED_FOLDERS_FILE, {
-        folders
-      })
+      await window.appApi.global.writeJsonFile<IgnoredFoldersConfig>(
+        IGNORED_FOLDERS_FILE,
+        'settings',
+        {
+          folders
+        }
+      )
     },
     [setFolders]
   )
