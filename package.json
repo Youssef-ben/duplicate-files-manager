@@ -15,7 +15,7 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "build": "yarn typecheck && electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && tsx scripts/download-cli.ts",
     "build:unpack": "yarn build && electron-builder --dir",
     "build:win": "electron-vite build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
@@ -29,15 +29,15 @@
     },
     "extraResources": [
       {
-        "from": "resources/library-organizer.exe",
-        "to": "library-organizer.exe",
+        "from": "resources/library-organizer-cli.exe",
+        "to": "library-organizer-cli.exe",
         "filter": [
           "**/*"
         ]
       },
       {
-        "from": "resources/library-organizer",
-        "to": "library-organizer",
+        "from": "resources/library-organizer-cli",
+        "to": "library-organizer-cli",
         "filter": [
           "**/*"
         ]
@@ -72,6 +72,7 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@electron/get": "^4.0.3",
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
@@ -92,6 +93,7 @@
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "tailwindcss": "^4.2.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
   }

@@ -9,6 +9,7 @@ node_modules/
 dist/
 out/
 library-organizer.exe
+library-organizer-cli
 library-organizer-cli.exe
 temporary/
 logs/
