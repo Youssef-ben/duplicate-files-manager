@@ -1,5 +1,6 @@
-appId: com.electron.app
-productName: duplicate-file-manager
+# Merged with package.json "build"; values here must align with package.json to avoid confusing overrides.
+appId: ca.ybensoft.library-organizer-app
+productName: Library Organizer
 directories:
   buildResources: build
 files:
@@ -9,10 +10,10 @@ files:
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
-asarUnpack:
-  - resources/**
+# CLI and other loose files live under extraResources in package.json (process.resourcesPath/resources).
+# Do not asarUnpack project resources/** — that duplicates packaging with extraResources.
 win:
-  executableName: duplicate-file-manager
+  executableName: library-organizer
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

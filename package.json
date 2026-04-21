@@ -29,18 +29,9 @@
     },
     "extraResources": [
       {
-        "from": "resources/library-organizer-cli.exe",
-        "to": "library-organizer-cli.exe",
-        "filter": [
-          "**/*"
-        ]
-      },
-      {
-        "from": "resources/library-organizer-cli",
-        "to": "library-organizer-cli",
-        "filter": [
-          "**/*"
-        ]
+        "from": "resources",
+        "to": "resources",
+        "filter": ["**/*"]
       }
     ],
     "win": {

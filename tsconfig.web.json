@@ -14,7 +14,8 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@pkg": ["./package.json"], 
+      "@pkg": ["./package.json"],
+      "@main/*": ["src/main/*"],
       "@shared/*": ["src/shared/*"],
       "@handlers/*": ["src/handlers/*"],
       

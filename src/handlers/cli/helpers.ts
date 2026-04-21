@@ -1,3 +1,4 @@
+import { getCliBinaryPath } from '@main/utils/getCliBinaryPath'
 import { IGNORED_FOLDERS_FILE } from '@shared/constants'
 import { app } from 'electron'
 import path from 'path'
@@ -27,21 +28,13 @@ export function getCliIgnoreConfigPath(): string {
   return path.join(app.getPath('userData'), 'results', `${IGNORED_FOLDERS_FILE}.json`)
 }
 
-const CLI_EXE_NAME = 'library-organizer-cli'
 /**
  * Gets the path to the CLI executable.
  *
- * Condition:
- * - If packaged -> the path will be in the `resources` folder
- * - If not packaged -> the path will be in the `app.getAppPath()` folder
- *
- * @returns The path to the CLI executable.
+ * @see getCliBinaryPath
  */
 export function getCliPath(): string {
-  const exe = process.platform === 'win32' ? `${CLI_EXE_NAME}.exe` : CLI_EXE_NAME
-  const resourcesPath = app.isPackaged ? process.resourcesPath : app.getAppPath()
-
-  return path.join(resourcesPath, 'resources', exe)
+  return getCliBinaryPath()
 }
 
 /**
