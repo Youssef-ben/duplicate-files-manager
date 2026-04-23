@@ -1,7 +1,7 @@
 import { FolderSelector } from '@components/folderSelector'
 import { LightBulbIcon } from '@heroicons/react/24/outline'
 
-interface FolderSelectionProps {
+export interface FolderSelectionProps {
   handleOnFolderSelected: (path: string) => void
   handleOnBrowseClick: () => void
   tips: {

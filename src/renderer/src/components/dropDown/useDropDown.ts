@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface UseActionsDropDownProps {
   flaggedCount: number
-  onDeleteDuplicates: () => void
-  onSelectDuplicates: () => void
-  onUnselectDuplicates: () => void
+  onAction: () => void
+  onSelectAll: () => void
+  onUnselectAll: () => void
 }
 
 interface useDropDownResult {
@@ -13,16 +13,16 @@ interface useDropDownResult {
   handleOnDropdownClick: (open: boolean) => void
   showSelectAll: boolean
   disableDelete: boolean
-  handleDeleteDuplicates: () => void
-  handleSelectDuplicates: () => void
-  handleUnselectDuplicates: () => void
+  handleAction: () => void
+  handleSelectAll: () => void
+  handleUnselectAll: () => void
 }
 
 export const useDropDown = ({
   flaggedCount,
-  onDeleteDuplicates,
-  onSelectDuplicates,
-  onUnselectDuplicates
+  onAction,
+  onSelectAll,
+  onUnselectAll
 }: UseActionsDropDownProps): useDropDownResult => {
   const [open, setOpen] = useState(false)
   const [showSelectAll, setShowSelectAll] = useState(true)
@@ -52,20 +52,20 @@ export const useDropDown = ({
     }
   }, [open])
 
-  const handleDeleteDuplicates = (): void => {
-    onDeleteDuplicates()
+  const handleAction = (): void => {
+    onAction()
     setOpen(false)
     setShowSelectAll(true)
   }
 
-  const handleSelectDuplicates = (): void => {
-    onSelectDuplicates()
+  const handleSelectAll = (): void => {
+    onSelectAll()
     setOpen(false)
     setShowSelectAll(false)
   }
 
-  const handleUnselectDuplicates = (): void => {
-    onUnselectDuplicates()
+  const handleUnselectAll = (): void => {
+    onUnselectAll()
     setOpen(false)
     setShowSelectAll(true)
   }
@@ -83,8 +83,8 @@ export const useDropDown = ({
     showSelectAll,
     disableDelete: flaggedCount === 0,
 
-    handleDeleteDuplicates,
-    handleSelectDuplicates,
-    handleUnselectDuplicates
+    handleAction,
+    handleSelectAll,
+    handleUnselectAll
   }
 }

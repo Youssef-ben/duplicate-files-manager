@@ -4,9 +4,10 @@ import { ScanningLoader } from './scanningLoader'
 import { ScanSummary } from './scanSummary'
 import { useScanningSummary } from './useScanningSummary'
 
-interface ScanningSummaryProps {
+export interface ScanningSummaryProps {
   result?: ScanningResults
 }
+
 export const ScanningSummary = ({ result }: ScanningSummaryProps): React.JSX.Element => {
   const { folderTree, scanSummary, discoveredStructure } = useScanningSummary({ result })
 

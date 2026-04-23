@@ -14,7 +14,7 @@ interface UseScanStepResult {
 }
 
 export const useScanStep = (): UseScanStepResult => {
-  const { summary, runnerId, progress, run, resetRunner } = useCliRun()
+  const { summary, runnerId, progress, run, resetRunner, onCliDone } = useCliRun()
 
   const { scanningResults } = useDuplicatesStore(
     useShallow((state) => {
@@ -107,7 +107,8 @@ export const useScanStep = (): UseScanStepResult => {
       menu: 'duplicate',
       duplicatesResults: step.result,
       onRunCli: handleOnRunCli,
-      onReRunClick: handleOnStartProcess
+      onReRunClick: handleOnStartProcess,
+      onCliDone
     }
   }
 }

@@ -28,7 +28,7 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
     reset: resetDuplicates
   } = useOrganizeStore(StepSelector('duplicates'))
 
-  const { runnerId, summary, progress, run, resetRunner, stop } = useCliRun()
+  const { runnerId, summary, progress, run, resetRunner, stop, onCliDone } = useCliRun()
 
   /**
    * On completion:
@@ -112,7 +112,8 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
       menu: 'organize',
       duplicatesResults: result,
       onRunCli: handleOnRunCli,
-      onReRunClick: handleStartProcess
+      onReRunClick: handleStartProcess,
+      onCliDone
     }
   }
 }

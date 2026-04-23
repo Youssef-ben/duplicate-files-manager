@@ -1,8 +1,10 @@
+import { SummaryEvent } from '@handlers/cli/types'
 import { DuplicatesResults } from '@handlers/cli/types/duplicates.mode'
 import {
   CleanUpCompleted,
   DuplicateGroup,
   DuplicateGroupsList,
+  DuplicateLoading,
   DuplicateStatusBar
 } from './components'
 import { useDuplicatesPreview } from './useDuplicatesPreview'
@@ -12,16 +14,18 @@ export interface DuplicatesPreviewProps {
   duplicatesResults?: DuplicatesResults
   onRunCli: (inputPath: string) => void
   onReRunClick: () => void
+  onCliDone: (callback: (summary: SummaryEvent) => void) => () => void
 }
 
 export const DuplicatesPreview = ({
   menu,
   duplicatesResults,
   onRunCli,
-  onReRunClick
+  onReRunClick,
+  onCliDone
 }: DuplicatesPreviewProps): React.JSX.Element => {
-  const { selectedGroup, groups, statusBarProps, groupsListProps, groupProps } =
-    useDuplicatesPreview({ menu, duplicatesResults, onRunCli })
+  const { isDeleting, selectedGroup, groups, statusBarProps, groupsListProps, groupProps } =
+    useDuplicatesPreview({ menu, duplicatesResults, onRunCli, onCliDone })
 
   if (Object.keys(groups).length === 0) {
     return <CleanUpCompleted onReRunClick={onReRunClick} />
@@ -29,6 +33,8 @@ export const DuplicatesPreview = ({
 
   return (
     <div className="flex flex-col items-center justify-start w-full h-full min-h-0 gap-2 p-0 overflow-hidden">
+      <DuplicateLoading isLoading={isDeleting} />
+
       {/* Status Bar */}
       <DuplicateStatusBar {...statusBarProps} />
 

@@ -3,7 +3,7 @@ import { BrowserWindow, ipcMain, ipcRenderer } from 'electron'
 import { existsSync, readFileSync } from 'fs'
 import { CLI_CHANNELS } from './channels'
 import { getCliFlags, getCliPath } from './helpers'
-import type { CliApi, CliEvent, CliRunArgs } from './types'
+import type { CliApi, CliEvent, CliRunArgs, SummaryEvent } from './types'
 
 const cliProcesses = new Map<string, ChildProcess>()
 
@@ -64,8 +64,20 @@ export function cliPreload(): CliApi {
     run: (args: CliRunArgs): void => ipcRenderer.send(CLI_CHANNELS.RUN, args),
     cancel: (runId: string): void => ipcRenderer.send(CLI_CHANNELS.CANCEL, runId),
     onProgress: (callback: (e: CliEvent) => void) => {
-      ipcRenderer.on(CLI_CHANNELS.PROGRESS, (_e, event) => callback(event))
-      return () => ipcRenderer.removeAllListeners(CLI_CHANNELS.PROGRESS)
+      const listener = (_e: Electron.IpcRendererEvent, event: CliEvent): void => callback(event)
+      ipcRenderer.on(CLI_CHANNELS.PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CLI_CHANNELS.PROGRESS, listener)
+    },
+    onDone: (callback: (e: SummaryEvent) => void) => {
+      const listener = (_e: Electron.IpcRendererEvent, event: CliEvent): void => {
+        // CLI "done" is represented by a summary-style event (not a progress event).
+        if ('stage' in event) return
+        if ('action' in event || 'report_path' in event) {
+          callback(event as SummaryEvent)
+        }
+      }
+      ipcRenderer.on(CLI_CHANNELS.PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CLI_CHANNELS.PROGRESS, listener)
     },
     readSummaryResult: <T>(jsonPath: string): T => readSummaryResult<T>(jsonPath)
   }

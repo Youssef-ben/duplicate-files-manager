@@ -13,6 +13,8 @@ interface UseCliRunResult {
   stop: () => void
   resetRunner: () => void
   setMenu: (menu: CliMenu) => void
+  /** Subscribe to CLI completion (summary). Returns unsubscribe. */
+  onCliDone: (callback: (summary: SummaryEvent) => void) => () => void
 }
 
 export function useCliRun(): UseCliRunResult {
@@ -29,11 +31,17 @@ export function useCliRun(): UseCliRunResult {
       if (!args.runId) {
         args.runId = crypto.randomUUID()
       }
-      args.menu = menu
+      // If caller didn't specify a menu, default to the currently selected one.
+      // (Some screens explicitly pass a menu to avoid relying on global state.)
+      if (!args.menu) {
+        args.menu = menu
+      } else if (args.menu !== menu) {
+        setMenu(args.menu)
+      }
       start(args.runId)
       window.appApi.cli.run(args)
     },
-    [start, menu]
+    [start, menu, setMenu]
   )
 
   const stop = useCallback((): void => {
@@ -57,6 +65,7 @@ export function useCliRun(): UseCliRunResult {
     run,
     stop,
     resetRunner,
-    setMenu
+    setMenu,
+    onCliDone: window.appApi.cli.onDone
   }
 }

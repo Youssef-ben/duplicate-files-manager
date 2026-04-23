@@ -23,7 +23,7 @@ export const SimpleButton = ({
       onClick={onClick}
       type="button"
       className={mergeCls(
-        'flex flex-row items-center justify-center gap-1 w-35 px-4 py-1 rounded-md group cursor-pointer',
+        'flex flex-row items-center justify-center gap-1 min-w-35 px-4 py-1 rounded-md group cursor-pointer',
         'transition-colors border active:scale-95 active:bg-primary-dim/40',
         variantCls[variant]
       )}

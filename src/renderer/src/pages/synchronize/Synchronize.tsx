@@ -1,56 +1,59 @@
 import { AppWizard } from '@components/appWizard'
 import { AppWizardStep } from '@components/appWizard/AppWizard'
-
-const steps: AppWizardStep[] = [
-  {
-    id: 1,
-    label: 'Selection',
-    isActive: true,
-    isCompleted: false,
-    component: <>Selection — choose folder A and folder B (both trees in scope).</>,
-    isRunning: false
-  },
-  {
-    id: 2,
-    label: 'Scan',
-    isActive: false,
-    isCompleted: false,
-    component: <>Scan / compare — preview-only diff (only on A, only on B, conflicts per CLI).</>,
-    isRunning: false
-  },
-  {
-    id: 3,
-    label: 'Direction',
-    isActive: false,
-    isCompleted: false,
-    component: (
-      <>Direction — A → B, B → A, or bidirectional (each side gets missing files from the other).</>
-    ),
-    isRunning: false
-  },
-  {
-    id: 4,
-    label: 'Review',
-    isActive: false,
-    isCompleted: false,
-    component: (
-      <>
-        Review and sync — choose planned copies; dry-run / preview first, then confirm before write.
-      </>
-    ),
-    isRunning: false
-  }
-]
+import { useCliRun } from '@hooks/useCliRun'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useShallow } from 'zustand/shallow'
+import { DestinationStep, SourceStep, SynchronizeStep } from './steps'
+import { SYNCHRONIZE_STEPS_IDS, useSynchronizeStore } from './store/synchronizeStore'
 
 export const Synchronize = (): React.JSX.Element => {
-  return (
-    <AppWizard steps={steps}>
-      <div className="flex flex-col items-left justify-center w-full gap-1">
-        <span className="text-xl font-semibold text-primary">Library Synchronizer</span>
-        <p className="text-sm text-outline-dim">
-          Align two folder trees with a clear direction and confirmed apply step.
-        </p>
-      </div>
-    </AppWizard>
+  const { reset, steps } = useSynchronizeStore(
+    useShallow((state) => ({
+      reset: state.reset,
+      steps: state.steps
+    }))
   )
+
+  const { setMenu } = useCliRun()
+
+  useEffect(() => {
+    setMenu('synchronize')
+  }, [setMenu])
+
+  const handleFinishClick = useCallback(async () => {
+    await window.appApi.global.removeFolder('synchronize')
+    reset()
+  }, [reset])
+
+  const wizardSteps: AppWizardStep[] = useMemo(
+    () => [
+      {
+        id: SYNCHRONIZE_STEPS_IDS.source,
+        label: 'Source',
+        isActive: true,
+        isCompleted: steps.source.status === 'COMPLETED',
+        isRunning: steps.source.status === 'RUNNING',
+        component: <SourceStep />
+      },
+      {
+        id: SYNCHRONIZE_STEPS_IDS.destination,
+        label: 'Destination',
+        isActive: false,
+        isCompleted: steps.destination.status === 'COMPLETED',
+        isRunning: steps.destination.status === 'RUNNING',
+        component: <DestinationStep />
+      },
+      {
+        id: SYNCHRONIZE_STEPS_IDS.synchronize,
+        label: 'Synchronize',
+        isActive: false,
+        isCompleted: steps.synchronize.status === 'COMPLETED',
+        isRunning: steps.synchronize.status === 'RUNNING',
+        component: <SynchronizeStep />
+      }
+    ],
+    [steps]
+  )
+
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
 }

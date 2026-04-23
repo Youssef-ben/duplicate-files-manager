@@ -7,8 +7,12 @@ import { ScanStep, SelectionStep } from './steps'
 import { DUPLICATES_STEPS_IDS, useDuplicatesStore } from './store/duplicatesStore'
 
 export const Duplicate = (): React.JSX.Element => {
-  const { reset } = useDuplicatesStore()
-  const { steps } = useDuplicatesStore(useShallow((state) => ({ steps: state.steps })))
+  const { reset, steps } = useDuplicatesStore(
+    useShallow((state) => ({
+      reset: state.reset,
+      steps: state.steps
+    }))
+  )
 
   const { setMenu } = useCliRun()
 

@@ -27,6 +27,19 @@ export function getFolderName(path: string): string {
 }
 
 /**
+ * Returns the name of the file from a given path.
+ *
+ * @param path - The path to get the file name from.
+ * @returns The name of the file.
+ */
+export function getFileName(path: string): string {
+  const trimmed = path.replace(/[/\\]+$/, '')
+  const parts = trimmed.split(/[/\\]/).filter(Boolean)
+  const name = parts.length > 0 ? parts[parts.length - 1]! : trimmed
+  return name.trim()
+}
+
+/**
  * Trims trailing separators and joins path segments with `/` so paths from
  * mixed or OS-specific separators compare and key reliably.
  */

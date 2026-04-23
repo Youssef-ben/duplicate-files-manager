@@ -1,5 +1,4 @@
-import { FolderSelection, ScanningSummary, StepLoader, StepProgress } from '@components/steps'
-import { useMemo } from 'react'
+import { FolderSelection, ScanningSummary, StepProgress } from '@components/steps'
 import { SelectionHeader } from './selectionHeader'
 import { useFolderSelection } from './useFolderSelection'
 
@@ -15,14 +14,6 @@ export const SelectionStep = (): React.JSX.Element => {
     handleOnBrowseClick
   } = useFolderSelection()
 
-  const progressComponent = useMemo(() => {
-    return progress ? (
-      <StepProgress startedAtMs={step.startedAtMs ?? 0} progress={progress} />
-    ) : (
-      <StepLoader />
-    )
-  }, [progress, step.startedAtMs])
-
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
       <SelectionHeader folderPath={folder} status={step.status} onResetClick={handleOnResetClick} />
@@ -37,7 +28,9 @@ export const SelectionStep = (): React.JSX.Element => {
         />
       )}
 
-      {isRunning && !isCompleted && progressComponent}
+      {isRunning && !isCompleted && (
+        <StepProgress startedAtMs={step.startedAtMs ?? 0} progress={progress} />
+      )}
 
       {isCompleted && (
         <div className="flex min-h-0 flex-1 flex-col w-full gap-4">

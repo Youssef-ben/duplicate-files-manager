@@ -1,20 +1,29 @@
-import { CheckIcon, EllipsisVerticalIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowPathIcon,
+  CheckIcon,
+  EllipsisVerticalIcon,
+  TrashIcon,
+  XMarkIcon
+} from '@heroicons/react/24/outline'
 import { mergeCls } from '@utils/ClassNameMerger'
+import { useMemo } from 'react'
 import { DropDownItem } from './DropDownItem'
 import { useDropDown } from './useDropDown'
 
 export interface DropDownProps {
   flaggedCount: number
-  onDeleteDuplicates: () => void
-  onSelectDuplicates: () => void
-  onUnselectDuplicates: () => void
+  action: 'Delete' | 'Synchronize'
+  onAction: () => void
+  onSelectAll: () => void
+  onUnselectAll: () => void
 }
 
 export const DropDown = ({
+  action,
   flaggedCount,
-  onDeleteDuplicates,
-  onSelectDuplicates,
-  onUnselectDuplicates
+  onAction,
+  onSelectAll,
+  onUnselectAll
 }: DropDownProps): React.JSX.Element => {
   const {
     containerRef,
@@ -22,15 +31,20 @@ export const DropDown = ({
     handleOnDropdownClick,
     showSelectAll,
     disableDelete,
-    handleDeleteDuplicates,
-    handleSelectDuplicates,
-    handleUnselectDuplicates
+    handleAction,
+    handleSelectAll,
+    handleUnselectAll
   } = useDropDown({
     flaggedCount,
-    onDeleteDuplicates,
-    onSelectDuplicates,
-    onUnselectDuplicates
+    onAction,
+    onSelectAll,
+    onUnselectAll
   })
+
+  const IconComponent = useMemo(
+    () => (action === 'Delete' ? TrashIcon : ArrowPathIcon),
+    [action]
+  ) as React.ElementType
 
   return (
     <div className="relative shrink-0" ref={containerRef}>
@@ -51,7 +65,6 @@ export const DropDown = ({
         )}
       >
         <EllipsisVerticalIcon className="size-4 stroke-2 shrink-0" aria-hidden />
-        <span className="sr-only">Open duplicate actions</span>
       </button>
 
       {open && (
@@ -61,25 +74,33 @@ export const DropDown = ({
         >
           <DropDownItem
             isDisabled={!showSelectAll}
-            label="Select Duplicates"
+            label="Select All"
             icon={<CheckIcon className="size-4 stroke-2 shrink-0 " aria-hidden />}
-            onClick={handleSelectDuplicates}
+            onClick={handleSelectAll}
           />
 
           <DropDownItem
             isDisabled={flaggedCount <= 0}
-            label="Unselect Duplicates"
+            label="Unselect All"
             icon={<XMarkIcon className="size-4 stroke-2 shrink-0" aria-hidden />}
-            onClick={handleUnselectDuplicates}
+            onClick={handleUnselectAll}
           />
 
           <div className="h-px w-full bg-outline-variant my-1" />
 
           <DropDownItem
             isDisabled={disableDelete}
-            label="Delete Duplicates"
-            icon={<TrashIcon className="size-4 shrink-0 text-error" aria-hidden />}
-            onClick={handleDeleteDuplicates}
+            label={`${action}`}
+            icon={
+              <IconComponent
+                className={mergeCls(
+                  'size-4 shrink-0',
+                  action === 'Delete' ? 'text-error' : 'text-primary'
+                )}
+                aria-hidden
+              />
+            }
+            onClick={handleAction}
           />
         </div>
       )}

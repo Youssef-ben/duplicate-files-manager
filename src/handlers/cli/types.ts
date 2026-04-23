@@ -2,6 +2,7 @@ import { DuplicatesProgressSummary } from './types/duplicates.mode'
 import { FlatteningProgressSummary } from './types/flatten.mode'
 import { OrganizeProgressSummary } from './types/organize.mode'
 import { ScanningProgressSummary } from './types/scan.mode'
+import { SynchronizeCompareSummary } from './types/synchronize.mode'
 
 export type CliProgressEvent = {
   type: 'progress'
@@ -27,6 +28,7 @@ export type SummaryEvent =
   | FlatteningProgressSummary
   | DuplicatesProgressSummary
   | OrganizeProgressSummary
+  | SynchronizeCompareSummary
 
 export type CliEvent = CliProgressEvent | SummaryEvent
 
@@ -61,5 +63,7 @@ export type CliApi = {
   run: (args: CliRunArgs) => void
   cancel: (runId: string) => void
   onProgress: (callback: (e: CliEvent) => void) => () => void
+  /** Fires only when the CLI emits a `summary` event. */
+  onDone: (callback: (e: SummaryEvent) => void) => () => void
   readSummaryResult: <T>(jsonPath: string) => T
 }

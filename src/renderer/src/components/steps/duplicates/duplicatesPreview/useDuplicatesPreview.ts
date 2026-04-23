@@ -1,9 +1,10 @@
+import { SummaryEvent } from '@handlers/cli/types'
 import {
   DeleteDuplicates,
   DuplicatesFile,
   DuplicatesResults
 } from '@handlers/cli/types/duplicates.mode'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import {
   DuplicateGroupProps,
@@ -13,11 +14,11 @@ import {
 import {
   canActOnUnselectedFile,
   findGroupContainingPath,
-  removeFileFromGroup,
   resolveSelectedGroupHash
 } from './helpers'
 
 interface DuplicatePreviewResult {
+  isDeleting: boolean
   selectedGroup: string
   groups: Record<string, DuplicatesFile[]>
   statusBarProps: DuplicateStatusBarProps
@@ -29,6 +30,7 @@ interface UseDuplicatesPreviewProps {
   menu: 'duplicate' | 'organize'
   duplicatesResults?: DuplicatesResults
   onRunCli: (inputPath: string) => void
+  onCliDone: (callback: (summary: SummaryEvent) => void) => () => void
 }
 
 const initGroups = (results?: DuplicatesResults): Record<string, DuplicatesFile[]> =>
@@ -40,9 +42,12 @@ const initGroups = (results?: DuplicatesResults): Record<string, DuplicatesFile[
 export const useDuplicatesPreview = ({
   menu = 'duplicate',
   duplicatesResults,
-  onRunCli
+  onRunCli,
+  onCliDone
 }: UseDuplicatesPreviewProps): DuplicatePreviewResult => {
   const cliLock = useRef(false) // prevents concurrent CLI calls
+
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const [selectedGroup, setSelectedGroup] = useState<string>(
     duplicatesResults?.groups?.[0]?.hash ?? ''
@@ -63,7 +68,7 @@ export const useDuplicatesPreview = ({
       try {
         const payload: DeleteDuplicates = { count: paths.length, delete: { files: paths } }
         return await window.appApi.global.writeJsonFile<DeleteDuplicates>(
-          `delete-duplicates-${crypto.randomUUID()}`,
+          `delete-duplicates`,
           menu,
           payload
         )
@@ -141,6 +146,8 @@ export const useDuplicatesPreview = ({
 
   /** Bulk delete: runs CLI then removes flagged files from state */
   const handleOnDeleteDuplicates = useCallback(async () => {
+    setIsDeleting(true)
+
     const flagged = Object.values(groups)
       .flatMap((files) => files)
       .filter((f) => f.is_flagged)
@@ -151,19 +158,6 @@ export const useDuplicatesPreview = ({
       if (!inputPath) return
 
       onRunCli(inputPath)
-
-      // Wait for CLI to finish before updating state
-      setTimeout(() => {
-        setGroups((prev) =>
-          Object.fromEntries(
-            Object.entries(prev).flatMap(([hash, files]) => {
-              const remaining = files.filter((f) => !f.is_flagged)
-              return remaining.length > 1 ? [[hash, remaining]] : []
-            })
-          )
-        )
-        toast.success('Duplicates deleted successfully!')
-      }, 1000)
     })
   }, [groups, saveJsonFile, onRunCli, withCliLock])
 
@@ -174,7 +168,7 @@ export const useDuplicatesPreview = ({
 
       const found = findGroupContainingPath(groups, filePath)
       if (!found) return
-      const { hash, files, file: fileToDelete } = found
+      const { files, file: fileToDelete } = found
 
       if (!canActOnUnselectedFile(files, fileToDelete)) {
         toast.error('At least one file must stay unselected in a group.')
@@ -187,11 +181,10 @@ export const useDuplicatesPreview = ({
 
         onRunCli(inputPath)
 
-        setGroups((prev) => removeFileFromGroup(prev, hash, filePath))
-        toast.success('Duplicate deleted successfully!')
+        handleOnDuplicateClick(filePath)
       })
     },
-    [groups, saveJsonFile, onRunCli, withCliLock]
+    [groups, saveJsonFile, onRunCli, withCliLock, handleOnDuplicateClick]
   )
 
   const handleOnGroupClick = useCallback(
@@ -200,6 +193,26 @@ export const useDuplicatesPreview = ({
     },
     [resolvedSelectedGroup]
   )
+
+  useEffect(() => {
+    const unsubscribe = onCliDone(async function cleanUp(summary: SummaryEvent) {
+      if (!summary || summary['action'] !== 'delete-duplicate') return
+
+      setGroups((prev) =>
+        Object.fromEntries(
+          Object.entries(prev).flatMap(([hash, files]) => {
+            const remaining = files.filter((f) => !f.is_flagged)
+            return remaining.length > 1 ? [[hash, remaining]] : []
+          })
+        )
+      )
+      toast.success('Duplicates deleted successfully!')
+
+      setIsDeleting(false)
+    })
+
+    return unsubscribe
+  }, [onCliDone])
 
   // ─── Derived counts ────────────────────────────────────────────────────────
 
@@ -214,14 +227,15 @@ export const useDuplicatesPreview = ({
   const totalFilesCount = useMemo(() => Object.values(groups).flatMap((f) => f).length, [groups])
 
   return {
+    isDeleting,
     groups,
     selectedGroup: resolvedSelectedGroup,
     statusBarProps: {
       flaggedCount: flaggedFilesCount,
       totalCount: totalFilesCount,
-      onDeleteDuplicates: handleOnDeleteDuplicates,
-      onSelectDuplicates: handleSelectAllDuplicates,
-      onUnselectDuplicates: handleUnselectAllDuplicates
+      onAction: handleOnDeleteDuplicates,
+      onSelectAll: handleSelectAllDuplicates,
+      onUnselectAll: handleUnselectAllDuplicates
     },
     groupsListProps: {
       groups,
