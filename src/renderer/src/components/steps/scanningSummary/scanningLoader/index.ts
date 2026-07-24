@@ -1,1 +1,1 @@
-export * from './ScanningLoader'
+export * from './ScanningLoader';

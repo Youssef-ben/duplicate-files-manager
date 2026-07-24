@@ -1,10 +1,10 @@
-import { LoadingDots } from '@components/loadingDots'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { LoadingDots } from '@components/loadingDots';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface ScanningLoaderProps {
-  progress: number
-  label?: string
-  className?: string
+  progress: number;
+  label?: string;
+  className?: string;
 }
 
 export const ScanningLoader = ({
@@ -25,5 +25,5 @@ export const ScanningLoader = ({
       </div>
       {progress > 0 && <span className="text-xs font-semibold text-primary">{progress}%</span>}
     </div>
-  )
-}
+  );
+};

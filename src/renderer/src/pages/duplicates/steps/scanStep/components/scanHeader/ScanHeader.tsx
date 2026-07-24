@@ -1,11 +1,11 @@
-import { CommonStepHeader } from '@components/steps'
-import type { StepStatus } from '@renderer/types/common'
-import { humanizeSize } from '@renderer/utils/strings'
+import { CommonStepHeader } from '@components/steps';
+import type { StepStatus } from '@renderer/types/common';
+import { humanizeSize } from '@renderer/utils/strings';
 
 export interface ScanHeaderProps extends CompletedContentProps {
-  status: StepStatus
-  onResetClick: () => void
-  onCancelClick: () => void
+  status: StepStatus;
+  onResetClick: () => void;
+  onCancelClick: () => void;
 }
 
 export const ScanHeader = ({
@@ -28,25 +28,25 @@ export const ScanHeader = ({
         <CompletedContent groupsCount={groupsCount} filesCount={filesCount} totalSize={totalSize} />
       }
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
   return (
     <div className="text-sm text-outline-dim text-justify">
       Start scanning the directory structure for duplicates files.
     </div>
-  )
-}
+  );
+};
 
 const RunningContent = (): React.JSX.Element => {
-  return <div>Scanning directory structure for duplicates files.</div>
-}
+  return <div>Scanning directory structure for duplicates files.</div>;
+};
 
 interface CompletedContentProps {
-  groupsCount: number
-  filesCount: number
-  totalSize: number
+  groupsCount: number;
+  filesCount: number;
+  totalSize: number;
 }
 const CompletedContent = ({
   groupsCount,
@@ -66,5 +66,5 @@ const CompletedContent = ({
         </span>
       </div>
     </div>
-  )
-}
+  );
+};

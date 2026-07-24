@@ -1,3 +1,3 @@
-export * from './cli'
-export * from './global'
-export * from './theme'
+export * from './cli';
+export * from './global';
+export * from './theme';

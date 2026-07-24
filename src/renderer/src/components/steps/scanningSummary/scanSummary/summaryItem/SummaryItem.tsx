@@ -1,6 +1,6 @@
 export interface SummaryItemProps {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
 export const SummaryItem = ({ label, value }: SummaryItemProps): React.JSX.Element => {
@@ -9,5 +9,5 @@ export const SummaryItem = ({ label, value }: SummaryItemProps): React.JSX.Eleme
       <span className="text-xs text-on-surface-variant capitalize">{label}</span>
       <span className="text-xs font-semibold text-primary uppercase font-mono">{value}</span>
     </div>
-  )
-}
+  );
+};

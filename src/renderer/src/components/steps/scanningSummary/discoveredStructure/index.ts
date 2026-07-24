@@ -1,1 +1,1 @@
-export * from './DiscoveredStructure'
+export * from './DiscoveredStructure';

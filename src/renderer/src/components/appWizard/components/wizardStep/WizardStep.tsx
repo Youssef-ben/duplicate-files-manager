@@ -1,12 +1,12 @@
-import { CheckIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { JSX } from 'react'
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { JSX } from 'react';
 
 interface WizardStepProps {
-  id: number
-  label: string
-  isActive: boolean
-  isCompleted: boolean
+  id: number;
+  label: string;
+  isActive: boolean;
+  isCompleted: boolean;
 }
 
 export const WizardStep = ({ id, label, isActive, isCompleted }: WizardStepProps): JSX.Element => {
@@ -34,5 +34,5 @@ export const WizardStep = ({ id, label, isActive, isCompleted }: WizardStepProps
       </span>
       <span className="capitalize">{label}</span>
     </div>
-  )
-}
+  );
+};

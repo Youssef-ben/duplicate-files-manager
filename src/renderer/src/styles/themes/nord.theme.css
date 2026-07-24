@@ -1,39 +1,36 @@
-
 /* ============================================================
    Nord
    Polar Night (bg) · Snow Storm (fg) · Frost (accent) · Aurora (status)
    ============================================================ */
-   :root[data-theme="nord"] {
-    --color-primary:               #88c0d0; /* nord8 — frost accent */
-    --color-primary-dim:           #81a1c1; /* nord9 */
-    --color-on-primary:            #2e3440; /* nord0 */
-    --color-primary-container:     #4c566a; /* nord3 */
-    --color-on-primary-container:  #eceff4; /* nord6 */
-  
-    --color-secondary-container:     #434c5e; /* nord2 */
-    --color-on-secondary-container:  #d8dee9; /* nord4 */
-  
-    --color-error:               #bf616a; /* nord11 aurora */
-    --color-on-error:            #eceff4;
-    --color-error-container:     #3b4252; /* nord1 — muted bg for error */
-    --color-on-error-container:  #bf616a;
-  
-    --color-surface:                    #2e3440; /* nord0 */
-    --color-surface-bright:             #3b4252; /* nord1 */
-    --color-surface-variant:            #434c5e; /* nord2 */
-    --color-on-surface:                 #eceff4; /* nord6 */
-    --color-on-surface-variant:         #d8dee9; /* nord4 */
-  
-    --color-surface-container-lowest:   #242933; /* deeper than nord0 */
-    --color-surface-container-low:      #2e3440; /* nord0 */
-    --color-surface-container:          #3b4252; /* nord1 */
-    --color-surface-container-high:     #434c5e; /* nord2 */
-  
-    --color-outline:          #4c566a; /* nord3 */
-    --color-outline-variant:  #616b83; /* nord1 */
-    --color-outline-dim:  #7f838d;
-  
-    --bg-primary-gradient: linear-gradient(135deg, #88c0d0, #81a1c1);
-  }
-  
-  
+:root[data-theme='nord'] {
+  --color-primary: #88c0d0; /* nord8 — frost accent */
+  --color-primary-dim: #81a1c1; /* nord9 */
+  --color-on-primary: #2e3440; /* nord0 */
+  --color-primary-container: #4c566a; /* nord3 */
+  --color-on-primary-container: #eceff4; /* nord6 */
+
+  --color-secondary-container: #434c5e; /* nord2 */
+  --color-on-secondary-container: #d8dee9; /* nord4 */
+
+  --color-error: #bf616a; /* nord11 aurora */
+  --color-on-error: #eceff4;
+  --color-error-container: #3b4252; /* nord1 — muted bg for error */
+  --color-on-error-container: #bf616a;
+
+  --color-surface: #2e3440; /* nord0 */
+  --color-surface-bright: #3b4252; /* nord1 */
+  --color-surface-variant: #434c5e; /* nord2 */
+  --color-on-surface: #eceff4; /* nord6 */
+  --color-on-surface-variant: #d8dee9; /* nord4 */
+
+  --color-surface-container-lowest: #242933; /* deeper than nord0 */
+  --color-surface-container-low: #2e3440; /* nord0 */
+  --color-surface-container: #3b4252; /* nord1 */
+  --color-surface-container-high: #434c5e; /* nord2 */
+
+  --color-outline: #4c566a; /* nord3 */
+  --color-outline-variant: #616b83; /* nord1 */
+  --color-outline-dim: #7f838d;
+
+  --bg-primary-gradient: linear-gradient(135deg, #88c0d0, #81a1c1);
+}

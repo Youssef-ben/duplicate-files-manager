@@ -1,1 +1,1 @@
-export * from './PulsingDot'
+export * from './PulsingDot';

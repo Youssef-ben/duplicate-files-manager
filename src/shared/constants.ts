@@ -1,1 +1,1 @@
-export const IGNORED_FOLDERS_FILE = 'ignored-folders'
+export const IGNORED_FOLDERS_FILE = 'ignored-folders';

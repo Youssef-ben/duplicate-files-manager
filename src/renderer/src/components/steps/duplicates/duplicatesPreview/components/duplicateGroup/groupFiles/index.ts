@@ -1,1 +1,1 @@
-export * from './GroupFiles'
+export * from './GroupFiles';

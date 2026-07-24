@@ -1,13 +1,13 @@
-import { BookmarkSquareIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { ComponentType, SVGProps } from 'react'
+import { BookmarkSquareIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { ComponentType, SVGProps } from 'react';
 
 export interface DetailsCardProps {
-  isPath?: boolean
-  title: string
-  value: string
-  isFolder?: boolean
-  icon?: ComponentType<SVGProps<SVGSVGElement>>
+  isPath?: boolean;
+  title: string;
+  value: string;
+  isFolder?: boolean;
+  icon?: ComponentType<SVGProps<SVGSVGElement>>;
 }
 
 export const DetailsCard = ({
@@ -16,7 +16,7 @@ export const DetailsCard = ({
   icon = undefined,
   isPath = false
 }: DetailsCardProps): React.JSX.Element => {
-  const Icon = icon ?? BookmarkSquareIcon
+  const Icon = icon ?? BookmarkSquareIcon;
 
   return (
     <div
@@ -40,5 +40,5 @@ export const DetailsCard = ({
         <span className="text-xs font-normal text-outline-dim font-mono truncate">{value}</span>
       </div>
     </div>
-  )
-}
+  );
+};

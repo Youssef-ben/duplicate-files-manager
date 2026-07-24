@@ -1,10 +1,10 @@
-import { DuplicatesFile } from '@handlers/cli/types/duplicates.mode'
-import { DuplicateImage } from './duplicateImage'
+import { DuplicatesFile } from '@handlers/cli/types/duplicates.mode';
+import { DuplicateImage } from './duplicateImage';
 
 export interface GroupFilesProps {
-  files: DuplicatesFile[]
-  onClick: (filePath: string) => void
-  onDeleteClick: (filePath: string) => void
+  files: DuplicatesFile[];
+  onClick: (filePath: string) => void;
+  onDeleteClick: (filePath: string) => void;
 }
 
 export const GroupFiles = ({
@@ -25,5 +25,5 @@ export const GroupFiles = ({
         />
       ))}
     </div>
-  )
-}
+  );
+};

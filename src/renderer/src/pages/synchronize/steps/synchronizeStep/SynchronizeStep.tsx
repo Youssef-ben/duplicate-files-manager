@@ -1,7 +1,7 @@
-import { StepProgress } from '@components/steps/stepProgress'
-import { ComparePreview, Header } from './components'
-import { Compare } from './components/compare'
-import { useSynchronizeStep } from './useSynchronizeStep'
+import { StepProgress } from '@components/steps/stepProgress';
+import { ComparePreview, Header } from './components';
+import { Compare } from './components/compare';
+import { useSynchronizeStep } from './useSynchronizeStep';
 
 export const SynchronizeStep = (): React.JSX.Element => {
   const {
@@ -12,7 +12,7 @@ export const SynchronizeStep = (): React.JSX.Element => {
     compareProps,
     progressProps,
     comparePreviewProps
-  } = useSynchronizeStep()
+  } = useSynchronizeStep();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
@@ -24,5 +24,5 @@ export const SynchronizeStep = (): React.JSX.Element => {
 
       {isCompleted && <ComparePreview {...comparePreviewProps} />}
     </div>
-  )
-}
+  );
+};

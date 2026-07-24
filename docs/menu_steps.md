@@ -9,7 +9,7 @@ This document describes all the steps for each menu in the app.
 | 2026-03-22 | Initial Document                                         |
 | 2026-03-22 | Expanded Organize section (wizard steps, safety, layout) |
 | 2026-03-22 | Expanded Duplicates section (goal, flow, steps, safety)  |
-| 2026-03-22 | Expanded Synchronize section (goal, flow, steps, safety)   |
+| 2026-03-22 | Expanded Synchronize section (goal, flow, steps, safety) |
 
 ## Dictionary
 

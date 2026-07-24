@@ -1,14 +1,14 @@
-import { ThemeSwitcher } from '@components/themeSwitcher'
-import { FolderIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useOpenFolderDialog } from '@hooks/useOpenFolderDialog'
-import { IGNORED_FOLDERS_FILE } from '@shared/constants'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { getFolderName } from '@utils/strings'
-import { JSX, useCallback, useEffect, useState } from 'react'
+import { ThemeSwitcher } from '@components/themeSwitcher';
+import { FolderIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useOpenFolderDialog } from '@hooks/useOpenFolderDialog';
+import { IGNORED_FOLDERS_FILE } from '@shared/constants';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { getFolderName } from '@utils/strings';
+import { JSX, useCallback, useEffect, useState } from 'react';
 
 interface SettingSectionProps {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }
 export const SettingSection = ({ title, children }: SettingSectionProps): JSX.Element => {
   return (
@@ -19,8 +19,8 @@ export const SettingSection = ({ title, children }: SettingSectionProps): JSX.El
 
       <div className="flex flex-col items-start gap-2 py-1 w-full">{children}</div>
     </div>
-  )
-}
+  );
+};
 
 export default function Settings(): JSX.Element {
   return (
@@ -45,73 +45,73 @@ export default function Settings(): JSX.Element {
         </SettingSection>
       </div>
     </div>
-  )
+  );
 }
 
 interface IgnoredFoldersConfig {
-  folders: string[]
+  folders: string[];
 }
 
 export const IgnoredFolderSection = (): JSX.Element => {
-  const { openFolder } = useOpenFolderDialog()
+  const { openFolder } = useOpenFolderDialog();
 
-  const [folders, setFolders] = useState<string[]>([])
+  const [folders, setFolders] = useState<string[]>([]);
 
   useEffect(() => {
     const readConfig = async (): Promise<void> => {
       const data = await window.appApi.global.readJsonFile<IgnoredFoldersConfig>(
         IGNORED_FOLDERS_FILE,
         'settings'
-      )
-      setFolders(data.folders)
-    }
+      );
+      setFolders(data.folders);
+    };
 
-    readConfig()
-  }, [])
+    readConfig();
+  }, []);
 
   const writeConfig = useCallback(
     async (folders: string[]): Promise<void> => {
-      setFolders(folders)
+      setFolders(folders);
       await window.appApi.global.writeJsonFile<IgnoredFoldersConfig>(
         IGNORED_FOLDERS_FILE,
         'settings',
         {
           folders
         }
-      )
+      );
     },
     [setFolders]
-  )
+  );
 
   const addFolder = useCallback(
     (folder: string): void => {
-      folder = folder.trim().toLowerCase()
+      folder = folder.trim().toLowerCase();
 
-      if (!folder || folder.length === 0 || folders.includes(folder)) return
+      if (!folder || folder.length === 0 || folders.includes(folder)) return;
 
-      const newFolders = [...folders, folder]
-      writeConfig(newFolders)
+      const newFolders = [...folders, folder];
+      writeConfig(newFolders);
     },
     [folders, writeConfig]
-  )
+  );
 
   const removeFolder = useCallback(
     (folder: string): void => {
-      folder = folder.trim().toLowerCase()
-      if (!folder || folder.length === 0 || !folders.includes(folder)) return
+      folder = folder.trim().toLowerCase();
+      if (!folder || folder.length === 0 || !folders.includes(folder)) return;
 
-      const newFolders = folders.filter((f) => f !== folder)
-      writeConfig(newFolders)
+      const newFolders = folders.filter((f) => f !== folder);
+      writeConfig(newFolders);
     },
     [folders, writeConfig]
-  )
+  );
 
   const handleOnFolderSelected = useCallback(async (): Promise<void> => {
-    const path = await openFolder()
-    if (!path) return
+    const path = await openFolder();
+    if (!path) return;
 
-    addFolder(getFolderName(path))
-  }, [openFolder, addFolder])
+    addFolder(getFolderName(path));
+  }, [openFolder, addFolder]);
 
   return (
     <div className="flex flex-col items-start gap-3 w-full max-w-xl text-left">
@@ -138,9 +138,9 @@ export const IgnoredFolderSection = (): JSX.Element => {
           )}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              e.preventDefault()
-              addFolder((e.target as HTMLInputElement).value)
-              ;(e.target as HTMLInputElement).value = ''
+              e.preventDefault();
+              addFolder((e.target as HTMLInputElement).value);
+              (e.target as HTMLInputElement).value = '';
             }
           }}
         />
@@ -163,5 +163,5 @@ export const IgnoredFolderSection = (): JSX.Element => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

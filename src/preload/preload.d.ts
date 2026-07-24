@@ -1,9 +1,9 @@
-import type { AppApi } from '@shared/window.types'
+import type { AppApi } from '@shared/window.types';
 
 declare global {
   interface Window {
-    appApi: AppApi
+    appApi: AppApi;
   }
 }
 
-export {}
+export {};

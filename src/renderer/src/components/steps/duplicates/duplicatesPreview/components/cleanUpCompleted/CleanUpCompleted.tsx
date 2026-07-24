@@ -1,8 +1,8 @@
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 interface CleanUpCompletedProps {
-  onReRunClick: () => void
+  onReRunClick: () => void;
 }
 
 export const CleanUpCompleted = ({ onReRunClick }: CleanUpCompletedProps): React.JSX.Element => {
@@ -53,5 +53,5 @@ export const CleanUpCompleted = ({ onReRunClick }: CleanUpCompletedProps): React
         <span className="text-sm group-hover:font-normal">Re-scan to find more duplicates</span>
       </button>
     </div>
-  )
-}
+  );
+};

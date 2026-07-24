@@ -1,30 +1,30 @@
-import { SimpleButton } from '@components/buttons/simpleButton'
-import { mergeCls } from '@renderer/utils/ClassNameMerger'
-import { isImage, loadFileUrl } from '@renderer/utils/strings'
-import { mimeTypeFromFilePath } from '@shared/fileMime'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { toast } from 'sonner'
-import { useThumbnail } from './useThumbnail'
+import { SimpleButton } from '@components/buttons/simpleButton';
+import { mergeCls } from '@renderer/utils/ClassNameMerger';
+import { isImage, loadFileUrl } from '@renderer/utils/strings';
+import { mimeTypeFromFilePath } from '@shared/fileMime';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
+import { useThumbnail } from './useThumbnail';
 
-const THUMBNAIL_SIZE = 450
+const THUMBNAIL_SIZE = 450;
 
 interface MediaPreviewProps {
-  filePath: string
+  filePath: string;
 }
 
 export const MediaPreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
-  const isImageFile = useMemo(() => isImage(filePath), [filePath])
+  const isImageFile = useMemo(() => isImage(filePath), [filePath]);
   if (isImageFile) {
-    return <ImagePreview filePath={filePath} />
+    return <ImagePreview filePath={filePath} />;
   }
 
-  return <VideoPreview filePath={filePath} />
-}
+  return <VideoPreview filePath={filePath} />;
+};
 
 const ImagePreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
-  const thumb = useThumbnail(loadFileUrl(filePath), THUMBNAIL_SIZE)
+  const thumb = useThumbnail(loadFileUrl(filePath), THUMBNAIL_SIZE);
   if (!thumb) {
-    return <div className="w-full h-full aspect-square min-w-0 bg-black rounded-sm" />
+    return <div className="w-full h-full aspect-square min-w-0 bg-black rounded-sm" />;
   }
 
   return (
@@ -33,31 +33,31 @@ const ImagePreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
       alt={filePath}
       className="w-full h-full aspect-square object-fill rounded-sm"
     />
-  )
-}
+  );
+};
 
 /**
  * Large preview for the selected duplicate group. Many phone `.3GP` files use
  * H.263 / AMR codecs that Chromium cannot decode — we fall back to copy + "open externally".
  */
 const VideoPreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
-  const [previewFailed, setPreviewFailed] = useState(false)
-  const previewUrl = loadFileUrl(filePath)
-  const mime = mimeTypeFromFilePath(filePath)
-  const sourceType = mime.startsWith('video/') ? mime : undefined
+  const [previewFailed, setPreviewFailed] = useState(false);
+  const previewUrl = loadFileUrl(filePath);
+  const mime = mimeTypeFromFilePath(filePath);
+  const sourceType = mime.startsWith('video/') ? mime : undefined;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPreviewFailed(false)
-  }, [filePath])
+    setPreviewFailed(false);
+  }, [filePath]);
 
   const handleOpenExternally = useCallback(async () => {
     try {
-      await window.appApi.global.openFilePath(filePath)
+      await window.appApi.global.openFilePath(filePath);
     } catch {
-      toast.error('Could not open this file with the default application.')
+      toast.error('Could not open this file with the default application.');
     }
-  }, [filePath])
+  }, [filePath]);
 
   if (previewFailed) {
     return (
@@ -74,7 +74,7 @@ const VideoPreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
         </p>
         <SimpleButton variant="outline" label="Open Externally" onClick={handleOpenExternally} />
       </div>
-    )
+    );
   }
 
   return (
@@ -88,5 +88,5 @@ const VideoPreview = ({ filePath }: MediaPreviewProps): React.JSX.Element => {
     >
       <source src={previewUrl} type={sourceType} />
     </video>
-  )
-}
+  );
+};

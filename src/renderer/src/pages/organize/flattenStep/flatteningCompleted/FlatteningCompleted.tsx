@@ -1,14 +1,14 @@
-import { ProgressBar } from '@components/progressBar'
-import { ClockIcon, CommandLineIcon, PhotoIcon } from '@heroicons/react/24/outline'
-import { StepSelector, useOrganizeStore } from '@pages/organize/store/organizeStore'
-import { formatDuration, humanizeSize } from '@utils/strings'
+import { ProgressBar } from '@components/progressBar';
+import { ClockIcon, CommandLineIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { StepSelector, useOrganizeStore } from '@pages/organize/store/organizeStore';
+import { formatDuration, humanizeSize } from '@utils/strings';
 
 export const FlatteningCompleted = (): React.JSX.Element => {
-  const { getPath } = useOrganizeStore()
+  const { getPath } = useOrganizeStore();
 
-  const { status, result, completedAtMs } = useOrganizeStore(StepSelector('flatten'))
+  const { status, result, completedAtMs } = useOrganizeStore(StepSelector('flatten'));
 
-  if (status !== 'COMPLETED' || !result || !completedAtMs) return <></>
+  if (status !== 'COMPLETED' || !result || !completedAtMs) return <></>;
 
   return (
     <div className="flex flex-col items-start justify-center w-full gap-6 p-2">
@@ -105,5 +105,5 @@ export const FlatteningCompleted = (): React.JSX.Element => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

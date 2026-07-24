@@ -1,10 +1,10 @@
-import { mergeCls } from '@utils/ClassNameMerger'
+import { mergeCls } from '@utils/ClassNameMerger';
 
 interface NavButtonProps {
-  icon: React.ReactNode
-  label: string
-  isActive?: boolean
-  onClick?: () => void
+  icon: React.ReactNode;
+  label: string;
+  isActive?: boolean;
+  onClick?: () => void;
 }
 
 export const NavButton = ({
@@ -29,5 +29,5 @@ export const NavButton = ({
       {icon}
       <span>{label}</span>
     </button>
-  )
-}
+  );
+};

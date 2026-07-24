@@ -1,4 +1,4 @@
-import { mergeCls } from '@utils/ClassNameMerger'
+import { mergeCls } from '@utils/ClassNameMerger';
 
 const LoadingDot = ({ className }: { className?: string }): React.JSX.Element => {
   return (
@@ -9,12 +9,12 @@ const LoadingDot = ({ className }: { className?: string }): React.JSX.Element =>
         className
       )}
     />
-  )
-}
+  );
+};
 
 export interface LoadingDotsProps {
-  className?: string
-  dotClassName?: string
+  className?: string;
+  dotClassName?: string;
 }
 export const LoadingDots = ({ className, dotClassName }: LoadingDotsProps): React.JSX.Element => {
   return (
@@ -29,5 +29,5 @@ export const LoadingDots = ({ className, dotClassName }: LoadingDotsProps): Reac
         <LoadingDot className={dotClassName} />
       </span>
     </span>
-  )
-}
+  );
+};

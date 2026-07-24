@@ -1,1 +1,1 @@
-export * from './StepProgress'
+export * from './StepProgress';

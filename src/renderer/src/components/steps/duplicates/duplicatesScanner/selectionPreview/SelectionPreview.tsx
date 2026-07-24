@@ -1,18 +1,18 @@
-import { DetailsCard } from '@components/detailsCard'
-import { ScanningResults } from '@handlers/cli/types/scan.mode'
-import { DocumentDuplicateIcon, FolderIcon, ServerIcon } from '@heroicons/react/24/outline'
-import { humanizeSize } from '@utils/strings'
+import { DetailsCard } from '@components/detailsCard';
+import { ScanningResults } from '@handlers/cli/types/scan.mode';
+import { DocumentDuplicateIcon, FolderIcon, ServerIcon } from '@heroicons/react/24/outline';
+import { humanizeSize } from '@utils/strings';
 
 export interface SelectionPreviewProps {
-  folderPath?: string
-  scanningResults?: ScanningResults
+  folderPath?: string;
+  scanningResults?: ScanningResults;
 }
 
 export const SelectionPreview = ({
   folderPath,
   scanningResults
 }: SelectionPreviewProps): React.JSX.Element => {
-  if (!scanningResults || !folderPath) return <></>
+  if (!scanningResults || !folderPath) return <></>;
 
   return (
     <div className="flex flex-row items-start justify-center w-full gap-2 p-2 ">
@@ -28,5 +28,5 @@ export const SelectionPreview = ({
         icon={ServerIcon}
       />
     </div>
-  )
-}
+  );
+};

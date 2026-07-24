@@ -1,11 +1,11 @@
-import { ScanningSummary, StepProgress } from '@components/steps'
-import { FolderSelection } from '@components/steps/folderSelection'
-import { SynchronizeHeader } from '../synchronizeHeader'
-import { useFolderSelectorStep } from './useFolderSelectorStep'
+import { ScanningSummary, StepProgress } from '@components/steps';
+import { FolderSelection } from '@components/steps/folderSelection';
+import { SynchronizeHeader } from '../synchronizeHeader';
+import { useFolderSelectorStep } from './useFolderSelectorStep';
 
 export interface FolderSelectorStepProps {
-  folder: 'source' | 'destination'
-  stepKey: 'source' | 'destination'
+  folder: 'source' | 'destination';
+  stepKey: 'source' | 'destination';
 }
 
 export const FolderSelectorStep = ({
@@ -20,7 +20,7 @@ export const FolderSelectorStep = ({
     headerProps,
     selectionProps,
     summaryProps
-  } = useFolderSelectorStep({ folder, stepKey })
+  } = useFolderSelectorStep({ folder, stepKey });
 
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
@@ -36,5 +36,5 @@ export const FolderSelectorStep = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

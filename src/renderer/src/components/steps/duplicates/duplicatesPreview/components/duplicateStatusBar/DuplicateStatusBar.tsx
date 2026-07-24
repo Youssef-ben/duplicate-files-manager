@@ -1,7 +1,7 @@
-import { DropDown, DropDownProps } from '@components/dropDown'
+import { DropDown, DropDownProps } from '@components/dropDown';
 
 export interface DuplicateStatusBarProps extends Omit<DropDownProps, 'action'> {
-  totalCount: number
+  totalCount: number;
 }
 
 export const DuplicateStatusBar = ({
@@ -25,5 +25,5 @@ export const DuplicateStatusBar = ({
         onUnselectAll={onUnselectAll}
       />
     </div>
-  )
-}
+  );
+};

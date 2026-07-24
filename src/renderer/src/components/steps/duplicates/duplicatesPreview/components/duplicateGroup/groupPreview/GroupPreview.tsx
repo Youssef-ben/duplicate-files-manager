@@ -1,7 +1,7 @@
-import { MediaPreview } from '@components/mediaPreview'
+import { MediaPreview } from '@components/mediaPreview';
 
 interface GroupPreviewProps {
-  filePath: string
+  filePath: string;
 }
 
 export const GroupPreview = ({ filePath }: GroupPreviewProps): React.JSX.Element => {
@@ -11,5 +11,5 @@ export const GroupPreview = ({ filePath }: GroupPreviewProps): React.JSX.Element
         <MediaPreview filePath={filePath} />
       </div>
     </div>
-  )
-}
+  );
+};

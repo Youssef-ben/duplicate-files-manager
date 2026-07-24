@@ -1,11 +1,11 @@
-import { LoadingDots } from '@components/loadingDots'
+import { LoadingDots } from '@components/loadingDots';
 
 export interface DuplicateLoadingProps {
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 export const DuplicateLoading = ({ isLoading }: DuplicateLoadingProps): React.JSX.Element => {
-  if (!isLoading) return <></>
+  if (!isLoading) return <></>;
 
   return (
     <div className="w-full h-full absolute inset-0 bg-black/60 z-10 flex items-center justify-center gap-2 p-2 cursor-not-allowed rounded-md">
@@ -14,5 +14,5 @@ export const DuplicateLoading = ({ isLoading }: DuplicateLoadingProps): React.JS
       </span>
       <LoadingDots dotClassName="size-1! bg-white" />
     </div>
-  )
-}
+  );
+};

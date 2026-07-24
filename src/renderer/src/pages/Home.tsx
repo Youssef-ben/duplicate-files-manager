@@ -1,1 +1,1 @@
-export { Organize } from './organize'
+export { Organize } from './organize';

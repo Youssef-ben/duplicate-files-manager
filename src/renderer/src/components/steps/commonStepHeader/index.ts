@@ -1,1 +1,1 @@
-export * from './CommonStepHeader'
+export * from './CommonStepHeader';

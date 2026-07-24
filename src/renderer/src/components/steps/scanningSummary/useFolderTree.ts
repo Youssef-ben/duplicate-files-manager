@@ -1,17 +1,17 @@
-import { ScannedResultsFolder, ScanningResults } from '@handlers/cli/types/scan.mode'
-import { getFolderName, getParentFolderPath, normalizeFolderPath } from '@utils/strings'
-import { useMemo } from 'react'
-import { FolderNode } from './summaryFolderTree'
+import { ScannedResultsFolder, ScanningResults } from '@handlers/cli/types/scan.mode';
+import { getFolderName, getParentFolderPath, normalizeFolderPath } from '@utils/strings';
+import { useMemo } from 'react';
+import { FolderNode } from './summaryFolderTree';
 
 /**
  * Sorts a folder tree in place by name
  * @param nodes - The nodes to sort
  */
 function sortFolderTreeInPlace(nodes: FolderNode[]): void {
-  nodes.sort((a, b) => a.name.localeCompare(b.name))
+  nodes.sort((a, b) => a.name.localeCompare(b.name));
 
   for (const node of nodes) {
-    sortFolderTreeInPlace(node.children)
+    sortFolderTreeInPlace(node.children);
   }
 }
 
@@ -23,14 +23,14 @@ function sortFolderTreeInPlace(nodes: FolderNode[]): void {
  * @returns The folder tree
  */
 function buildFolderTree(folders: ScannedResultsFolder[], root: string): FolderNode[] {
-  const rootNorm = normalizeFolderPath(root)
-  const nodeMap = new Map<string, FolderNode>()
+  const rootNorm = normalizeFolderPath(root);
+  const nodeMap = new Map<string, FolderNode>();
 
   for (const folder of folders) {
-    if (!folder.path.trim()) continue
+    if (!folder.path.trim()) continue;
 
-    const pathNorm = normalizeFolderPath(folder.path)
-    if (pathNorm === rootNorm || pathNorm === '') continue
+    const pathNorm = normalizeFolderPath(folder.path);
+    if (pathNorm === rootNorm || pathNorm === '') continue;
 
     // key is normalized for reliable lookup; path retains original for display
     nodeMap.set(pathNorm, {
@@ -39,34 +39,34 @@ function buildFolderTree(folders: ScannedResultsFolder[], root: string): FolderN
       size: folder.recursive_bytes,
       files: folder.direct_files,
       children: []
-    })
+    });
   }
 
-  const roots: FolderNode[] = []
+  const roots: FolderNode[] = [];
 
   for (const node of nodeMap.values()) {
-    const parentPath = getParentFolderPath(node.path)
-    const parent = nodeMap.get(parentPath)
+    const parentPath = getParentFolderPath(node.path);
+    const parent = nodeMap.get(parentPath);
     if (parent) {
-      parent.children.push(node)
+      parent.children.push(node);
     } else {
-      roots.push(node)
+      roots.push(node);
     }
   }
 
   // Sort the tree
-  sortFolderTreeInPlace(roots)
+  sortFolderTreeInPlace(roots);
 
   // Return the tree
-  return roots
+  return roots;
 }
 
 interface UseFolderTreeProps {
-  result?: ScanningResults
+  result?: ScanningResults;
 }
 export const useFolderTree = ({ result }: UseFolderTreeProps): FolderNode[] => {
   return useMemo(() => {
-    if (!result) return []
-    return buildFolderTree(result.folders, result.root)
-  }, [result])
-}
+    if (!result) return [];
+    return buildFolderTree(result.folders, result.root);
+  }, [result]);
+};

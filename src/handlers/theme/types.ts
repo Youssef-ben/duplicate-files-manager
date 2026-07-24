@@ -1,27 +1,27 @@
-export type SupportedTheme = 'dark' | 'light' | 'nord' | 'catppuccin-mocha'
-export type ThemePreference = SupportedTheme | 'system'
+export type SupportedTheme = 'dark' | 'light' | 'nord' | 'catppuccin-mocha';
+export type ThemePreference = SupportedTheme | 'system';
 
 export type ThemeStoreSchema = {
   theme: {
-    selected: ThemePreference
-  }
-}
+    selected: ThemePreference;
+  };
+};
 
 export type ThemeSnapshot = {
-  preference: ThemeStoreSchema
-  resolved: ThemePreference
-}
+  preference: ThemeStoreSchema;
+  resolved: ThemePreference;
+};
 
 export type ThemeApi = {
-  getTheme: () => Promise<ThemeSnapshot>
-  setTheme: (theme: ThemePreference) => void
-  onThemeChanged: (callback: (theme: SupportedTheme) => void) => () => void
-}
+  getTheme: () => Promise<ThemeSnapshot>;
+  setTheme: (theme: ThemePreference) => void;
+  onThemeChanged: (callback: (theme: SupportedTheme) => void) => () => void;
+};
 
 export interface ThemeSwatch {
-  id: ThemePreference
-  label: string
-  swatches: string[]
+  id: ThemePreference;
+  label: string;
+  swatches: string[];
 }
 
 export const THEMES_SWATCHES: ThemeSwatch[] = [
@@ -34,4 +34,4 @@ export const THEMES_SWATCHES: ThemeSwatch[] = [
     label: 'Catppuccin Mocha',
     swatches: ['#1e1e2e', '#313244', '#cba6f7']
   }
-]
+];

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom';
 
 const DEFAULT_LABELS: Readonly<Record<string, string>> = {
   organize: 'Organize',
@@ -8,33 +8,33 @@ const DEFAULT_LABELS: Readonly<Record<string, string>> = {
   confirm: 'Confirm',
   synchronize: 'Synchronize',
   settings: 'Settings'
-}
+};
 
 const toTitle = (value: string): string => {
-  const decoded = decodeURIComponent(value)
-  const spaced = decoded.replace(/[-_]+/g, ' ')
-  return spaced.replace(/\b\w/g, (c) => c.toUpperCase())
-}
+  const decoded = decodeURIComponent(value);
+  const spaced = decoded.replace(/[-_]+/g, ' ');
+  return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
+};
 
 export interface BreadcrumbsProps {
-  labels?: Readonly<Record<string, string>>
-  className?: string
+  labels?: Readonly<Record<string, string>>;
+  className?: string;
 }
 
 export function Breadcrumbs({ labels, className }: BreadcrumbsProps): React.JSX.Element {
-  const { pathname } = useLocation()
-  const mergedLabels = labels ? { ...DEFAULT_LABELS, ...labels } : DEFAULT_LABELS
+  const { pathname } = useLocation();
+  const mergedLabels = labels ? { ...DEFAULT_LABELS, ...labels } : DEFAULT_LABELS;
 
-  const segments = pathname.split('/').filter(Boolean)
+  const segments = pathname.split('/').filter(Boolean);
   const crumbs = segments.map((seg, idx) => {
-    const to = `/${segments.slice(0, idx + 1).join('/')}`
-    const label = mergedLabels[seg] ?? toTitle(seg)
-    const isLast = idx === segments.length - 1
-    return { to, label, isLast }
-  })
+    const to = `/${segments.slice(0, idx + 1).join('/')}`;
+    const label = mergedLabels[seg] ?? toTitle(seg);
+    const isLast = idx === segments.length - 1;
+    return { to, label, isLast };
+  });
 
   if (crumbs.length === 0) {
-    return <></>
+    return <></>;
   }
 
   return (
@@ -53,10 +53,10 @@ export function Breadcrumbs({ labels, className }: BreadcrumbsProps): React.JSX.
                 )}
                 {idx < crumbs.length - 1 ? <span aria-hidden="true">/</span> : null}
               </li>
-            )
+            );
           })}
         </ol>
       </nav>
     </div>
-  )
+  );
 }

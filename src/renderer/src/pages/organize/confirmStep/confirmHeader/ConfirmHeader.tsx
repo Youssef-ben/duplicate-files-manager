@@ -1,10 +1,10 @@
-import { CommonStepHeader } from '@components/steps/commonStepHeader'
-import type { StepStatus } from '@renderer/types/common'
+import { CommonStepHeader } from '@components/steps/commonStepHeader';
+import type { StepStatus } from '@renderer/types/common';
 
 interface ConfirmHeaderProps {
-  status: StepStatus
-  onCancelClick: () => void
-  onReRunClick: () => void
+  status: StepStatus;
+  onCancelClick: () => void;
+  onReRunClick: () => void;
 }
 
 export const ConfirmHeader = ({
@@ -22,8 +22,8 @@ export const ConfirmHeader = ({
       runningContent={<RunningContent />}
       completedContent={<CompletedContent />}
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
   return (
@@ -33,8 +33,8 @@ const IdleContent = (): React.JSX.Element => {
         the physical location of assets on your local drive.
       </span>
     </p>
-  )
-}
+  );
+};
 
 const RunningContent = (): React.JSX.Element => {
   return (
@@ -43,8 +43,8 @@ const RunningContent = (): React.JSX.Element => {
         Carefully scanning to identify duplicates — no changes are being made yet.
       </p>
     </div>
-  )
-}
+  );
+};
 
 const CompletedContent = (): React.JSX.Element => {
   return (
@@ -55,5 +55,5 @@ const CompletedContent = (): React.JSX.Element => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};

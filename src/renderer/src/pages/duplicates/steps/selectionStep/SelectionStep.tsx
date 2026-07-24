@@ -1,6 +1,6 @@
-import { FolderSelection, ScanningSummary, StepProgress } from '@components/steps'
-import { SelectionHeader } from './selectionHeader'
-import { useFolderSelection } from './useFolderSelection'
+import { FolderSelection, ScanningSummary, StepProgress } from '@components/steps';
+import { SelectionHeader } from './selectionHeader';
+import { useFolderSelection } from './useFolderSelection';
 
 export const SelectionStep = (): React.JSX.Element => {
   const {
@@ -12,7 +12,7 @@ export const SelectionStep = (): React.JSX.Element => {
     handleOnResetClick,
     handleOnFolderSelected,
     handleOnBrowseClick
-  } = useFolderSelection()
+  } = useFolderSelection();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
@@ -38,5 +38,5 @@ export const SelectionStep = (): React.JSX.Element => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

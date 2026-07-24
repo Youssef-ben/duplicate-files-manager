@@ -1,1 +1,1 @@
-export * from './SummaryFolder'
+export * from './SummaryFolder';

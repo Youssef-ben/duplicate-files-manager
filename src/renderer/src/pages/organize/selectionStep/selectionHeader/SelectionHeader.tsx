@@ -1,11 +1,11 @@
-import { CommonStepHeader } from '@components/steps'
-import { FolderIcon } from '@heroicons/react/24/outline'
-import type { StepStatus } from '@renderer/types/common'
+import { CommonStepHeader } from '@components/steps';
+import { FolderIcon } from '@heroicons/react/24/outline';
+import type { StepStatus } from '@renderer/types/common';
 
 interface SelectionHeaderProps {
-  folderPath: string
-  status: StepStatus
-  onResetClick: () => void
+  folderPath: string;
+  status: StepStatus;
+  onResetClick: () => void;
 }
 
 export const SelectionHeader = ({
@@ -23,19 +23,19 @@ export const SelectionHeader = ({
       runningContent={<RunningContent />}
       completedContent={<CompletedContent folderPath={folderPath} />}
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
-  return <div>Choose a root directory to begin the organization process.</div>
-}
+  return <div>Choose a root directory to begin the organization process.</div>;
+};
 
 const RunningContent = (): React.JSX.Element => {
-  return <div>Scanning directory structure to prepare for the organization process.</div>
-}
+  return <div>Scanning directory structure to prepare for the organization process.</div>;
+};
 
 interface CompletedContentProps {
-  folderPath: string
+  folderPath: string;
 }
 const CompletedContent = ({ folderPath }: CompletedContentProps): React.JSX.Element => {
   return (
@@ -50,5 +50,5 @@ const CompletedContent = ({ folderPath }: CompletedContentProps): React.JSX.Elem
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

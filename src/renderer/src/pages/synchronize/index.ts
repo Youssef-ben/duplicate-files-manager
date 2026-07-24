@@ -1,1 +1,1 @@
-export * from './Synchronize'
+export * from './Synchronize';

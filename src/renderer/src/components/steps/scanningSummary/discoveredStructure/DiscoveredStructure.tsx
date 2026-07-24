@@ -1,12 +1,12 @@
-import { FolderNode, SummaryFolderTree } from '../summaryFolderTree'
+import { FolderNode, SummaryFolderTree } from '../summaryFolderTree';
 
 export interface DiscoveredStructureProps {
-  isAnyExpanded: boolean
-  collapseAll: () => void
-  expandAll: () => void
-  folderTree: FolderNode[]
-  expanded: Record<string, boolean>
-  toggle: (path: string) => void
+  isAnyExpanded: boolean;
+  collapseAll: () => void;
+  expandAll: () => void;
+  folderTree: FolderNode[];
+  expanded: Record<string, boolean>;
+  toggle: (path: string) => void;
 }
 
 export const DiscoveredStructure = ({
@@ -33,5 +33,5 @@ export const DiscoveredStructure = ({
         <SummaryFolderTree depth={0} nodes={folderTree} expanded={expanded} onToggle={toggle} />
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,7 +1,7 @@
-import { MediaPreview } from '@components/mediaPreview'
+import { MediaPreview } from '@components/mediaPreview';
 
 export interface FileMediaPreviewProps {
-  filePath: string
+  filePath: string;
 }
 
 export const FileMediaPreview = ({ filePath }: FileMediaPreviewProps): React.JSX.Element => {
@@ -11,5 +11,5 @@ export const FileMediaPreview = ({ filePath }: FileMediaPreviewProps): React.JSX
         <MediaPreview filePath={filePath} />
       </div>
     </div>
-  )
-}
+  );
+};

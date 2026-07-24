@@ -1,1 +1,1 @@
-export * from './OutputHeader'
+export * from './OutputHeader';

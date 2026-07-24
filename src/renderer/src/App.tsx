@@ -1,5 +1,5 @@
-import { Toaster } from 'sonner'
-import { Navigation, SidebarNavigation } from './navigation'
+import { Toaster } from 'sonner';
+import { Navigation, SidebarNavigation } from './navigation';
 
 function App(): React.JSX.Element {
   return (
@@ -9,7 +9,7 @@ function App(): React.JSX.Element {
       <Navigation />
       <Toaster closeButton richColors position="bottom-center" />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

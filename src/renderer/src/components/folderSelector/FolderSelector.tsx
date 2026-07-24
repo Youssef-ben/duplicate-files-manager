@@ -1,11 +1,11 @@
-import { DropZone } from '@components/dropZone'
-import { FolderIcon } from '@heroicons/react/24/solid'
+import { DropZone } from '@components/dropZone';
+import { FolderIcon } from '@heroicons/react/24/solid';
 
 export interface FolderSelectorProps {
-  title: string
-  description: string
-  onClick: () => void
-  onFolderSelected: (path: string) => void
+  title: string;
+  description: string;
+  onClick: () => void;
+  onFolderSelected: (path: string) => void;
 }
 
 export const FolderSelector = ({
@@ -29,5 +29,5 @@ export const FolderSelector = ({
         <span className="text-md text-outline-dim">{description}</span>
       </div>
     </DropZone>
-  )
-}
+  );
+};

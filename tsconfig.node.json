@@ -4,14 +4,13 @@
   "compilerOptions": {
     "composite": true,
     "strict": true,
-    "types": ["electron-vite/node"],
-    "baseUrl": ".",
+    "types": ["electron-vite/node"], 
     "paths": {
-      "@handlers/*": ["src/handlers/*"],
-      "@shared/*": ["src/shared/*"],
-      "@main/*": ["src/main/*"],
+      "@handlers/*": ["./src/handlers/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@main/*": ["./src/main/*"],
       "@pkg": ["./package.json"],
-      "@resources/*": ["resources/*"]
+      "@resources/*": ["./resources/*"]
     }
   }
 }

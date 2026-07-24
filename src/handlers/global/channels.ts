@@ -4,4 +4,4 @@ export const GLOBAL_CHANNELS = {
   READ_JSON_FILE: 'global:readJsonFile',
   OPEN_FILE_PATH: 'global:openFilePath',
   REMOVE_FOLDER: 'global:removeFolder'
-} as const
+} as const;

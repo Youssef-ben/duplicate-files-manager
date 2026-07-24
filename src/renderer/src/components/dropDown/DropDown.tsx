@@ -4,18 +4,18 @@ import {
   EllipsisVerticalIcon,
   TrashIcon,
   XMarkIcon
-} from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { useMemo } from 'react'
-import { DropDownItem } from './DropDownItem'
-import { useDropDown } from './useDropDown'
+} from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { useMemo } from 'react';
+import { DropDownItem } from './DropDownItem';
+import { useDropDown } from './useDropDown';
 
 export interface DropDownProps {
-  flaggedCount: number
-  action: 'Delete' | 'Synchronize'
-  onAction: () => void
-  onSelectAll: () => void
-  onUnselectAll: () => void
+  flaggedCount: number;
+  action: 'Delete' | 'Synchronize';
+  onAction: () => void;
+  onSelectAll: () => void;
+  onUnselectAll: () => void;
 }
 
 export const DropDown = ({
@@ -39,12 +39,12 @@ export const DropDown = ({
     onAction,
     onSelectAll,
     onUnselectAll
-  })
+  });
 
   const IconComponent = useMemo(
     () => (action === 'Delete' ? TrashIcon : ArrowPathIcon),
     [action]
-  ) as React.ElementType
+  ) as React.ElementType;
 
   return (
     <div className="relative shrink-0" ref={containerRef}>
@@ -105,5 +105,5 @@ export const DropDown = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

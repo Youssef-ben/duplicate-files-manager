@@ -1,9 +1,9 @@
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface RefreshButtonProps {
-  title?: string
-  onClick: () => void
+  title?: string;
+  onClick: () => void;
 }
 
 export const RefreshButton = ({
@@ -23,5 +23,5 @@ export const RefreshButton = ({
     >
       <ArrowPathIcon className="size-3 stroke-2 shrink-0 " />
     </button>
-  )
-}
+  );
+};

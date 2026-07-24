@@ -1,4 +1,4 @@
-import { LoadingDots } from '@components/loadingDots'
+import { LoadingDots } from '@components/loadingDots';
 
 export const StepLoader = (): React.JSX.Element => {
   return (
@@ -8,5 +8,5 @@ export const StepLoader = (): React.JSX.Element => {
         <LoadingDots dotClassName="bg-outline-dim" />
       </div>
     </div>
-  )
-}
+  );
+};

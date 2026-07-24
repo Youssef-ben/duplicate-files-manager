@@ -1,8 +1,8 @@
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface CancelButtonProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export const CancelButton = ({ onClick }: CancelButtonProps): React.JSX.Element => {
@@ -18,5 +18,5 @@ export const CancelButton = ({ onClick }: CancelButtonProps): React.JSX.Element 
     >
       <XMarkIcon className="size-4 stroke-3 shrink-0 transition-all duration-500 group-hover:rotate-90" />
     </button>
-  )
-}
+  );
+};

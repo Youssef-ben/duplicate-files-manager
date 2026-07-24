@@ -1,4 +1,3 @@
-export * from './destinationStep'
-export * from './sourceStep'
-export * from './synchronizeStep'
-
+export * from './destinationStep';
+export * from './sourceStep';
+export * from './synchronizeStep';

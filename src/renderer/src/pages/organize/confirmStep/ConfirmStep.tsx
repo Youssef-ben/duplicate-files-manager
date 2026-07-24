@@ -1,16 +1,16 @@
-import { SimpleButton } from '@components/buttons'
-import { StepProgress } from '@components/steps/stepProgress'
-import { OrganizeProgressSummary } from '@handlers/cli/types/organize.mode'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { useCliRun } from '@hooks/useCliRun'
-import { useCallback, useEffect, useMemo } from 'react'
-import { StepSelector, useOrganizeStore } from '../store/organizeStore'
-import { ConfirmCompleted } from './confirmCompleted'
-import { ConfirmHeader } from './confirmHeader'
-import { ConfirmPreview } from './confirmPreview'
+import { SimpleButton } from '@components/buttons';
+import { StepProgress } from '@components/steps/stepProgress';
+import { OrganizeProgressSummary } from '@handlers/cli/types/organize.mode';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { useCliRun } from '@hooks/useCliRun';
+import { useCallback, useEffect, useMemo } from 'react';
+import { StepSelector, useOrganizeStore } from '../store/organizeStore';
+import { ConfirmCompleted } from './confirmCompleted';
+import { ConfirmHeader } from './confirmHeader';
+import { ConfirmPreview } from './confirmPreview';
 
 export const ConfirmStep = (): React.JSX.Element => {
-  const { getPath } = useOrganizeStore()
+  const { getPath } = useOrganizeStore();
   const {
     stepRunnerId,
     status,
@@ -18,34 +18,34 @@ export const ConfirmStep = (): React.JSX.Element => {
     start,
     complete,
     reset: resetConfirm
-  } = useOrganizeStore(StepSelector('confirm'))
-  const { runnerId, summary, progress, run, stop } = useCliRun()
+  } = useOrganizeStore(StepSelector('confirm'));
+  const { runnerId, summary, progress, run, stop } = useCliRun();
 
   useEffect(() => {
-    if (!summary || stepRunnerId !== runnerId) return
+    if (!summary || stepRunnerId !== runnerId) return;
 
-    complete(summary as OrganizeProgressSummary)
-  }, [summary, complete, stepRunnerId, runnerId])
+    complete(summary as OrganizeProgressSummary);
+  }, [summary, complete, stepRunnerId, runnerId]);
 
   const onOrganizeClick = useCallback(() => {
-    const newRunId = crypto.randomUUID()
-    start(newRunId)
+    const newRunId = crypto.randomUUID();
+    start(newRunId);
     run({
       runId: newRunId,
       menu: 'organize',
       mode: 'organize',
       sourceRoot: getPath(),
       outputFolder: getPath()
-    })
-  }, [getPath, run, start])
+    });
+  }, [getPath, run, start]);
 
   const handleCancelOrganize = useCallback(() => {
-    stop()
-    resetConfirm()
-  }, [stop, resetConfirm])
+    stop();
+    resetConfirm();
+  }, [stop, resetConfirm]);
 
-  const isRunning = useMemo(() => status === 'RUNNING', [status])
-  const isCompleted = useMemo(() => status === 'COMPLETED', [status])
+  const isRunning = useMemo(() => status === 'RUNNING', [status]);
+  const isCompleted = useMemo(() => status === 'COMPLETED', [status]);
 
   return (
     <div className="flex flex-1 flex-col w-full h-full gap-4 overflow-hidden">
@@ -88,5 +88,5 @@ export const ConfirmStep = (): React.JSX.Element => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

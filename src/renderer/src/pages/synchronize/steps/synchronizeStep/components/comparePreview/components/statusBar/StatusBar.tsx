@@ -1,7 +1,7 @@
-import { DropDown, DropDownProps } from '@components/dropDown'
+import { DropDown, DropDownProps } from '@components/dropDown';
 
 export interface StatusBarProps extends Omit<DropDownProps, 'action'> {
-  totalCount: number
+  totalCount: number;
 }
 
 export const StatusBar = ({
@@ -25,5 +25,5 @@ export const StatusBar = ({
         onUnselectAll={onUnselectAll}
       />
     </div>
-  )
-}
+  );
+};

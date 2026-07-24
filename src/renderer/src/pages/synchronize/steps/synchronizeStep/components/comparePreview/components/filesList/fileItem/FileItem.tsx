@@ -1,20 +1,20 @@
-import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode'
-import { VideoCameraIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@renderer/utils/ClassNameMerger'
-import { getFileName, isImage, loadFileUrl } from '@renderer/utils/strings'
-import { useMemo } from 'react'
+import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode';
+import { VideoCameraIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@renderer/utils/ClassNameMerger';
+import { getFileName, isImage, loadFileUrl } from '@renderer/utils/strings';
+import { useMemo } from 'react';
 
 export interface FileItemProps {
-  isSelected: boolean
-  file: SynchronizeFile
-  onClick: (file: SynchronizeFile) => void
+  isSelected: boolean;
+  file: SynchronizeFile;
+  onClick: (file: SynchronizeFile) => void;
 }
 
 export const FileItem = ({ isSelected, file, onClick }: FileItemProps): React.JSX.Element => {
-  const { is_flagged, path } = file
+  const { is_flagged, path } = file;
 
-  const isFileAnImage = useMemo(() => isImage(path), [path])
-  const fileName = useMemo(() => getFileName(path), [path])
+  const isFileAnImage = useMemo(() => isImage(path), [path]);
+  const fileName = useMemo(() => getFileName(path), [path]);
 
   return (
     <div
@@ -45,5 +45,5 @@ export const FileItem = ({ isSelected, file, onClick }: FileItemProps): React.JS
         <span className="text-xs text-Primary font-semibold">{fileName}</span>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,9 +1,9 @@
-import { FolderMinusIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { FolderMinusIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface ClearFolderButtonProps {
-  title?: string
-  onClick: () => void
+  title?: string;
+  onClick: () => void;
 }
 export const ClearFolderButton = ({
   title = 'Clear Folder',
@@ -21,5 +21,5 @@ export const ClearFolderButton = ({
     >
       <FolderMinusIcon className="size-4 stroke-3 shrink-0" />
     </button>
-  )
-}
+  );
+};

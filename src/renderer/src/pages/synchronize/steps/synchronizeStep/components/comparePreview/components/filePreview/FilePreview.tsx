@@ -1,18 +1,18 @@
-import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode'
-import { CheckIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@renderer/utils/ClassNameMerger'
-import { getFileName } from '@renderer/utils/strings'
-import { FileMediaPreview } from '../fileMediaPreview'
+import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@renderer/utils/ClassNameMerger';
+import { getFileName } from '@renderer/utils/strings';
+import { FileMediaPreview } from '../fileMediaPreview';
 
 export interface FilePreviewProps {
-  file: SynchronizeFile | null
-  onFlagCurrentClick: () => void
+  file: SynchronizeFile | null;
+  onFlagCurrentClick: () => void;
 }
 
 export const FilePreview = ({ file, onFlagCurrentClick }: FilePreviewProps): React.JSX.Element => {
-  if (!file) return <></>
+  if (!file) return <></>;
 
-  const { path, is_flagged } = file
+  const { path, is_flagged } = file;
 
   return (
     <div className="flex flex-2 flex-col h-full min-h-0 w-full gap-2 px-2 py-2 overflow-hidden">
@@ -48,5 +48,5 @@ export const FilePreview = ({ file, onFlagCurrentClick }: FilePreviewProps): Rea
         <span className="text-xs font-normal text-outline-dim">{path}</span>
       </div>
     </div>
-  )
-}
+  );
+};

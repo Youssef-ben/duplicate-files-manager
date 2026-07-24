@@ -1,1 +1,1 @@
-export * from './DuplicateStatusBar'
+export * from './DuplicateStatusBar';

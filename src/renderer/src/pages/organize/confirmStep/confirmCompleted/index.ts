@@ -1,1 +1,1 @@
-export * from './ConfirmCompleted'
+export * from './ConfirmCompleted';

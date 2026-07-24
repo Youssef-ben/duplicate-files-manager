@@ -1,12 +1,12 @@
-import { CommonStepHeader } from '@components/steps'
-import { FolderIcon } from '@heroicons/react/24/outline'
-import type { StepStatus } from '@renderer/types/common'
+import { CommonStepHeader } from '@components/steps';
+import { FolderIcon } from '@heroicons/react/24/outline';
+import type { StepStatus } from '@renderer/types/common';
 
 export interface SynchronizeHeaderProps extends CompletedContentProps {
-  title: string
-  status: StepStatus
-  onResetClick: () => void
-  onCancelClick: () => void
+  title: string;
+  status: StepStatus;
+  onResetClick: () => void;
+  onCancelClick: () => void;
 }
 
 export const SynchronizeHeader = ({
@@ -26,23 +26,23 @@ export const SynchronizeHeader = ({
       runningContent={<RunningContent />}
       completedContent={<CompletedContent folderPath={folderPath} />}
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
   return (
     <div className="text-sm text-outline-dim text-justify">
       Select the directory to be synchronized.
     </div>
-  )
-}
+  );
+};
 
 const RunningContent = (): React.JSX.Element => {
-  return <div>Scanning directory structure.</div>
-}
+  return <div>Scanning directory structure.</div>;
+};
 
 interface CompletedContentProps {
-  folderPath: string
+  folderPath: string;
 }
 const CompletedContent = ({ folderPath }: CompletedContentProps): React.JSX.Element => {
   return (
@@ -57,5 +57,5 @@ const CompletedContent = ({ folderPath }: CompletedContentProps): React.JSX.Elem
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

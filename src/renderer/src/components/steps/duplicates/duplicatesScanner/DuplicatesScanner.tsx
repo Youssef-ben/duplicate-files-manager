@@ -1,15 +1,15 @@
-import { SimpleButton } from '@components/buttons'
-import { StepProgress } from '@components/steps'
-import { CliProgressEvent } from '@handlers/cli/types'
-import { SelectionPreview, SelectionPreviewProps } from './selectionPreview'
+import { SimpleButton } from '@components/buttons';
+import { StepProgress } from '@components/steps';
+import { CliProgressEvent } from '@handlers/cli/types';
+import { SelectionPreview, SelectionPreviewProps } from './selectionPreview';
 
 export interface DuplicatesScannerProps extends SelectionPreviewProps {
-  isIdle: boolean
-  isRunning: boolean
-  isCompleted: boolean
-  progress: CliProgressEvent | null
-  startedAtMs: number
-  onStartScan: () => void
+  isIdle: boolean;
+  isRunning: boolean;
+  isCompleted: boolean;
+  progress: CliProgressEvent | null;
+  startedAtMs: number;
+  onStartScan: () => void;
 }
 
 export const DuplicatesScanner = ({
@@ -34,5 +34,5 @@ export const DuplicatesScanner = ({
 
       {isRunning && <StepProgress startedAtMs={startedAtMs} progress={progress} />}
     </div>
-  )
-}
+  );
+};

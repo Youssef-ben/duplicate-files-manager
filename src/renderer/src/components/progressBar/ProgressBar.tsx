@@ -1,5 +1,5 @@
 interface ProgressBarProps {
-  percentage: number
+  percentage: number;
 }
 
 export const ProgressBar = ({ percentage }: ProgressBarProps): React.JSX.Element => {
@@ -15,5 +15,5 @@ export const ProgressBar = ({ percentage }: ProgressBarProps): React.JSX.Element
         />
       </div>
     </div>
-  )
-}
+  );
+};

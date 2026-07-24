@@ -1,9 +1,9 @@
-import { CliApi } from '@handlers/cli'
-import { GlobalApi } from '@handlers/global'
-import { ThemeApi } from '@handlers/theme'
+import { CliApi } from '@handlers/cli';
+import { GlobalApi } from '@handlers/global';
+import { ThemeApi } from '@handlers/theme';
 
 export type AppApi = {
-  global: GlobalApi
-  cli: CliApi
-  theme: ThemeApi
-}
+  global: GlobalApi;
+  cli: CliApi;
+  theme: ThemeApi;
+};

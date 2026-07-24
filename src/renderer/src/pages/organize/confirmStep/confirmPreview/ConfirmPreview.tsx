@@ -1,25 +1,25 @@
-import { FolderIcon, ServerIcon, SquaresPlusIcon } from '@heroicons/react/24/outline'
-import { StepSelector, useOrganizeStore } from '@pages/organize/store/organizeStore'
-import { formatDuration, humanizeSize } from '@utils/strings'
-import { useMemo } from 'react'
-import { InfoCard } from './infoCard'
-import { ProcessDataCard } from './processDataCard'
+import { FolderIcon, ServerIcon, SquaresPlusIcon } from '@heroicons/react/24/outline';
+import { StepSelector, useOrganizeStore } from '@pages/organize/store/organizeStore';
+import { formatDuration, humanizeSize } from '@utils/strings';
+import { useMemo } from 'react';
+import { InfoCard } from './infoCard';
+import { ProcessDataCard } from './processDataCard';
 
-const MB = 1024 * 1024
-const FIXED_SPEED_BYTES = 60 * MB
-const FIXED_SPEED_BYTES_PER_MS = FIXED_SPEED_BYTES / 1000
-const PER_FILE_OVERHEAD_MS = 50 // ~50ms per file for open/stat/metadata/close
+const MB = 1024 * 1024;
+const FIXED_SPEED_BYTES = 60 * MB;
+const FIXED_SPEED_BYTES_PER_MS = FIXED_SPEED_BYTES / 1000;
+const PER_FILE_OVERHEAD_MS = 50; // ~50ms per file for open/stat/metadata/close
 
 export const ConfirmPreview = (): React.JSX.Element => {
-  const { getPath } = useOrganizeStore()
-  const { result } = useOrganizeStore(StepSelector('duplicates'))
+  const { getPath } = useOrganizeStore();
+  const { result } = useOrganizeStore(StepSelector('duplicates'));
   const etaInMS = useMemo(() => {
-    const transferMs = (result?.total_bytes ?? 0) / FIXED_SPEED_BYTES_PER_MS
-    const overheadMs = (result?.scanned ?? 0) * PER_FILE_OVERHEAD_MS
-    return Math.round(transferMs + overheadMs)
-  }, [result?.total_bytes, result?.scanned])
+    const transferMs = (result?.total_bytes ?? 0) / FIXED_SPEED_BYTES_PER_MS;
+    const overheadMs = (result?.scanned ?? 0) * PER_FILE_OVERHEAD_MS;
+    return Math.round(transferMs + overheadMs);
+  }, [result?.total_bytes, result?.scanned]);
 
-  if (!result) return <></>
+  if (!result) return <></>;
 
   return (
     <div className="flex flex-col items-start justify-start w-full h-fit gap-2 px-1">
@@ -115,5 +115,5 @@ export const ConfirmPreview = (): React.JSX.Element => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

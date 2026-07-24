@@ -1,13 +1,13 @@
-import { PhotoIcon, VideoCameraIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { isImage, loadFileUrl } from '@utils/strings'
+import { PhotoIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { isImage, loadFileUrl } from '@utils/strings';
 
 interface GroupItemProps {
-  isSelected: boolean
-  title: string
-  value?: string
-  imageUrl?: string
-  onClick?: () => void
+  isSelected: boolean;
+  title: string;
+  value?: string;
+  imageUrl?: string;
+  onClick?: () => void;
 }
 
 export const GroupItem = ({
@@ -58,5 +58,5 @@ export const GroupItem = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

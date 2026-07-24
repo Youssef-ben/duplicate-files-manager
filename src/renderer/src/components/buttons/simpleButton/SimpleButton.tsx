@@ -1,9 +1,9 @@
-import { mergeCls } from '@utils/ClassNameMerger'
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface SimpleButtonProps {
-  label: string
-  onClick: () => void
-  variant?: 'filled' | 'outline'
+  label: string;
+  onClick: () => void;
+  variant?: 'filled' | 'outline';
 }
 
 const variantCls = {
@@ -11,7 +11,7 @@ const variantCls = {
     'border-primary bg-primary text-on-primary hover:bg-primary-dim/80 hover:text-on-primary hover:border-primary-dim active:scale-95',
   outline:
     'border-primary bg-transparent text-primary hover:bg-primary-dim hover:text-on-primary hover:border-primary-dim'
-}
+};
 
 export const SimpleButton = ({
   label,
@@ -30,5 +30,5 @@ export const SimpleButton = ({
     >
       <span className={mergeCls('text-sm')}>{label}</span>
     </button>
-  )
-}
+  );
+};

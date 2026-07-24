@@ -1,1 +1,1 @@
-export * from './AppWizard'
+export * from './AppWizard';

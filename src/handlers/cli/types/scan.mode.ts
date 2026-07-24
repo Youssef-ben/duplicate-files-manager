@@ -1,31 +1,31 @@
 /** PROGRESS SUMMARY OF SCANNING **/
 export type ScanningProgressSummary = {
-  type: string
-  action: string
-  total_files: number
-  total_bytes: number
-  folder_count: number
-  report_path: string
-}
+  type: string;
+  action: string;
+  total_files: number;
+  total_bytes: number;
+  folder_count: number;
+  report_path: string;
+};
 
 /** RESULT OF SCANNING **/
 //===============================================
 export interface ScannedResultsFolder {
-  path: string
-  direct_files: number
-  recursive_bytes: number
+  path: string;
+  direct_files: number;
+  recursive_bytes: number;
 }
 
 export type ScanningResults = {
-  root: string
-  total_files: number
-  total_bytes: number
-  folder_count: number
-  report_path: string
-  folders: ScannedResultsFolder[]
-}
+  root: string;
+  total_files: number;
+  total_bytes: number;
+  folder_count: number;
+  report_path: string;
+  folders: ScannedResultsFolder[];
+};
 
 export type OutputFolderResults = {
-  path?: string
-}
+  path?: string;
+};
 //===============================================

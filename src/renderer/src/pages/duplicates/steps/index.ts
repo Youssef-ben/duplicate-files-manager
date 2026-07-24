@@ -1,3 +1,2 @@
-export * from './scanStep'
-export * from './selectionStep'
-
+export * from './scanStep';
+export * from './selectionStep';

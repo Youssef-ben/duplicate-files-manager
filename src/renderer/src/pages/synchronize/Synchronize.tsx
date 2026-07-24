@@ -1,10 +1,10 @@
-import { AppWizard } from '@components/appWizard'
-import { AppWizardStep } from '@components/appWizard/AppWizard'
-import { useCliRun } from '@hooks/useCliRun'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useShallow } from 'zustand/shallow'
-import { DestinationStep, SourceStep, SynchronizeStep } from './steps'
-import { SYNCHRONIZE_STEPS_IDS, useSynchronizeStore } from './store/synchronizeStore'
+import { AppWizard } from '@components/appWizard';
+import { AppWizardStep } from '@components/appWizard/AppWizard';
+import { useCliRun } from '@hooks/useCliRun';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
+import { DestinationStep, SourceStep, SynchronizeStep } from './steps';
+import { SYNCHRONIZE_STEPS_IDS, useSynchronizeStore } from './store/synchronizeStore';
 
 export const Synchronize = (): React.JSX.Element => {
   const { reset, steps } = useSynchronizeStore(
@@ -12,18 +12,18 @@ export const Synchronize = (): React.JSX.Element => {
       reset: state.reset,
       steps: state.steps
     }))
-  )
+  );
 
-  const { setMenu } = useCliRun()
+  const { setMenu } = useCliRun();
 
   useEffect(() => {
-    setMenu('synchronize')
-  }, [setMenu])
+    setMenu('synchronize');
+  }, [setMenu]);
 
   const handleFinishClick = useCallback(async () => {
-    await window.appApi.global.removeFolder('synchronize')
-    reset()
-  }, [reset])
+    await window.appApi.global.removeFolder('synchronize');
+    reset();
+  }, [reset]);
 
   const wizardSteps: AppWizardStep[] = useMemo(
     () => [
@@ -53,7 +53,7 @@ export const Synchronize = (): React.JSX.Element => {
       }
     ],
     [steps]
-  )
+  );
 
-  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
-}
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />;
+};

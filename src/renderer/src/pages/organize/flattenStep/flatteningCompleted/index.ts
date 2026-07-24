@@ -1,1 +1,1 @@
-export * from './FlatteningCompleted'
+export * from './FlatteningCompleted';

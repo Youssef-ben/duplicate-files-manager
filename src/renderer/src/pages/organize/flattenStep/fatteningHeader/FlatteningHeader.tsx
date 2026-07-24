@@ -1,10 +1,10 @@
-import { CommonStepHeader } from '@components/steps/commonStepHeader'
-import type { StepStatus } from '@renderer/types/common'
+import { CommonStepHeader } from '@components/steps/commonStepHeader';
+import type { StepStatus } from '@renderer/types/common';
 
 interface FlatteningHeaderProps {
-  status: StepStatus
-  onCancelClick: () => void
-  onReRunClick: () => void
+  status: StepStatus;
+  onCancelClick: () => void;
+  onReRunClick: () => void;
 }
 
 export const FlatteningHeader = ({
@@ -22,8 +22,8 @@ export const FlatteningHeader = ({
       runningContent={<RunningContent />}
       completedContent={<CompletedContent />}
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
   return (
@@ -42,8 +42,8 @@ const IdleContent = (): React.JSX.Element => {
         folder. This is a non-destructive action.
       </span>
     </p>
-  )
-}
+  );
+};
 
 const RunningContent = (): React.JSX.Element => {
   return (
@@ -52,8 +52,8 @@ const RunningContent = (): React.JSX.Element => {
         Currently flattening your directory structure and preparing the staging area.
       </p>
     </div>
-  )
-}
+  );
+};
 
 const CompletedContent = (): React.JSX.Element => {
   return (
@@ -62,5 +62,5 @@ const CompletedContent = (): React.JSX.Element => {
         Your directory structure has been staged and is ready for the next step.
       </p>
     </div>
-  )
-}
+  );
+};

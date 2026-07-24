@@ -1,27 +1,27 @@
-import { humanizeSize } from '@utils/strings'
-import { useMemo } from 'react'
-import { DiscoveredStructureProps } from './discoveredStructure'
-import { ScanSummaryProps } from './scanSummary'
-import { FolderNode } from './summaryFolderTree'
-import { useExpandCollapse } from './useExpandCollapse'
-import { useFolderTree } from './useFolderTree'
-import { ScanningResults } from '@handlers/cli/types/scan.mode'
+import { humanizeSize } from '@utils/strings';
+import { useMemo } from 'react';
+import { DiscoveredStructureProps } from './discoveredStructure';
+import { ScanSummaryProps } from './scanSummary';
+import { FolderNode } from './summaryFolderTree';
+import { useExpandCollapse } from './useExpandCollapse';
+import { useFolderTree } from './useFolderTree';
+import { ScanningResults } from '@handlers/cli/types/scan.mode';
 
 interface UseScanningSummaryProps {
-  result?: ScanningResults
+  result?: ScanningResults;
 }
 
 interface UseScanningSummaryResult {
-  folderTree: FolderNode[]
-  scanSummary: ScanSummaryProps
-  discoveredStructure: DiscoveredStructureProps
+  folderTree: FolderNode[];
+  scanSummary: ScanSummaryProps;
+  discoveredStructure: DiscoveredStructureProps;
 }
 
 export const useScanningSummary = ({
   result
 }: UseScanningSummaryProps): UseScanningSummaryResult => {
-  const folderTree = useFolderTree({ result })
-  const { expanded, isAnyExpanded, expandAll, collapseAll, toggle } = useExpandCollapse(folderTree)
+  const folderTree = useFolderTree({ result });
+  const { expanded, isAnyExpanded, expandAll, collapseAll, toggle } = useExpandCollapse(folderTree);
 
   const scanSummary: ScanSummaryProps = useMemo(
     () => ({
@@ -30,7 +30,7 @@ export const useScanningSummary = ({
       totalSize: humanizeSize(result?.total_bytes ?? 0)
     }),
     [result]
-  )
+  );
 
   const discoveredStructure: DiscoveredStructureProps = useMemo(
     () => ({
@@ -42,11 +42,11 @@ export const useScanningSummary = ({
       toggle
     }),
     [isAnyExpanded, collapseAll, expandAll, folderTree, expanded, toggle]
-  )
+  );
 
   return {
     folderTree,
     scanSummary,
     discoveredStructure
-  }
-}
+  };
+};

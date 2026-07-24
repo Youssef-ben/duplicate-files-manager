@@ -1,1 +1,1 @@
-export * from './SummaryFolderTree'
+export * from './SummaryFolderTree';

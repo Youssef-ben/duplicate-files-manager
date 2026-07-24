@@ -1,1 +1,1 @@
-export * from './FlattenStep'
+export * from './FlattenStep';

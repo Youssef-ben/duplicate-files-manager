@@ -1,8 +1,8 @@
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 interface SyncCompletedProps {
-  onReRunClick: () => void
+  onReRunClick: () => void;
 }
 
 export const SyncCompleted = ({ onReRunClick }: SyncCompletedProps): React.JSX.Element => {
@@ -55,5 +55,5 @@ export const SyncCompleted = ({ onReRunClick }: SyncCompletedProps): React.JSX.E
         </span>
       </button>
     </div>
-  )
-}
+  );
+};

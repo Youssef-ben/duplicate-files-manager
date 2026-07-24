@@ -1,19 +1,19 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { SummaryFolder } from './summaryFolder'
+import { AnimatePresence, motion } from 'framer-motion';
+import { SummaryFolder } from './summaryFolder';
 
 export interface FolderNode {
-  path: string
-  name: string
-  size: number
-  files: number
-  children: FolderNode[]
+  path: string;
+  name: string;
+  size: number;
+  files: number;
+  children: FolderNode[];
 }
 
 interface SummaryFolderTreeProps {
-  nodes: FolderNode[]
-  depth: number
-  expanded: Record<string, boolean>
-  onToggle: (path: string) => void
+  nodes: FolderNode[];
+  depth: number;
+  expanded: Record<string, boolean>;
+  onToggle: (path: string) => void;
 }
 
 export const SummaryFolderTree = ({
@@ -62,5 +62,5 @@ export const SummaryFolderTree = ({
         </div>
       ))}
     </>
-  )
-}
+  );
+};

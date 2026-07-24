@@ -1,14 +1,14 @@
-import { SimpleButton } from '@components/buttons'
-import { Summary } from './summary'
-import { useCompare } from './useCompare'
+import { SimpleButton } from '@components/buttons';
+import { Summary } from './summary';
+import { useCompare } from './useCompare';
 
 export interface CompareProps {
-  onCompareClick: () => void
+  onCompareClick: () => void;
 }
 
 export const Compare = ({ onCompareClick }: CompareProps): React.JSX.Element => {
   const { isIdle, sourceSummaryProps, destinationSummaryProps, buttonProps } =
-    useCompare(onCompareClick)
+    useCompare(onCompareClick);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col w-full gap-4">
@@ -24,5 +24,5 @@ export const Compare = ({ onCompareClick }: CompareProps): React.JSX.Element => 
         </div>
       )}
     </div>
-  )
-}
+  );
+};

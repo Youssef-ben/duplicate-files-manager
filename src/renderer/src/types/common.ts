@@ -1,1 +1,1 @@
-export type StepStatus = 'NOT_STARTED' | 'RUNNING' | 'COMPLETED' | 'ERROR'
+export type StepStatus = 'NOT_STARTED' | 'RUNNING' | 'COMPLETED' | 'ERROR';

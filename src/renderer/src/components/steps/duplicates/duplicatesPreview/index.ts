@@ -1,1 +1,1 @@
-export * from './DuplicatesPreview'
+export * from './DuplicatesPreview';

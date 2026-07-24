@@ -1,4 +1,3 @@
-export * from './compare'
-export * from './comparePreview'
-export * from './header'
-
+export * from './compare';
+export * from './comparePreview';
+export * from './header';

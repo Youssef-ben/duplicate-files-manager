@@ -1,22 +1,22 @@
-import { DuplicatesPreviewProps, DuplicatesScannerProps } from '@components/steps'
-import { DuplicatesProgressSummary, DuplicatesResults } from '@handlers/cli/types/duplicates.mode'
-import { useCliRun } from '@hooks/useCliRun'
-import { useCallback, useEffect, useMemo } from 'react'
-import { StepSelector, useOrganizeStore } from '../store/organizeStore'
-import { DuplicateHeaderProps } from './duplicateHeader'
+import { DuplicatesPreviewProps, DuplicatesScannerProps } from '@components/steps';
+import { DuplicatesProgressSummary, DuplicatesResults } from '@handlers/cli/types/duplicates.mode';
+import { useCliRun } from '@hooks/useCliRun';
+import { useCallback, useEffect, useMemo } from 'react';
+import { StepSelector, useOrganizeStore } from '../store/organizeStore';
+import { DuplicateHeaderProps } from './duplicateHeader';
 
 interface UseDuplicateStepResult {
-  isCompleted: boolean
+  isCompleted: boolean;
 
-  headerProps: DuplicateHeaderProps
-  scannerProps: DuplicatesScannerProps
-  previewProps: DuplicatesPreviewProps
+  headerProps: DuplicateHeaderProps;
+  scannerProps: DuplicatesScannerProps;
+  previewProps: DuplicatesPreviewProps;
 }
 
 export const useDuplicateStep = (): UseDuplicateStepResult => {
-  const { getPath } = useOrganizeStore()
+  const { getPath } = useOrganizeStore();
 
-  const { result: scanningResults } = useOrganizeStore(StepSelector('selection'))
+  const { result: scanningResults } = useOrganizeStore(StepSelector('selection'));
 
   const {
     stepRunnerId,
@@ -26,9 +26,9 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
     start,
     complete,
     reset: resetDuplicates
-  } = useOrganizeStore(StepSelector('duplicates'))
+  } = useOrganizeStore(StepSelector('duplicates'));
 
-  const { runnerId, summary, progress, run, resetRunner, stop, onCliDone } = useCliRun()
+  const { runnerId, summary, progress, run, resetRunner, stop, onCliDone } = useCliRun();
 
   /**
    * On completion:
@@ -37,44 +37,44 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
    * - Complete the step
    */
   useEffect(() => {
-    if (!summary || status === 'COMPLETED' || stepRunnerId !== runnerId) return
-    const { report_path } = summary as DuplicatesProgressSummary
-    const results = window.appApi.cli.readSummaryResult<DuplicatesResults>(report_path)
+    if (!summary || status === 'COMPLETED' || stepRunnerId !== runnerId) return;
+    const { report_path } = summary as DuplicatesProgressSummary;
+    const results = window.appApi.cli.readSummaryResult<DuplicatesResults>(report_path);
 
-    complete(results)
-  }, [summary, status, stepRunnerId, runnerId, complete])
+    complete(results);
+  }, [summary, status, stepRunnerId, runnerId, complete]);
 
   useEffect(() => {
-    if (!getPath()) window.location.reload()
-  }, [getPath])
+    if (!getPath()) window.location.reload();
+  }, [getPath]);
 
   const handleStartProcess = useCallback(() => {
-    if (!getPath()) return
+    if (!getPath()) return;
 
     // Reset the step store.
-    resetDuplicates()
-    resetRunner()
+    resetDuplicates();
+    resetRunner();
 
     queueMicrotask(() => {
-      const newRunId = crypto.randomUUID()
-      start(newRunId)
+      const newRunId = crypto.randomUUID();
+      start(newRunId);
       run({
         runId: newRunId,
         menu: 'organize',
         mode: 'find-duplicate',
         sourceRoot: getPath()
-      })
-    })
-  }, [start, run, resetDuplicates, resetRunner, getPath])
+      });
+    });
+  }, [start, run, resetDuplicates, resetRunner, getPath]);
 
   const handleCancelDuplicate = useCallback(() => {
-    stop()
-    resetDuplicates()
-  }, [stop, resetDuplicates])
+    stop();
+    resetDuplicates();
+  }, [stop, resetDuplicates]);
 
   const handleOnRunCli = useCallback(
     (inputPath: string) => {
-      if (!getPath()) return
+      if (!getPath()) return;
 
       run({
         runId: crypto.randomUUID(),
@@ -82,10 +82,10 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
         mode: 'delete-duplicate',
         input: inputPath,
         sourceRoot: getPath()
-      })
+      });
     },
     [getPath, run]
-  )
+  );
 
   return {
     isCompleted: useMemo(() => status === 'COMPLETED', [status]),
@@ -115,5 +115,5 @@ export const useDuplicateStep = (): UseDuplicateStepResult => {
       onReRunClick: handleStartProcess,
       onCliDone
     }
-  }
-}
+  };
+};

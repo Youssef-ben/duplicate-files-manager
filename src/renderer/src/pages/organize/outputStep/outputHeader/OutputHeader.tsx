@@ -1,11 +1,11 @@
-import { ClearFolderButton } from '@components/buttons'
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { ClearFolderButton } from '@components/buttons';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface OutputHeaderProps {
-  hasSelection: boolean
-  handleOnSkipClick: () => void
-  handleOnClearClick: () => void
+  hasSelection: boolean;
+  handleOnSkipClick: () => void;
+  handleOnClearClick: () => void;
 }
 
 export const OutputHeader = ({
@@ -44,5 +44,5 @@ export const OutputHeader = ({
 
       {hasSelection && <ClearFolderButton onClick={handleOnClearClick} />}
     </div>
-  )
-}
+  );
+};

@@ -1,20 +1,20 @@
-import { SummaryEvent } from '@handlers/cli/types'
-import { DuplicatesResults } from '@handlers/cli/types/duplicates.mode'
+import { SummaryEvent } from '@handlers/cli/types';
+import { DuplicatesResults } from '@handlers/cli/types/duplicates.mode';
 import {
   CleanUpCompleted,
   DuplicateGroup,
   DuplicateGroupsList,
   DuplicateLoading,
   DuplicateStatusBar
-} from './components'
-import { useDuplicatesPreview } from './useDuplicatesPreview'
+} from './components';
+import { useDuplicatesPreview } from './useDuplicatesPreview';
 
 export interface DuplicatesPreviewProps {
-  menu: 'duplicate' | 'organize'
-  duplicatesResults?: DuplicatesResults
-  onRunCli: (inputPath: string) => void
-  onReRunClick: () => void
-  onCliDone: (callback: (summary: SummaryEvent) => void) => () => void
+  menu: 'duplicate' | 'organize';
+  duplicatesResults?: DuplicatesResults;
+  onRunCli: (inputPath: string) => void;
+  onReRunClick: () => void;
+  onCliDone: (callback: (summary: SummaryEvent) => void) => () => void;
 }
 
 export const DuplicatesPreview = ({
@@ -25,10 +25,10 @@ export const DuplicatesPreview = ({
   onCliDone
 }: DuplicatesPreviewProps): React.JSX.Element => {
   const { isDeleting, selectedGroup, groups, statusBarProps, groupsListProps, groupProps } =
-    useDuplicatesPreview({ menu, duplicatesResults, onRunCli, onCliDone })
+    useDuplicatesPreview({ menu, duplicatesResults, onRunCli, onCliDone });
 
   if (Object.keys(groups).length === 0) {
-    return <CleanUpCompleted onReRunClick={onReRunClick} />
+    return <CleanUpCompleted onReRunClick={onReRunClick} />;
   }
 
   return (
@@ -45,5 +45,5 @@ export const DuplicatesPreview = ({
         {selectedGroup && <DuplicateGroup {...groupProps} />}
       </div>
     </div>
-  )
-}
+  );
+};

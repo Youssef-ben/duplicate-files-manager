@@ -1,13 +1,13 @@
-import { FolderSelector } from '@components/folderSelector'
-import { LightBulbIcon } from '@heroicons/react/24/outline'
+import { FolderSelector } from '@components/folderSelector';
+import { LightBulbIcon } from '@heroicons/react/24/outline';
 
 export interface FolderSelectionProps {
-  handleOnFolderSelected: (path: string) => void
-  handleOnBrowseClick: () => void
+  handleOnFolderSelected: (path: string) => void;
+  handleOnBrowseClick: () => void;
   tips: {
-    title: string
-    items?: string[]
-  }
+    title: string;
+    items?: string[];
+  };
 }
 
 const DEFAULT_TIPS = {
@@ -16,7 +16,7 @@ const DEFAULT_TIPS = {
     'You can drag and drop a folder inside the above box or click anywhere to browse.',
     'Selecting a parent folder will automatically index all sub-directories.'
   ]
-}
+};
 
 export const FolderSelection = ({
   tips = DEFAULT_TIPS,
@@ -48,5 +48,5 @@ export const FolderSelection = ({
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};

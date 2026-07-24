@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { APP_ROUTES, NAVIGATION_PATHS } from './routes'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { APP_ROUTES, NAVIGATION_PATHS } from './routes';
 
 export const Navigation = (): React.JSX.Element => {
   return (
@@ -7,11 +7,11 @@ export const Navigation = (): React.JSX.Element => {
       <div className="flex rounded-md flex-col items-center gap-4 bg-surface-bright shadow-ghost w-full">
         <Routes>
           {APP_ROUTES.map((route) => {
-            return <Route key={route.path} path={route.path} element={<route.component />} />
+            return <Route key={route.path} path={route.path} element={<route.component />} />;
           })}
           <Route path="*" element={<Navigate replace to={NAVIGATION_PATHS.organize} />} />
         </Routes>
       </div>
     </div>
-  )
-}
+  );
+};

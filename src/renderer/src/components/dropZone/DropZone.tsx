@@ -1,12 +1,12 @@
-import { mergeCls } from '@utils/ClassNameMerger'
-import type { ReactNode } from 'react'
-import { useRef, useState } from 'react'
+import { mergeCls } from '@utils/ClassNameMerger';
+import type { ReactNode } from 'react';
+import { useRef, useState } from 'react';
 
 export interface DropZoneProps {
-  onFolderSelected: (path: string) => void
-  onClick: () => void
-  children: ReactNode
-  className?: string
+  onFolderSelected: (path: string) => void;
+  onClick: () => void;
+  children: ReactNode;
+  className?: string;
 }
 
 export const DropZone = ({
@@ -15,40 +15,40 @@ export const DropZone = ({
   children,
   className
 }: DropZoneProps): React.JSX.Element => {
-  const [isDraggingOver, setIsDraggingOver] = useState(false)
-  const dragDepthRef = useRef(0)
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const dragDepthRef = useRef(0);
 
   const endDragHighlight = (): void => {
-    dragDepthRef.current = 0
-    setIsDraggingOver(false)
-  }
+    dragDepthRef.current = 0;
+    setIsDraggingOver(false);
+  };
 
   const handleDragEnter = (e: React.DragEvent): void => {
-    if (!e.dataTransfer.types.includes('Files')) return
-    e.preventDefault()
-    dragDepthRef.current += 1
-    setIsDraggingOver(true)
-  }
+    if (!e.dataTransfer.types.includes('Files')) return;
+    e.preventDefault();
+    dragDepthRef.current += 1;
+    setIsDraggingOver(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent): void => {
-    e.preventDefault()
-    dragDepthRef.current = Math.max(0, dragDepthRef.current - 1)
-    if (dragDepthRef.current === 0) setIsDraggingOver(false)
-  }
+    e.preventDefault();
+    dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
+    if (dragDepthRef.current === 0) setIsDraggingOver(false);
+  };
 
   const handleDragOver = (e: React.DragEvent): void => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'copy'
-  }
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
 
   const handleDrop = (e: React.DragEvent): void => {
-    e.preventDefault()
-    endDragHighlight()
-    const file = e.dataTransfer.files[0]
-    if (!file) return
-    const path = window.appApi.global.getPathForFile(file)
-    onFolderSelected(path)
-  }
+    e.preventDefault();
+    endDragHighlight();
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const path = window.appApi.global.getPathForFile(file);
+    onFolderSelected(path);
+  };
 
   return (
     <div
@@ -68,5 +68,5 @@ export const DropZone = ({
     >
       {children}
     </div>
-  )
-}
+  );
+};

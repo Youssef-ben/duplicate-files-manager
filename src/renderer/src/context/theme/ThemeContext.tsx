@@ -1,26 +1,26 @@
 /* eslint-disable react-refresh/only-export-components */
-import { type ThemePreference } from '@handlers/theme/types'
-import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { type ThemePreference } from '@handlers/theme/types';
+import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 export interface ThemeContextValue {
-  theme: ThemePreference
-  setTheme: (theme: ThemePreference) => void
+  theme: ThemePreference;
+  setTheme: (theme: ThemePreference) => void;
 }
 
-export const ThemeContext = createContext<ThemeContextValue | null>(null)
+export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 interface ThemeProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function ThemeProvider({
   children
 }: ThemeProviderProps): ReturnType<typeof ThemeContext.Provider> {
-  const [selectedTheme, setSelectedTheme] = useState<ThemePreference>('system')
-  const [theme, setPreferredTheme] = useState<ThemePreference>('system')
+  const [selectedTheme, setSelectedTheme] = useState<ThemePreference>('system');
+  const [theme, setPreferredTheme] = useState<ThemePreference>('system');
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
     const fetchTheme = (): void => {
       window.appApi.theme
@@ -32,41 +32,41 @@ export function ThemeProvider({
               theme: { selected }
             }
           }) => {
-            if (cancelled) return
-            setPreferredTheme(selected)
-            setSelectedTheme(resolved)
+            if (cancelled) return;
+            setPreferredTheme(selected);
+            setSelectedTheme(resolved);
           }
         )
         .catch(() => {
           // Optional: Handle error (e.g. log or ignore)
-        })
-    }
+        });
+    };
 
-    fetchTheme()
+    fetchTheme();
     return () => {
-      cancelled = true
-    }
-  }, [])
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [theme])
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const unsubscribe = window.appApi.theme.onThemeChanged((theme) => {
-      setPreferredTheme(theme)
-    })
+      setPreferredTheme(theme);
+    });
 
     return () => {
-      unsubscribe()
-    }
-  }, [])
+      unsubscribe();
+    };
+  }, []);
 
   const setTheme = useCallback((theme: ThemePreference): void => {
-    setPreferredTheme(theme)
-    setSelectedTheme(theme)
-    window.appApi.theme.setTheme(theme)
-  }, [])
+    setPreferredTheme(theme);
+    setSelectedTheme(theme);
+    window.appApi.theme.setTheme(theme);
+  }, []);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
@@ -74,7 +74,7 @@ export function ThemeProvider({
       setTheme
     }),
     [selectedTheme, setTheme]
-  )
+  );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

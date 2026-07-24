@@ -1,1 +1,1 @@
-export { GroupPreview } from './GroupPreview'
+export { GroupPreview } from './GroupPreview';

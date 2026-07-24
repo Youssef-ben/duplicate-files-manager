@@ -1,13 +1,13 @@
-import { CheckIcon, PhotoIcon, TrashIcon, VideoCameraIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { getFolderName, humanizeSize, isImage, loadFileUrl } from '@utils/strings'
+import { CheckIcon, PhotoIcon, TrashIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { getFolderName, humanizeSize, isImage, loadFileUrl } from '@utils/strings';
 
 interface DuplicateImageProps {
-  imagePath: string
-  size: number
-  isFlagged: boolean
-  onClick?: () => void
-  onDeleteClick?: () => void
+  imagePath: string;
+  size: number;
+  isFlagged: boolean;
+  onClick?: () => void;
+  onDeleteClick?: () => void;
 }
 
 export const DuplicateImage = ({
@@ -17,7 +17,7 @@ export const DuplicateImage = ({
   onClick,
   onDeleteClick
 }: DuplicateImageProps): React.JSX.Element => {
-  const title = `${getFolderName(imagePath)}`
+  const title = `${getFolderName(imagePath)}`;
   return (
     <div
       title={title}
@@ -69,13 +69,13 @@ export const DuplicateImage = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface DuplicateImageThumbnailProps {
-  imagePath: string
-  isFlagged: boolean
-  title: string
+  imagePath: string;
+  isFlagged: boolean;
+  title: string;
 }
 
 const DuplicateImageThumbnail = ({
@@ -88,7 +88,7 @@ const DuplicateImageThumbnail = ({
       <div className="flex w-10 h-10 flex-col items-center justify-center bg-amber-50/90 text-primary rounded-md">
         <CheckIcon className="size-5 stroke-4 accent-current" />
       </div>
-    )
+    );
   }
 
   if (!imagePath) {
@@ -96,7 +96,7 @@ const DuplicateImageThumbnail = ({
       <div className="flex w-10 h-10 flex-col items-center justify-center bg-surface-variant text-outline-dim rounded-md">
         <PhotoIcon className="size-6 text-primary" />
       </div>
-    )
+    );
   }
 
   return (
@@ -112,5 +112,5 @@ const DuplicateImageThumbnail = ({
         <VideoCameraIcon className="size-6 text-primary" aria-hidden />
       )}
     </div>
-  )
-}
+  );
+};

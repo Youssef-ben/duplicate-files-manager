@@ -1,16 +1,16 @@
-import { CancelButton, RefreshButton } from '@components/buttons'
-import { PulsingDot } from '@components/pulsingDot'
-import { StepStatus } from '@renderer/types/common'
-import { useMemo } from 'react'
+import { CancelButton, RefreshButton } from '@components/buttons';
+import { PulsingDot } from '@components/pulsingDot';
+import { StepStatus } from '@renderer/types/common';
+import { useMemo } from 'react';
 
 export interface CommonStepHeaderProps {
-  title: string
-  status: StepStatus
-  idleContent: React.JSX.Element
-  runningContent?: React.JSX.Element
-  completedContent?: React.JSX.Element
-  onCancelClick: () => void
-  onReRunClick: () => void
+  title: string;
+  status: StepStatus;
+  idleContent: React.JSX.Element;
+  runningContent?: React.JSX.Element;
+  completedContent?: React.JSX.Element;
+  onCancelClick: () => void;
+  onReRunClick: () => void;
 }
 
 export const CommonStepHeader = ({
@@ -22,8 +22,8 @@ export const CommonStepHeader = ({
   onCancelClick,
   onReRunClick
 }: CommonStepHeaderProps): React.JSX.Element => {
-  const isRunning = useMemo(() => status === 'RUNNING', [status])
-  const isCompleted = useMemo(() => status === 'COMPLETED', [status])
+  const isRunning = useMemo(() => status === 'RUNNING', [status]);
+  const isCompleted = useMemo(() => status === 'COMPLETED', [status]);
 
   return (
     <div className="flex flex-col items-left justify-center w-full gap-1">
@@ -48,5 +48,5 @@ export const CommonStepHeader = ({
         {isCompleted && completedContent}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
-import { DetailsCard } from '@components/detailsCard'
-import { FolderSelector } from '@components/folderSelector'
-import { FolderIcon } from '@heroicons/react/24/outline'
-import { OutputHeader } from './outputHeader'
-import { useOutputStep } from './useOutputStep'
+import { DetailsCard } from '@components/detailsCard';
+import { FolderSelector } from '@components/folderSelector';
+import { FolderIcon } from '@heroicons/react/24/outline';
+import { OutputHeader } from './outputHeader';
+import { useOutputStep } from './useOutputStep';
 
 export const OutputStep = (): React.JSX.Element => {
   const {
@@ -12,7 +12,7 @@ export const OutputStep = (): React.JSX.Element => {
     handleOnBrowseClick,
     handleOnSkipClick,
     handleOnClearClick
-  } = useOutputStep()
+  } = useOutputStep();
 
   return (
     <div className="flex flex-col w-full gap-4 h-full">
@@ -41,5 +41,5 @@ export const OutputStep = (): React.JSX.Element => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

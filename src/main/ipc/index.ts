@@ -1,1 +1,1 @@
-export { registerHandlers } from './handlers'
+export { registerHandlers } from './handlers';

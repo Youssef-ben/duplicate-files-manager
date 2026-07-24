@@ -1,15 +1,15 @@
-import { ChevronRightIcon, FolderIcon, WalletIcon } from '@heroicons/react/24/outline'
-import { humanizeSize } from '@utils/strings'
+import { ChevronRightIcon, FolderIcon, WalletIcon } from '@heroicons/react/24/outline';
+import { humanizeSize } from '@utils/strings';
 
 export interface SummaryFolderProps {
-  name: string
-  size: number
-  path: string
-  files: number
-  hasChildren: boolean
-  isExpanded: boolean
-  depth: number
-  onToggle: () => void
+  name: string;
+  size: number;
+  path: string;
+  files: number;
+  hasChildren: boolean;
+  isExpanded: boolean;
+  depth: number;
+  onToggle: () => void;
 }
 
 export const SummaryFolder = ({
@@ -57,5 +57,5 @@ export const SummaryFolder = ({
         />
       )}
     </div>
-  )
-}
+  );
+};

@@ -1,11 +1,11 @@
-import { ThemeSwatch } from '@handlers/theme/types'
-import { mergeCls } from '@utils/ClassNameMerger'
-import { JSX } from 'react'
+import { ThemeSwatch } from '@handlers/theme/types';
+import { mergeCls } from '@utils/ClassNameMerger';
+import { JSX } from 'react';
 
 export interface ThemeThumbnailProps {
-  theme: ThemeSwatch
-  isActive: boolean
-  onClick: () => void
+  theme: ThemeSwatch;
+  isActive: boolean;
+  onClick: () => void;
 }
 
 export const ThemeThumbnail = ({ theme, isActive, onClick }: ThemeThumbnailProps): JSX.Element => {
@@ -32,5 +32,5 @@ export const ThemeThumbnail = ({ theme, isActive, onClick }: ThemeThumbnailProps
 
       <span className="block text-xs font-medium text-subtle">{theme.label}</span>
     </button>
-  )
-}
+  );
+};

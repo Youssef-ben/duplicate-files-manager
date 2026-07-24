@@ -1,1 +1,1 @@
-export * from './ConfirmStep'
+export * from './ConfirmStep';

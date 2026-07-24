@@ -1,9 +1,9 @@
-import { SummaryItem } from './summaryItem'
+import { SummaryItem } from './summaryItem';
 
 export interface ScanSummaryProps {
-  foldersCount: string
-  filesCount: string
-  totalSize: string
+  foldersCount: string;
+  filesCount: string;
+  totalSize: string;
 }
 
 export const ScanSummary = ({
@@ -22,5 +22,5 @@ export const ScanSummary = ({
         <SummaryItem label="Total Size" value={totalSize} />
       </div>
     </div>
-  )
-}
+  );
+};

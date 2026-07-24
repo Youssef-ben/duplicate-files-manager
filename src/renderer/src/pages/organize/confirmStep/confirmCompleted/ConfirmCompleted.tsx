@@ -1,11 +1,11 @@
-import { ClockIcon, CommandLineIcon } from '@heroicons/react/24/outline'
-import { formatDuration } from '@utils/strings'
-import { StepSelector, useOrganizeStore } from '../../store/organizeStore'
+import { ClockIcon, CommandLineIcon } from '@heroicons/react/24/outline';
+import { formatDuration } from '@utils/strings';
+import { StepSelector, useOrganizeStore } from '../../store/organizeStore';
 
 export const ConfirmCompleted = (): React.JSX.Element => {
-  const { selectedFolderPath } = useOrganizeStore()
+  const { selectedFolderPath } = useOrganizeStore();
 
-  const { completedAtMs } = useOrganizeStore(StepSelector('flatten'))
+  const { completedAtMs } = useOrganizeStore(StepSelector('flatten'));
 
   return (
     <div className="flex flex-col items-start justify-start w-full h-fit gap-2 px-1">
@@ -37,5 +37,5 @@ export const ConfirmCompleted = (): React.JSX.Element => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

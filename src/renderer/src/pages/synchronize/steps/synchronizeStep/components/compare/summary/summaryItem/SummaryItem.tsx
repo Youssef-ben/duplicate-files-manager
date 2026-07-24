@@ -1,9 +1,9 @@
-import { mergeCls } from '@renderer/utils/ClassNameMerger'
+import { mergeCls } from '@renderer/utils/ClassNameMerger';
 
 export interface SummaryItemProps {
-  label: string
-  value: string
-  isPath?: boolean
+  label: string;
+  value: string;
+  isPath?: boolean;
 }
 
 export const SummaryItem = ({
@@ -23,5 +23,5 @@ export const SummaryItem = ({
         {value}
       </span>
     </div>
-  )
-}
+  );
+};

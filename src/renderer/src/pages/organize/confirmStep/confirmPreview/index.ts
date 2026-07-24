@@ -1,1 +1,1 @@
-export * from './ConfirmPreview'
+export * from './ConfirmPreview';

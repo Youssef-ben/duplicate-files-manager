@@ -1,1 +1,1 @@
-export * from './FolderSelector'
+export * from './FolderSelector';

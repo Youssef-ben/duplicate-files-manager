@@ -1,15 +1,15 @@
-import { SimpleButtonProps } from '@components/buttons'
-import { useSynchronizeStore } from '@pages/synchronize/store/synchronizeStore'
-import { humanizeSize } from '@renderer/utils/strings'
-import { useMemo } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import { SummaryProps } from './summary'
+import { SimpleButtonProps } from '@components/buttons';
+import { useSynchronizeStore } from '@pages/synchronize/store/synchronizeStore';
+import { humanizeSize } from '@renderer/utils/strings';
+import { useMemo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { SummaryProps } from './summary';
 
 interface UseCompareResult {
-  isIdle: boolean
-  buttonProps: SimpleButtonProps
-  sourceSummaryProps: SummaryProps
-  destinationSummaryProps: SummaryProps
+  isIdle: boolean;
+  buttonProps: SimpleButtonProps;
+  sourceSummaryProps: SummaryProps;
+  destinationSummaryProps: SummaryProps;
 }
 
 export const useCompare = (onCompareClick: () => void): UseCompareResult => {
@@ -20,9 +20,9 @@ export const useCompare = (onCompareClick: () => void): UseCompareResult => {
       sourceStep: state.steps.source,
       destinationStep: state.steps.destination
     }))
-  )
+  );
 
-  const isIdle = useMemo(() => step.status === 'NOT_STARTED', [step.status])
+  const isIdle = useMemo(() => step.status === 'NOT_STARTED', [step.status]);
 
   return {
     isIdle,
@@ -45,5 +45,5 @@ export const useCompare = (onCompareClick: () => void): UseCompareResult => {
       filesCount: destinationStep.result?.total_files.toString() ?? '0',
       totalSize: humanizeSize(destinationStep.result?.total_bytes ?? 0)
     }
-  }
-}
+  };
+};

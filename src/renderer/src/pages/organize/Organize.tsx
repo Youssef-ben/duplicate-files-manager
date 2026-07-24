@@ -1,28 +1,28 @@
-import { AppWizard, AppWizardStep } from '@components/appWizard'
-import { useCliRun } from '@hooks/useCliRun'
-import { ORGANIZE_STEPS_IDS, useOrganizeStore } from '@pages/organize/store/organizeStore'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useShallow } from 'zustand/shallow'
-import { ConfirmStep } from './confirmStep'
-import { DuplicateStep } from './duplicateStep'
-import { FlattenFolder } from './flattenStep'
-import { OutputStep } from './outputStep'
-import { SelectionStep } from './selectionStep'
+import { AppWizard, AppWizardStep } from '@components/appWizard';
+import { useCliRun } from '@hooks/useCliRun';
+import { ORGANIZE_STEPS_IDS, useOrganizeStore } from '@pages/organize/store/organizeStore';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
+import { ConfirmStep } from './confirmStep';
+import { DuplicateStep } from './duplicateStep';
+import { FlattenFolder } from './flattenStep';
+import { OutputStep } from './outputStep';
+import { SelectionStep } from './selectionStep';
 
 export const Organize = (): React.JSX.Element => {
-  const { reset } = useOrganizeStore()
-  const { steps } = useOrganizeStore(useShallow((state) => ({ steps: state.steps })))
+  const { reset } = useOrganizeStore();
+  const { steps } = useOrganizeStore(useShallow((state) => ({ steps: state.steps })));
 
-  const { setMenu } = useCliRun()
+  const { setMenu } = useCliRun();
 
   useEffect(() => {
-    setMenu('organize')
-  }, [setMenu])
+    setMenu('organize');
+  }, [setMenu]);
 
   const handleFinishClick = useCallback(async () => {
-    await window.appApi.global.removeFolder('organize')
-    reset()
-  }, [reset])
+    await window.appApi.global.removeFolder('organize');
+    reset();
+  }, [reset]);
 
   const wizardSteps: AppWizardStep[] = useMemo(
     () => [
@@ -68,7 +68,7 @@ export const Organize = (): React.JSX.Element => {
       }
     ],
     [steps]
-  )
+  );
 
-  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
-}
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />;
+};

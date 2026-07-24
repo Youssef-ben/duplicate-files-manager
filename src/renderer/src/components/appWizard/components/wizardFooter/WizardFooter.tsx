@@ -1,15 +1,15 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { mergeCls } from '@utils/ClassNameMerger'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { mergeCls } from '@utils/ClassNameMerger';
 
 export interface WizardFooterProps {
-  goToPreviousStep: () => void
-  isFirstStep: boolean
-  goToNextStep: () => void
-  isLastStep: boolean
-  isCompleted: boolean
-  isRunning: boolean
-  isWizardCompleted: boolean
-  onWizardCompleted: () => void
+  goToPreviousStep: () => void;
+  isFirstStep: boolean;
+  goToNextStep: () => void;
+  isLastStep: boolean;
+  isCompleted: boolean;
+  isRunning: boolean;
+  isWizardCompleted: boolean;
+  onWizardCompleted: () => void;
 }
 
 export const WizardFooter = ({
@@ -61,5 +61,5 @@ export const WizardFooter = ({
         {!isWizardCompleted && <ChevronRightIcon className="size-4 stroke-2 mt-[3px]" />}
       </button>
     </div>
-  )
-}
+  );
+};

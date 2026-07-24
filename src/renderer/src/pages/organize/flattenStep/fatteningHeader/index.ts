@@ -1,1 +1,1 @@
-export * from './FlatteningHeader'
+export * from './FlatteningHeader';

@@ -1,11 +1,11 @@
-import { LoadingDots } from '@components/loadingDots'
+import { LoadingDots } from '@components/loadingDots';
 
 export interface SyncLoadingProps {
-  isSynchronizing: boolean
+  isSynchronizing: boolean;
 }
 
 export const SyncLoading = ({ isSynchronizing }: SyncLoadingProps): React.JSX.Element => {
-  if (!isSynchronizing) return <></>
+  if (!isSynchronizing) return <></>;
 
   return (
     <div className="w-full h-full absolute inset-0 bg-black/60 z-10 flex items-center justify-center gap-2 p-2 cursor-not-allowed rounded-md">
@@ -14,5 +14,5 @@ export const SyncLoading = ({ isSynchronizing }: SyncLoadingProps): React.JSX.El
       </span>
       <LoadingDots dotClassName="size-1! bg-white" />
     </div>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
-import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode'
-import { FilePreview, FilesList, StatusBar, SyncCompleted, SyncLoading } from './components'
-import { useComparePreview } from './useComparePreview'
+import { SynchronizeFile } from '@handlers/cli/types/synchronize.mode';
+import { FilePreview, FilesList, StatusBar, SyncCompleted, SyncLoading } from './components';
+import { useComparePreview } from './useComparePreview';
 
 export interface ComparePreviewProps {
-  compareResult: SynchronizeFile[]
-  onReRunClick: () => void
+  compareResult: SynchronizeFile[];
+  onReRunClick: () => void;
 }
 
 export const ComparePreview = ({
@@ -12,10 +12,10 @@ export const ComparePreview = ({
   onReRunClick
 }: ComparePreviewProps): React.JSX.Element => {
   const { isSynchronizing, statusBarProps, filesListProps, filePreviewProps } =
-    useComparePreview(compareResult)
+    useComparePreview(compareResult);
 
   if (filesListProps.files.length === 0) {
-    return <SyncCompleted onReRunClick={onReRunClick} />
+    return <SyncCompleted onReRunClick={onReRunClick} />;
   }
 
   return (
@@ -32,5 +32,5 @@ export const ComparePreview = ({
         <FilePreview {...filePreviewProps} />
       </div>
     </div>
-  )
-}
+  );
+};

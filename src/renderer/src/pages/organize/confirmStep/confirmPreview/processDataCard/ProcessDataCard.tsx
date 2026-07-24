@@ -1,7 +1,7 @@
 export interface ProcessDataCardProps {
-  title: string
-  value: string | React.JSX.Element
-  icon: React.ReactNode
+  title: string;
+  value: string | React.JSX.Element;
+  icon: React.ReactNode;
 }
 
 export const ProcessDataCard = ({
@@ -17,5 +17,5 @@ export const ProcessDataCard = ({
         <span className="text-xs font-normal text-outline-dim ">{value}</span>
       </div>
     </div>
-  )
-}
+  );
+};

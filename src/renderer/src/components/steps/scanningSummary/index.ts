@@ -1,1 +1,1 @@
-export * from './ScanningSummary'
+export * from './ScanningSummary';

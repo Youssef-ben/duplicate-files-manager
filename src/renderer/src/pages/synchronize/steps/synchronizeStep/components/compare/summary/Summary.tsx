@@ -1,11 +1,11 @@
-import { SummaryItem } from './summaryItem'
+import { SummaryItem } from './summaryItem';
 
 export interface SummaryProps {
-  title: string
-  path: string
-  foldersCount: string
-  filesCount: string
-  totalSize: string
+  title: string;
+  path: string;
+  foldersCount: string;
+  filesCount: string;
+  totalSize: string;
 }
 
 export const Summary = ({
@@ -27,5 +27,5 @@ export const Summary = ({
         <SummaryItem label="Total Size" value={totalSize} />
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,2 +1,2 @@
-export * from './wizardFooter'
-export * from './wizardStep'
+export * from './wizardFooter';
+export * from './wizardStep';

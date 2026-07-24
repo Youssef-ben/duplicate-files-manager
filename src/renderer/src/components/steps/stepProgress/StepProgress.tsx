@@ -1,25 +1,25 @@
-import { LoadingDots } from '@components/loadingDots'
-import { ProgressBar } from '@components/progressBar'
-import { StepLoader } from '@components/steps/stepLoader'
-import { CliProgressEvent } from '@handlers/cli/types'
+import { LoadingDots } from '@components/loadingDots';
+import { ProgressBar } from '@components/progressBar';
+import { StepLoader } from '@components/steps/stepLoader';
+import { CliProgressEvent } from '@handlers/cli/types';
 import {
   calculateRemainingTime,
   formatDuration,
   getProgressPercentage,
   humanizeSize
-} from '@utils/strings'
+} from '@utils/strings';
 
 export interface StepProgressProps {
-  startedAtMs: number
-  progress: CliProgressEvent | null
+  startedAtMs: number;
+  progress: CliProgressEvent | null;
 }
 
 export const StepProgress = ({ startedAtMs, progress }: StepProgressProps): React.JSX.Element => {
-  if (!progress) return <StepLoader />
+  if (!progress) return <StepLoader />;
 
-  const progressPercentage = getProgressPercentage(progress)
-  const remainingTime = calculateRemainingTime(progress, startedAtMs)
-  const isDiscovering = progress.stage.toLowerCase() === 'discovering'
+  const progressPercentage = getProgressPercentage(progress);
+  const remainingTime = calculateRemainingTime(progress, startedAtMs);
+  const isDiscovering = progress.stage.toLowerCase() === 'discovering';
 
   return (
     <div className="flex flex-row items-start justify-center w-full gap-4 p-2">
@@ -73,5 +73,5 @@ export const StepProgress = ({ startedAtMs, progress }: StepProgressProps): Reac
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,1 +1,1 @@
-export * from './SummaryItem'
+export * from './SummaryItem';

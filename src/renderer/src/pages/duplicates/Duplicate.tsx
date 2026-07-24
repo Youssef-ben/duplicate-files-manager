@@ -1,10 +1,10 @@
-import { AppWizard } from '@components/appWizard'
-import { AppWizardStep } from '@components/appWizard/AppWizard'
-import { useCliRun } from '@hooks/useCliRun'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useShallow } from 'zustand/shallow'
-import { ScanStep, SelectionStep } from './steps'
-import { DUPLICATES_STEPS_IDS, useDuplicatesStore } from './store/duplicatesStore'
+import { AppWizard } from '@components/appWizard';
+import { AppWizardStep } from '@components/appWizard/AppWizard';
+import { useCliRun } from '@hooks/useCliRun';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
+import { ScanStep, SelectionStep } from './steps';
+import { DUPLICATES_STEPS_IDS, useDuplicatesStore } from './store/duplicatesStore';
 
 export const Duplicate = (): React.JSX.Element => {
   const { reset, steps } = useDuplicatesStore(
@@ -12,18 +12,18 @@ export const Duplicate = (): React.JSX.Element => {
       reset: state.reset,
       steps: state.steps
     }))
-  )
+  );
 
-  const { setMenu } = useCliRun()
+  const { setMenu } = useCliRun();
 
   useEffect(() => {
-    setMenu('duplicate')
-  }, [setMenu])
+    setMenu('duplicate');
+  }, [setMenu]);
 
   const handleFinishClick = useCallback(async () => {
-    await window.appApi.global.removeFolder('duplicate')
-    reset()
-  }, [reset])
+    await window.appApi.global.removeFolder('duplicate');
+    reset();
+  }, [reset]);
 
   const wizardSteps: AppWizardStep[] = useMemo(
     () => [
@@ -45,7 +45,7 @@ export const Duplicate = (): React.JSX.Element => {
       }
     ],
     [steps]
-  )
+  );
 
-  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />
-}
+  return <AppWizard steps={wizardSteps} onFinishClick={handleFinishClick} />;
+};

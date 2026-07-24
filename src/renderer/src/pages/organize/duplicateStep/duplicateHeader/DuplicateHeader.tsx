@@ -1,11 +1,11 @@
-import { CommonStepHeader } from '@components/steps/commonStepHeader'
-import type { StepStatus } from '@renderer/types/common'
-import { humanizeSize } from '@utils/strings'
+import { CommonStepHeader } from '@components/steps/commonStepHeader';
+import type { StepStatus } from '@renderer/types/common';
+import { humanizeSize } from '@utils/strings';
 
 export interface DuplicateHeaderProps extends CompletedContentProps {
-  status: StepStatus
-  onCancelClick: () => void
-  onReRunClick: () => void
+  status: StepStatus;
+  onCancelClick: () => void;
+  onReRunClick: () => void;
 }
 
 export const DuplicateHeader = ({
@@ -28,8 +28,8 @@ export const DuplicateHeader = ({
         <CompletedContent groupsCount={groupsCount} filesCount={filesCount} totalSize={totalSize} />
       }
     />
-  )
-}
+  );
+};
 
 const IdleContent = (): React.JSX.Element => {
   return (
@@ -38,8 +38,8 @@ const IdleContent = (): React.JSX.Element => {
         Analyze the staged folder to safely detect and report duplicate files.
       </span>
     </p>
-  )
-}
+  );
+};
 
 const RunningContent = (): React.JSX.Element => {
   return (
@@ -48,13 +48,13 @@ const RunningContent = (): React.JSX.Element => {
         Carefully scanning to identify duplicates — no changes are being made yet.
       </p>
     </div>
-  )
-}
+  );
+};
 
 interface CompletedContentProps {
-  groupsCount: number
-  filesCount: number
-  totalSize: number
+  groupsCount: number;
+  filesCount: number;
+  totalSize: number;
 }
 
 const CompletedContent = ({
@@ -75,5 +75,5 @@ const CompletedContent = ({
         </span>
       </div>
     </div>
-  )
-}
+  );
+};

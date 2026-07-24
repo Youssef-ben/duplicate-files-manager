@@ -1,3 +1,2 @@
-export * from './duplicatesPreview'
-export * from './duplicatesScanner'
-
+export * from './duplicatesPreview';
+export * from './duplicatesScanner';

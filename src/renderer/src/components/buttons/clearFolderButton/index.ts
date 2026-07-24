@@ -1,1 +1,1 @@
-export * from './ClearFolderButton'
+export * from './ClearFolderButton';
