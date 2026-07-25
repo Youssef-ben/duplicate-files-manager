@@ -14,7 +14,7 @@ pycodestyle==2.6.0
 pylint==2.6.0
 pyparsing==2.4.7
 pyperclip==1.8.1
-pytest==6.2.1
+pytest==9.0.3
 rope==0.18.0
 six==1.15.0
 termcolor==1.1.0
