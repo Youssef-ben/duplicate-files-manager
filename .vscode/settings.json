@@ -1,32 +1,39 @@
 {
   "files.eol": "\n",
-  "files.exclude": {
-    "**/.venv": true,
-    "**/testfiles": true
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.markdownlint": true
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
-  "python.formatting.provider": "autopep8",
-  "python.pythonPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
-
-  "python.autoComplete.extraPaths": ["../manager"],
-
-  "python.testing.pytestArgs": ["tests"],
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": false,
-
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
-  "python.linting.lintOnSave": true,
-  "python.languageServer": "Pylance",
-  "python.analysis.extraPaths": [
-    "../manager"
-  ],
-  "cSpell.words": [
-    "ntpath"
-  ]
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "cSpell.words": ["catppuccin", "nord"]
 }

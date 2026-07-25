@@ -1,0 +1,51 @@
+/* ============================================================
+   Catppuccin Mocha
+   base=#1e1e2e  mantle=#181825  crust=#11111b
+   surface0-2, overlay0-2, subtext0-1, text
+   accent = teal #94e2d5
+   ============================================================ */
+:root[data-theme='catppuccin-mocha'] {
+  /* --- Primary (Mauve accent) --- */
+  --color-primary: #cba6f7;
+  --color-primary-dim: #b4befe;
+  --color-on-primary: #1e1e2e;
+  --color-primary-container: #313244;
+  --color-on-primary-container: #cdd6f4;
+
+  /* --- Secondary --- */
+  --color-secondary-container: #45475a;
+  --color-on-secondary-container: #cdd6f4;
+
+  /* --- Error (Red) --- */
+  --color-error: #f38ba8;
+  --color-on-error: #1e1e2e;
+  --color-error-container: #3a1f2b;
+  --color-on-error-container: #f2cdcd;
+
+  /* --- Surfaces --- */
+  --color-surface: #1e1e2e; /* base */
+  --color-surface-bright: #313244; /* surface0 */
+  --color-surface-variant: #45475a; /* surface1 */
+  --color-on-surface: #cdd6f4; /* text */
+  --color-on-surface-variant: #bac2de; /* subtext1 */
+
+  --color-surface-container: #181825; /* mantle */
+  --color-surface-container-lowest: #11111b; /* crust */
+  --color-surface-container-low: color-mix(in srgb, #181825 85%, #1e1e2e 15%);
+  --color-surface-container-high: color-mix(in srgb, #313244 70%, #1e1e2e 30%);
+
+  /* --- Outline --- */
+  --color-outline: #6c7086; /* overlay0 */
+  --color-outline-variant: #585b70; /* surface2 */
+  --color-outline-dim: #888ca5;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* --- Shadows --- */
+  --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.5);
+
+  /* --- Gradients --- */
+  --bg-primary-gradient: linear-gradient(135deg, #cba6f7, #89b4fa);
+}

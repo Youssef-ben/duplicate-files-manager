@@ -1,0 +1,115 @@
+/* ============================================================
+   @theme — Default ("Digital Architect" light)
+   ============================================================ */
+@theme {
+  /* --- Primary (Teal) --- */
+  --color-primary: #006a61;
+  --color-primary-dim: #005d55;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #89f5e7;
+  --color-on-primary-container: #00201d;
+
+  /* --- Secondary --- */
+  --color-secondary-container: #cce8e4;
+  --color-on-secondary-container: #051f1d;
+
+  /* --- Error --- */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #410002;
+
+  --color-info: #0c8ce9;
+  --color-on-info: #ffffff;
+
+  /* --- Surfaces --- */
+  --color-surface: #f7f9fb;
+  --color-surface-bright: #f7f9fb;
+  --color-surface-variant: #dbe4e8;
+  --color-surface-dim: #f1f4f6;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #3f484a;
+
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f1f4f6;
+  --color-surface-container: #e8eff3;
+  --color-surface-container-high: #dde5ea;
+
+  /* --- Outline --- */
+  --color-outline: #6f797b;
+  --color-outline-variant: #bec8ca;
+  --color-outline-dim: #c3c9ca;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* --- Shadows --- */
+  --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.06), 0 0 16px rgb(0 0 0 / 0.08);
+
+  /* --- Gradients --- */
+  --bg-primary-gradient: linear-gradient(135deg, #006a61, #005d55);
+}
+
+:root[data-theme='light'] {
+  /* --- Primary (Teal) --- */
+  --color-primary: #006a61;
+  --color-primary-dim: #005d55;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #89f5e7;
+  --color-on-primary-container: #00201d;
+
+  /* --- Secondary --- */
+  --color-secondary-container: #cce8e4;
+  --color-on-secondary-container: #051f1d;
+
+  /* --- Error --- */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #410002;
+
+  /* --- Surfaces --- */
+  --color-surface: #eaecee;
+  --color-surface-bright: #ffffff;
+  --color-surface-variant: #dbe4e8;
+  --color-surface-dim: #f1f5f9;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #3f484a;
+
+  --color-surface-container: #ffffff;
+  --color-surface-container-lowest: color-mix(
+    in srgb,
+    var(--color-surface-container) 94%,
+    var(--color-surface) 6%
+  );
+  --color-surface-container-low: color-mix(
+    in srgb,
+    var(--color-surface-container) 86%,
+    var(--color-surface) 14%
+  );
+  --color-surface-container-high: color-mix(
+    in srgb,
+    var(--color-surface-container) 70%,
+    var(--color-surface-bright) 30%
+  );
+
+  /* --- Outline --- */
+  --color-outline: #6f797b;
+  --color-outline-variant: #bec8ca;
+  --color-outline-dim: #8d9192;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* --- Shadows --- */
+  --shadow-ghost: 0 8px 30px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.06), 0 0 16px rgb(0 0 0 / 0.08);
+
+  /* --- Gradients --- */
+  --bg-primary-gradient: linear-gradient(135deg, #006a61, #005d55);
+
+  --scale-98: scale(0.98);
+}

@@ -1,0 +1,33 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  "include": [
+    "src/renderer/src/env.d.ts",
+    "src/renderer/src/**/*",
+    "src/renderer/src/**/*.tsx",
+    "src/renderer/src/context/theme/**/*",
+    "src/shared/**/*",
+    "src/handlers/**/*"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@pkg": ["./package.json"],
+      "@main/*": ["./src/main/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@handlers/*": ["./src/handlers/*"],
+      
+      "@assets/*": ["./src/renderer/src/assets/*"],
+      "@components/*": ["./src/renderer/src/components/*"],
+      "@context/*": ["./src/renderer/src/context/*"],
+      "@hooks/*": ["./src/renderer/src/hooks/*"],
+      "@navigation/*": ["./src/renderer/src/navigation/*"],
+      "@pages/*": ["./src/renderer/src/pages/*"],
+      "@stores/*": ["./src/renderer/src/stores/*"],
+      "@styles/*": ["./src/renderer/src/styles/*"],
+      "@renderer/*": ["./src/renderer/src/*"],
+      "@utils/*": ["./src/renderer/src/utils/*"]
+    }
+  }
+}
