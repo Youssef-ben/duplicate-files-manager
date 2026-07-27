@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
+    paths: [package.json]
   workflow_dispatch:
 
 permissions:
@@ -14,8 +14,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      tag: ${{ steps.meta.outputs.tag }}
+      should_release: ${{ steps.meta.outputs.should_release }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - id: meta
+        name: Resolve version and gate release
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v${VERSION}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+          # Skip when package.json changed but version did not (push only).
+          if [ "${{ github.event_name }}" = "push" ] && git rev-parse HEAD^ >/dev/null 2>&1; then
+            PREV=$(git show HEAD^:package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
+            if [ "$PREV" = "$VERSION" ]; then
+              echo "Version unchanged ($VERSION) — skip"
+              echo "should_release=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q "refs/tags/${TAG}$"; then
+            echo "Tag $TAG already exists — skip"
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Will release $TAG"
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
     name: Build (${{ matrix.name }})
+    needs: prepare
+    if: needs.prepare.outputs.should_release == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -24,14 +64,11 @@ jobs:
           - name: Windows
             os: windows-latest
             builder_args: --win nsis
-            artifacts: |
-              dist/*.exe
+            artifacts: dist/*.exe
           - name: Linux
             os: ubuntu-latest
             builder_args: --linux AppImage
-            artifacts: |
-              dist/*.AppImage
-
+            artifacts: dist/*.AppImage
     steps:
       - uses: actions/checkout@v7
 
@@ -40,29 +77,47 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
 
-      # Full install: postinstall fetches the CLI into resources/ for packaging.
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build and package
         env:
-          # Unsigned builds until code-signing certs are configured.
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: |
           yarn electron-vite build
           yarn electron-builder ${{ matrix.builder_args }} --publish never
 
-      - name: Upload workflow artifacts
+      - name: Upload installer
         uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.name }}-installers
           path: ${{ matrix.artifacts }}
-          if-no-files-found: warn
+          if-no-files-found: error
 
-      - name: Attach to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
+  publish:
+    name: Tag & Release
+    needs: [prepare, build]
+    if: needs.prepare.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download installers
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create and push tag
+        run: |
+          git tag "${{ needs.prepare.outputs.tag }}"
+          git push origin "${{ needs.prepare.outputs.tag }}"
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          files: ${{ matrix.artifacts }}
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          name: ${{ needs.prepare.outputs.tag }}
+          files: artifacts/*
           generate_release_notes: true
-          fail_on_unmatched_files: false
+          fail_on_unmatched_files: true

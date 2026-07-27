@@ -119,7 +119,7 @@ yarn build:win
 yarn build:linux
 ```
 
-Tagged releases (`v*`) are built by GitHub Actions — see `[.github/workflows/release.yml](./.github/workflows/release.yml)`.
+GitHub Actions builds Windows and Linux installers, creates a `v*` tag, and publishes a release when the `version` in [`package.json`](./package.json) is bumped on `main` — see [`.github/workflows/release.yml`](./.github/workflows/release.yml).
 
 ## Documentation
 
