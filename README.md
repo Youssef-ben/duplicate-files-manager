@@ -119,7 +119,7 @@ yarn build:win
 yarn build:linux
 ```
 
-GitHub Actions builds Windows and Linux installers, creates a `v*` tag, and publishes a release when the `version` in [`package.json`](./package.json) is bumped on `main` — see [`.github/workflows/release.yml`](./.github/workflows/release.yml).
+When `package.json` changes on `main` and CI passes, GitHub Actions builds Windows and Linux installers, creates a `v*` tag, and publishes a release if the `version` was bumped — see [`.github/workflows/release.yml`](./.github/workflows/release.yml).
 
 ## Documentation
 

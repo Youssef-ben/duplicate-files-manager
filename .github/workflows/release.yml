@@ -8,9 +8,11 @@ on:
 
 permissions:
   contents: write
+  actions: read
+  checks: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -20,6 +22,7 @@ jobs:
     outputs:
       version: ${{ steps.meta.outputs.version }}
       tag: ${{ steps.meta.outputs.tag }}
+      sha: ${{ steps.meta.outputs.sha }}
       should_release: ${{ steps.meta.outputs.should_release }}
     steps:
       - uses: actions/checkout@v7
@@ -29,14 +32,16 @@ jobs:
       - id: meta
         name: Resolve version and gate release
         run: |
+          SHA="${{ github.sha }}"
           VERSION=$(node -p "require('./package.json').version")
           TAG="v${VERSION}"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
           # Skip when package.json changed but version did not (push only).
-          if [ "${{ github.event_name }}" = "push" ] && git rev-parse HEAD^ >/dev/null 2>&1; then
-            PREV=$(git show HEAD^:package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
+          if [ "${{ github.event_name }}" = "push" ] && git rev-parse "${SHA}^" >/dev/null 2>&1; then
+            PREV=$(git show "${SHA}^:package.json" | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
             if [ "$PREV" = "$VERSION" ]; then
               echo "Version unchanged ($VERSION) — skip"
               echo "should_release=false" >> "$GITHUB_OUTPUT"
@@ -48,9 +53,44 @@ jobs:
             echo "Tag $TAG already exists — skip"
             echo "should_release=false" >> "$GITHUB_OUTPUT"
           else
-            echo "Will release $TAG"
+            echo "Will release $TAG at $SHA"
             echo "should_release=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Wait for CI
+        if: steps.meta.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Waiting for CI on ${{ github.sha }}..."
+          for i in $(seq 1 60); do
+            CONCLUSION=$(gh run list \
+              --workflow CI \
+              --commit "${{ github.sha }}" \
+              --branch main \
+              --limit 1 \
+              --json conclusion,status \
+              --jq '.[0] | "\(.status):\(.conclusion // "")"')
+
+            echo "CI status: ${CONCLUSION:-none}"
+
+            case "$CONCLUSION" in
+              completed:success)
+                echo "CI passed"
+                exit 0
+                ;;
+              completed:*)
+                echo "CI finished without success ($CONCLUSION) — abort release"
+                exit 1
+                ;;
+              *)
+                sleep 30
+                ;;
+            esac
+          done
+
+          echo "Timed out waiting for CI"
+          exit 1
 
   build:
     name: Build (${{ matrix.name }})
@@ -71,6 +111,8 @@ jobs:
             artifacts: dist/*.AppImage
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
 
       - uses: actions/setup-node@v7
         with:
@@ -101,6 +143,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
 
       - name: Download installers
         uses: actions/download-artifact@v8
@@ -110,7 +154,7 @@ jobs:
 
       - name: Create and push tag
         run: |
-          git tag "${{ needs.prepare.outputs.tag }}"
+          git tag "${{ needs.prepare.outputs.tag }}" "${{ needs.prepare.outputs.sha }}"
           git push origin "${{ needs.prepare.outputs.tag }}"
 
       - name: Create GitHub Release
@@ -118,6 +162,7 @@ jobs:
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           name: ${{ needs.prepare.outputs.tag }}
+          target_commitish: ${{ needs.prepare.outputs.sha }}
           files: artifacts/*
           generate_release_notes: true
           fail_on_unmatched_files: true
