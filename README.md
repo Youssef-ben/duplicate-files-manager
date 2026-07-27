@@ -35,7 +35,7 @@ Pick a messy photo or video folder and organize its files into a clean `year/mon
 
 Choose your library and output folder, then let the app consolidate files, detect duplicates, and arrange everything by date. You review every step, and nothing is moved or deleted without your confirmation.
 
-Organize
+![Organize](./docs/images/organize.png)
 
 ### Duplicates Finder
 
@@ -46,7 +46,7 @@ by side.
 Nothing is deleted automatically — you choose what to keep, review the plan, and
 confirm before any redundant files are removed.
 
-Duplicates
+![Duplicates Finder](./docs/images/duplicates.png)
 
 ### Synchronize
 
@@ -56,7 +56,7 @@ review the planned copies before anything is written.
 
 Nothing is applied until you confirm — so you always see what will change first.
 
-Synchronize
+![Synchronize](./docs/images/synchronize.png)
 
 ### Settings
 
@@ -64,7 +64,7 @@ Personalize the app to match how you work. Switch between System, Light, Dark, N
 and Catppuccin Mocha themes, and exclude folders you never want scanned (for example
 caches or system directories).
 
-Settings
+![Settings](./docs/images/settings.png)
 
 ## Prerequisites
 
