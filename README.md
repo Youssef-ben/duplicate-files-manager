@@ -121,6 +121,8 @@ yarn build:linux
 
 When `package.json` changes on `main` and CI passes, GitHub Actions builds Windows and Linux installers, creates a `v*` tag, and publishes a release if the `version` was bumped — see [`.github/workflows/release.yml`](./.github/workflows/release.yml).
 
+Packaged installs use **electron-updater** against that GitHub Release. Bumping `version` and shipping the release (including `latest.yml` / `latest-linux.yml` and `.blockmap` files) is what triggers auto-update for existing installs.
+
 ## Documentation
 
 - [Architecture overview](./docs/top-level-architecture.md)

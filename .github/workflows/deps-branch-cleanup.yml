@@ -1,0 +1,22 @@
+name: Cleanup deps branch
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  delete:
+    name: Delete chore/deps
+    if: github.event.pull_request.merged && github.event.pull_request.head.ref == 'chore/deps'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete remote branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/chore/deps" \
+            || echo "Branch already deleted"

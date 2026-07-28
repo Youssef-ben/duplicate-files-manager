@@ -5,12 +5,13 @@ on: pull_request
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 
 jobs:
   auto-merge:
     name: Enable auto-merge
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Fetch Dependabot metadata
         id: meta
@@ -18,13 +19,30 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Patch and minor only — majors stay manual for review.
-      # --auto queues the merge until required checks (CI) are green.
-      - name: Enable auto-merge for patch and minor
+      # Version updates: patch/minor (and grouped non-majors) into chore/deps.
+      # Security updates: patch/minor into main (Dependabot ignores target-branch).
+      # Majors stay manual.
+      - name: Merge patch and minor
         if: |
-          steps.meta.outputs.update-type == 'version-update:semver-patch' ||
-          steps.meta.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --squash "$PR_URL"
+          steps.meta.outputs.update-type != 'version-update:semver-major' &&
+          (
+            github.event.pull_request.base.ref == 'chore/deps' ||
+            (
+              github.event.pull_request.base.ref == 'main' &&
+              steps.meta.outputs.alert-number != ''
+            )
+          )
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Checks may not be registered yet when the PR event fires.
+          for i in $(seq 1 20); do
+            if gh pr checks "$PR_URL" >/dev/null 2>&1; then
+              break
+            fi
+            sleep 15
+          done
+          gh pr checks "$PR_URL" --watch
+          gh pr merge --squash "$PR_URL"

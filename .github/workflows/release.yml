@@ -104,11 +104,17 @@ jobs:
           - name: Windows
             os: windows-latest
             builder_args: --win nsis
-            artifacts: dist/*.exe
+            artifacts: |
+              dist/*.exe
+              dist/*.yml
+              dist/*.blockmap
           - name: Linux
             os: ubuntu-latest
             builder_args: --linux AppImage
-            artifacts: dist/*.AppImage
+            artifacts: |
+              dist/*.AppImage
+              dist/*.yml
+              dist/*.blockmap
     steps:
       - uses: actions/checkout@v7
         with:

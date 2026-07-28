@@ -1,0 +1,43 @@
+name: Ensure deps branch
+
+on:
+  schedule:
+    # Saturday 00:00 UTC — before Sunday Dependabot.
+    - cron: "0 0 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  ensure:
+    name: Create or reset chore/deps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Create or reset chore/deps from main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+
+          if git ls-remote --heads origin chore/deps | grep -q .; then
+            OPEN=$(gh pr list --base main --head chore/deps --state open --json number --jq 'length')
+            if [ "$OPEN" != "0" ]; then
+              echo "Open chore/deps PR exists — leaving branch unchanged"
+              exit 0
+            fi
+            echo "Resetting chore/deps to origin/main"
+            git checkout -B chore/deps origin/main
+            git push --force origin chore/deps
+          else
+            echo "Creating chore/deps from origin/main"
+            git checkout -B chore/deps origin/main
+            git push origin chore/deps
+          fi

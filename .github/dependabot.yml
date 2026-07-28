@@ -1,7 +1,9 @@
 version: 2
 updates:
+  # Version updates target chore/deps. Security updates always go to main.
   - package-ecosystem: "npm"
     directory: "/"
+    target-branch: "chore/deps"
     schedule:
       interval: "weekly"
       day: "sunday"
@@ -22,15 +24,12 @@ updates:
         update-types:
           - "minor"
           - "patch"
-      security-dependencies:
-        applies-to: security-updates
-        patterns:
-          - "*"
     labels:
       - "dependencies"
 
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "chore/deps"
     schedule:
       interval: "weekly"
       day: "sunday"

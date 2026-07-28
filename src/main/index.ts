@@ -5,6 +5,7 @@ import { app, BrowserWindow, protocol, shell } from 'electron';
 import { join } from 'path';
 import { localFileResponse } from './helpers';
 import { registerHandlers } from './ipc/handlers';
+import { setupAutoUpdater } from './updater';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -13,6 +14,7 @@ protocol.registerSchemesAsPrivileged([
       secure: true,
       standard: true,
       supportFetchAPI: true,
+      corsEnabled: true,
       bypassCSP: true,
       stream: true
     }
@@ -100,6 +102,7 @@ app.whenReady().then(() => {
   });
 
   createWindow();
+  setupAutoUpdater();
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

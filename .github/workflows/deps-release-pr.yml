@@ -1,0 +1,85 @@
+name: Open deps release PR
+
+on:
+  schedule:
+    # Monday 12:00 UTC — after Sunday Dependabot + CI auto-merge.
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  open-pr:
+    name: Bump patch and open PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Bump patch and open PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git fetch origin chore/deps:chore/deps || {
+            echo "chore/deps does not exist — run Ensure deps branch first"
+            exit 0
+          }
+
+          git checkout chore/deps
+
+          AHEAD=$(git rev-list --count origin/main..HEAD)
+          if [ "$AHEAD" = "0" ]; then
+            echo "No commits on chore/deps ahead of main — skip"
+            exit 0
+          fi
+
+          MAIN_VER=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
+          CUR_VER=$(node -p "require('./package.json').version")
+
+          if [ "$CUR_VER" = "$MAIN_VER" ]; then
+            NEW_VER=$(node -e "
+              const fs = require('fs');
+              const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+              const parts = p.version.split('.').map(Number);
+              parts[2] += 1;
+              p.version = parts.join('.');
+              fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
+              process.stdout.write(p.version);
+            ")
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package.json
+            git commit -m "chore: bump version to ${NEW_VER}"
+            git push origin chore/deps
+            CUR_VER="$NEW_VER"
+          else
+            echo "Version already bumped ($CUR_VER vs main $MAIN_VER)"
+          fi
+
+          EXISTING=$(gh pr list --base main --head chore/deps --state open --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            echo "PR #$EXISTING already open"
+            exit 0
+          fi
+
+          gh label create dependencies --force >/dev/null || true
+
+          gh pr create \
+            --base main \
+            --head chore/deps \
+            --title "chore(deps): weekly updates (${CUR_VER})" \
+            --label dependencies \
+            --body "$(cat <<EOF
+          Weekly dependency batch from \`chore/deps\`.
+
+          Patch version bumped to **${CUR_VER}**. Merge this PR to ship the release.
+
+          Majors (if any) are left unmerged on \`chore/deps\` for review.
+          EOF
+          )"
