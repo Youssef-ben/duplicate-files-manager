@@ -1,11 +1,15 @@
 {
   "name": "library-organizer",
   "productName": "Library Organizer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
   "author": "YBensoft",
   "homepage": "https://ybensoft.ca",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Youssef-ben/duplicate-files-manager.git"
+  },
   "engines": {
     "node": ">=22"
   },
@@ -60,6 +64,7 @@
     "@tanstack/react-virtual": "^3.13.23",
     "clsx": "^2.1.1",
     "electron-store": "11.0.2",
+    "electron-updater": "^6.8.9",
     "framer-motion": "^12.38.0",
     "immer": "^11.1.4",
     "react-router-dom": "^7.13.1",
