@@ -68,9 +68,9 @@
     "framer-motion": "^12.43.0",
     "immer": "^11.1.16",
     "react-router-dom": "^7.18.2",
-    "sonner": "^2.0.7",
+    "sonner": "^2.0.8",
     "tailwind-merge": "^3.5.0",
-    "zustand": "^5.0.12"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
