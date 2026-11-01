@@ -84,7 +84,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "cspell": "^10.4.0",
     "electron": "44.9.3",
-    "electron-builder": "^26.17.0",
+    "electron-builder": "^26.18.0",
     "electron-vite": "^5.0.0",
     "eslint": "^9",
     "eslint-plugin-react": "^7.37.5",
