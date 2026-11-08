@@ -1415,29 +1415,29 @@
     "@tailwindcss/oxide" "4.3.3"
     tailwindcss "4.3.3"
 
-"@tanstack/query-core@5.104.5":
-  version "5.104.5"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.104.5.tgz#251e241c537fb065ae188d0332e62cf413db863c"
-  integrity sha512-Q94gI8Opd+CbdVNOdj8ZCyV8WqLYitrDq1t96Xc8WZT6lY0r5iRnJLXYDxMex7EEf2v+mXvn4FcjaBKSxXZQ9A==
+"@tanstack/query-core@5.105.1":
+  version "5.105.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.105.1.tgz#8f44982e87f8b5cb9257737ae10dcfc43cab3f65"
+  integrity sha512-B/rNlZoZ54w1dlddiUt9oEe1SLM+37c00SKLJEg9YH+7as3Y54P81o9Fh+2ujZ36tXPnQJ5oVe7AcyEWkyFhPg==
 
-"@tanstack/react-query@^5.104.5":
-  version "5.104.5"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.104.5.tgz#a7c4d9317fbbdab79a1cb0c6191d3fe689a823f8"
-  integrity sha512-RORgFe052U+93weaNuqg7qHq7vNVNzXN/VrXqD4bbAuQCWUqOl2lV5Ui9flWk5CVvMyL/Bh27QWhzwH0aaOx9g==
+"@tanstack/react-query@^5.105.1":
+  version "5.105.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.105.1.tgz#3619467713014f3336d67bb9ba5c627d474ba8ee"
+  integrity sha512-qcu+/+PtBOjW8qU4/0l47QVmNG7hPOWsCLzP0bTRhE1X7HYa757C4732wXTUH0QhCjTV1yedX8onsCiEwlNYrA==
   dependencies:
-    "@tanstack/query-core" "5.104.5"
+    "@tanstack/query-core" "5.105.1"
 
-"@tanstack/react-virtual@^3.14.24":
-  version "3.14.24"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.24.tgz#cec5ccdf118449b357d0cd956dc6737756e88f6c"
-  integrity sha512-JoNsByXR68fNlB2NZuT3bSk8uYBxuOWl6YNJ7djTrw7IMwBWuaOtffxj/TcuMa80WmL6byb+80i1NEM/8Qmocw==
+"@tanstack/react-virtual@^3.14.26":
+  version "3.14.26"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.14.26.tgz#30efd2d54dfa7165b59657abfef39312d3de2402"
+  integrity sha512-HUDlfsrYH6ko5xH56L62Mcl/uzT+AGVNMHFuDNqDJMdZWc1AQa2oeVKNUvZ/RWBZQ4TYtyQerFrNvLnp39h65A==
   dependencies:
-    "@tanstack/virtual-core" "3.19.9"
+    "@tanstack/virtual-core" "3.19.11"
 
-"@tanstack/virtual-core@3.19.9":
-  version "3.19.9"
-  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.19.9.tgz#12ab5f5b2561ec2c44510bd72f190c5225dcda8f"
-  integrity sha512-Syiaf3w69dFyYv4o2mqJ1/2VtBJTNq5Hu5cVXfnzOuJKFpUojukQR13ZW+5NvdMJM7GFHeNPmveMNhoIubiFyA==
+"@tanstack/virtual-core@3.19.11":
+  version "3.19.11"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.19.11.tgz#089fd1a9a92503f8f2329c7e48ceb84178726fc1"
+  integrity sha512-/5iHb0RHBvj8Di59FDs4ESNm45jls33aZAi4zccVXZjc/6ZvwQP6nzEYeT6weXjTf9E6/vrp2JhYWRyO+ZP13A==
 
 "@tybys/wasm-util@^0.10.2", "@tybys/wasm-util@^0.10.3":
   version "0.10.4"
