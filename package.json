@@ -60,17 +60,17 @@
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "@heroicons/react": "^2.2.0",
-    "@tanstack/react-query": "^5.105.1",
+    "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-virtual": "^3.14.26",
     "clsx": "^2.1.1",
     "electron-store": "12.0.0",
     "electron-updater": "^6.8.11",
     "framer-motion": "^13.5.1",
-    "immer": "^11.2.9",
+    "immer": "^11.2.10",
     "react-router-dom": "^7.18.5",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.7.0",
-    "zustand": "^5.0.16"
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
