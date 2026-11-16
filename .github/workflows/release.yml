@@ -12,7 +12,7 @@ permissions:
   checks: read
 
 concurrency:
-  group: release-${{ github.sha }}
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       version: ${{ steps.meta.outputs.version }}
       tag: ${{ steps.meta.outputs.tag }}
       sha: ${{ steps.meta.outputs.sha }}
-      should_release: ${{ steps.meta.outputs.should_release }}
+      should_release: ${{ steps.ci.outputs.should_release || steps.meta.outputs.should_release }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -58,33 +58,67 @@ jobs:
           fi
 
       - name: Wait for CI
+        id: ci
         if: steps.meta.outputs.should_release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          echo "Waiting for CI on ${{ github.sha }}..."
+          set -u
+          echo "Waiting for CI on $SHA ($BRANCH)..."
           for i in $(seq 1 60); do
-            CONCLUSION=$(gh run list \
+            RUN=$(gh run list \
               --workflow CI \
-              --commit "${{ github.sha }}" \
-              --branch main \
+              --commit "$SHA" \
+              --branch "$BRANCH" \
               --limit 1 \
-              --json conclusion,status \
-              --jq '.[0] | "\(.status):\(.conclusion // "")"')
+              --json databaseId,status,conclusion \
+              --jq '.[0] // empty')
 
-            echo "CI status: ${CONCLUSION:-none}"
+            if [ -z "$RUN" ]; then
+              echo "CI status: none"
+              sleep 15
+              continue
+            fi
 
-            case "$CONCLUSION" in
+            STATUS=$(printf '%s' "$RUN" | jq -r .status)
+            CONCLUSION=$(printf '%s' "$RUN" | jq -r '.conclusion // ""')
+            RUN_ID=$(printf '%s' "$RUN" | jq -r .databaseId)
+            echo "CI status: ${STATUS}:${CONCLUSION} (run $RUN_ID)"
+
+            if [ "$STATUS" != "completed" ]; then
+              if gh run watch "$RUN_ID" --exit-status; then
+                echo "CI passed"
+                echo "should_release=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              CONCLUSION=$(gh run view "$RUN_ID" --json conclusion --jq .conclusion)
+              STATUS=completed
+            fi
+
+            case "${STATUS}:${CONCLUSION}" in
               completed:success)
                 echo "CI passed"
+                echo "should_release=true" >> "$GITHUB_OUTPUT"
                 exit 0
                 ;;
+              completed:cancelled)
+                TIP=$(gh api "repos/${{ github.repository }}/commits/${BRANCH}" --jq .sha)
+                if [ "$TIP" != "$SHA" ]; then
+                  echo "CI cancelled and ${BRANCH} moved on ($TIP) — skip release"
+                  echo "should_release=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+                fi
+                echo "CI cancelled — waiting for a re-run on this SHA"
+                sleep 15
+                ;;
               completed:*)
-                echo "CI finished without success ($CONCLUSION) — abort release"
+                echo "CI finished without success (${STATUS}:${CONCLUSION}) — abort release"
                 exit 1
                 ;;
               *)
-                sleep 30
+                sleep 15
                 ;;
             esac
           done
@@ -143,7 +177,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Tag & Release
+    name: Release
     needs: [prepare, build]
     if: needs.prepare.outputs.should_release == 'true'
     runs-on: ubuntu-latest
@@ -158,13 +192,9 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Create and push tag
-        run: |
-          git tag "${{ needs.prepare.outputs.tag }}" "${{ needs.prepare.outputs.sha }}"
-          git push origin "${{ needs.prepare.outputs.tag }}"
-
+      # softprops creates the tag at target_commitish — avoids orphan tags if upload fails.
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           name: ${{ needs.prepare.outputs.tag }}

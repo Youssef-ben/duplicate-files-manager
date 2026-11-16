@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 
 jobs:
   open-pr:
@@ -31,7 +32,29 @@ jobs:
             exit 0
           }
 
+          echo "Waiting for open Dependabot PRs into chore/deps to settle..."
+          SETTLED=0
+          for i in $(seq 1 24); do
+            bash .github/scripts/close-stuck-dependabot-prs.sh chore/deps \
+              "Closed: CI failed; will not block weekly deps release." \
+              "Merge when CI passes"
+
+            OPEN_DEPS=$(gh pr list --base chore/deps --state open --json author,number \
+              --jq '[.[] | select(.author.login == "dependabot[bot]")] | length')
+            echo "Open Dependabot PRs targeting chore/deps: $OPEN_DEPS"
+            if [ "$OPEN_DEPS" = "0" ]; then
+              SETTLED=1
+              break
+            fi
+            sleep 300
+          done
+          if [ "$SETTLED" != "1" ]; then
+            echo "Dependabot PRs still open after ~2h — skip this run"
+            exit 0
+          fi
+
           git checkout chore/deps
+          git pull --ff-only origin chore/deps
 
           AHEAD=$(git rev-list --count origin/main..HEAD)
           if [ "$AHEAD" = "0" ]; then
@@ -76,10 +99,8 @@ jobs:
             --title "chore(deps): weekly updates (${CUR_VER})" \
             --label dependencies \
             --body "$(cat <<EOF
-          Weekly dependency batch from \`chore/deps\`.
+          Weekly dependency batch from \`chore/deps\` (patch/minor/major, auto-merged after CI).
 
           Patch version bumped to **${CUR_VER}**. Merge this PR to ship the release.
-
-          Majors (if any) are left unmerged on \`chore/deps\` for review.
           EOF
           )"

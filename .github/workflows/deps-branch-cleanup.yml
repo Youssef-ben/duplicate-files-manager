@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   delete:
@@ -14,9 +15,14 @@ jobs:
     if: github.event.pull_request.merged && github.event.pull_request.head.ref == 'chore/deps'
     runs-on: ubuntu-latest
     steps:
-      - name: Delete remote branch
+      - name: Close leftover PRs and delete branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+          for num in $(gh pr list --base chore/deps --state open --json number --jq '.[].number'); do
+            echo "Closing leftover PR #$num"
+            gh pr close "$num" --comment "Closed: chore/deps was merged and deleted." || true
+          done
           gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/chore/deps" \
             || echo "Branch already deleted"

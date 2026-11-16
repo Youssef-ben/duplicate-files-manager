@@ -9,40 +9,64 @@ permissions:
 
 jobs:
   auto-merge:
-    name: Enable auto-merge
+    name: Merge when CI passes
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Fetch Dependabot metadata
         id: meta
-        uses: dependabot/fetch-metadata@v3
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Version updates: patch/minor (and grouped non-majors) into chore/deps.
-      # Security updates: patch/minor into main (Dependabot ignores target-branch).
-      # Majors stay manual.
-      - name: Merge patch and minor
+      # Version updates (incl. majors) into chore/deps; security updates into main
+      # (Dependabot ignores target-branch for alerts).
+      # Wait for every check except this job — do not use `gh pr checks --watch`
+      # (it waits on this job and deadlocks). Optional: ruleset requiring CI on
+      # chore/deps and main; allow Actions to force-push/delete chore/deps.
+      - name: Wait for CI and squash-merge
         if: |
-          steps.meta.outputs.update-type != 'version-update:semver-major' &&
+          github.event.pull_request.base.ref == 'chore/deps' ||
           (
-            github.event.pull_request.base.ref == 'chore/deps' ||
-            (
-              github.event.pull_request.base.ref == 'main' &&
-              steps.meta.outputs.alert-number != ''
-            )
+            github.event.pull_request.base.ref == 'main' &&
+            steps.meta.outputs.alert-number != ''
           )
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SELF_CHECK: Merge when CI passes
         run: |
           set -euo pipefail
-          # Checks may not be registered yet when the PR event fires.
-          for i in $(seq 1 20); do
-            if gh pr checks "$PR_URL" >/dev/null 2>&1; then
-              break
-            fi
-            sleep 15
+          echo "Waiting for checks on $PR_URL (ignoring \"$SELF_CHECK\")..."
+          for i in $(seq 1 60); do
+            # gh exits 8 while checks are pending; still emit JSON.
+            STATE=$(gh pr checks "$PR_URL" --json name,bucket \
+              --jq --arg self "$SELF_CHECK" '
+                [.[] | select(.name != $self) | .bucket]
+                | if length == 0 then "missing"
+                  elif any(. == "fail" or . == "cancel") then "fail"
+                  elif all(. == "pass") then "pass"
+                  else "pending"
+                  end
+              ' || true)
+
+            echo "Check state: ${STATE:-missing}"
+
+            case "${STATE:-missing}" in
+              pass)
+                echo "CI passed — merging"
+                gh pr merge --squash "$PR_URL"
+                exit 0
+                ;;
+              fail)
+                echo "CI did not pass ($STATE) — abort"
+                exit 1
+                ;;
+              *)
+                sleep 30
+                ;;
+            esac
           done
-          gh pr checks "$PR_URL" --watch
-          gh pr merge --squash "$PR_URL"
+
+          echo "Timed out waiting for CI"
+          exit 1
