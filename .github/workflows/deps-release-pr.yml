@@ -36,8 +36,7 @@ jobs:
           SETTLED=0
           for i in $(seq 1 24); do
             bash .github/scripts/close-stuck-dependabot-prs.sh chore/deps \
-              "Closed: CI failed; will not block weekly deps release." \
-              "Merge when CI passes"
+              "Closed: CI failed; will not block weekly deps release."
 
             OPEN_DEPS=$(gh pr list --base chore/deps --state open --json author,number \
               --jq '[.[] | select(.author.login == "dependabot[bot]")] | length')

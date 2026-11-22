@@ -37,8 +37,7 @@ jobs:
 
             # Close Dependabot PRs whose CI already failed so they cannot block reset forever.
             bash .github/scripts/close-stuck-dependabot-prs.sh chore/deps \
-              "Closed: CI failed; clearing chore/deps for weekly reset." \
-              "Merge when CI passes"
+              "Closed: CI failed; clearing chore/deps for weekly reset."
 
             OPEN_INTO_DEPS=$(gh pr list --base chore/deps --state open --json number --jq 'length')
             if [ "$OPEN_INTO_DEPS" != "0" ]; then

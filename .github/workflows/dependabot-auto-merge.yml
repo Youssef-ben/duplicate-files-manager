@@ -21,7 +21,7 @@ jobs:
 
       # Version updates (incl. majors) into chore/deps; security updates into main
       # (Dependabot ignores target-branch for alerts).
-      # Wait for every check except this job — do not use `gh pr checks --watch`
+      # Wait only for CI job names — do not use `gh pr checks --watch`
       # (it waits on this job and deadlocks). Optional: ruleset requiring CI on
       # chore/deps and main; allow Actions to force-push/delete chore/deps.
       - name: Wait for CI and squash-merge
@@ -34,25 +34,32 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SELF_CHECK: Merge when CI passes
+          # Must match job `name:` values in ci.yml
+          REQUIRED_CHECKS: '["Lint & Typecheck","Build"]'
         run: |
           set -euo pipefail
-          echo "Waiting for checks on $PR_URL (ignoring \"$SELF_CHECK\")..."
+          echo "Waiting for CI checks on $PR_URL: $REQUIRED_CHECKS"
           for i in $(seq 1 60); do
             # gh exits 8 while checks are pending; still emit JSON.
-            STATE=$(gh pr checks "$PR_URL" --json name,bucket \
-              --jq --arg self "$SELF_CHECK" '
-                [.[] | select(.name != $self) | .bucket]
-                | if length == 0 then "missing"
-                  elif any(. == "fail" or . == "cancel") then "fail"
-                  elif all(. == "pass") then "pass"
+            # Use standalone jq — gh --jq does not support --arg/--argjson.
+            CHECKS=$(gh pr checks "$PR_URL" --json name,bucket || true)
+            if [ -z "$CHECKS" ]; then
+              STATE=pending
+            else
+              STATE=$(printf '%s' "$CHECKS" | jq -r --argjson required "$REQUIRED_CHECKS" '
+                map(select(.name as $n | $required | index($n))) as $found
+                | if ($found | length) != ($required | length) then "pending"
+                  elif any($found[]; .bucket == "fail" or .bucket == "cancel") then "fail"
+                  elif any($found[]; .bucket == "pending") then "pending"
+                  elif all($found[]; .bucket == "pass" or .bucket == "skipping") then "pass"
                   else "pending"
                   end
-              ' || true)
+              ' || echo pending)
+            fi
 
-            echo "Check state: ${STATE:-missing}"
+            echo "Check state: ${STATE:-pending}"
 
-            case "${STATE:-missing}" in
+            case "${STATE:-pending}" in
               pass)
                 echo "CI passed — merging"
                 gh pr merge --squash "$PR_URL"
